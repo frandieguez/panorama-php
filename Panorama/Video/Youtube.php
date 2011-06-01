@@ -27,7 +27,7 @@
  */
 namespace Panorama\Video;
 
-class Youtube  implements BaseInterface {
+class Youtube  implements VideoInterface {
     
     /*
      * __construct()

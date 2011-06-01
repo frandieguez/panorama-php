@@ -25,7 +25,7 @@
 */
 namespace Panorama\Video;
 
-interface BaseInterface {
+interface VideoInterface {
     
     /**
      * Returns the download url for the video
