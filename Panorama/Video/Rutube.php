@@ -20,12 +20,17 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  **/
-/*
- * class Rutube  * http://www.ted.com/index.php/talks/benjamin_wallace_on_the_price_of_happiness.html
- */
+/**
+ * Wrapper class for Rutube videos
+ *
+ * @author Fran Diéguez <fran@openhost.es>
+ * @version \$Id\$
+ * @copyright OpenHost S.L., Mér Xuñ 01 15:58:58 2011
+ * @package Panorama\Video
+ **/
 namespace Panorama\Video;
 
-class Rutube  {
+class Rutube implements VideoInterface {
     
     private $rtXmlAPIUrl = "http://rutube.ru/cgi-bin/xmlapi.cgi";
     
@@ -37,15 +42,6 @@ class Rutube  {
     {
         
         $this->url = $url;
-        $this->videoId = $this->getVideoID();
-        $this->title = $this->getTitle();
-        $this->thumbnail = $this->getThumbnail();
-        $this->duration = $this->getDuration();
-        $this->embedUrl = $this->getEmbedUrl();
-        $this->embedHTML = $this->getEmbedHTML();
-        $this->FLV = $this->getFLV();
-        $this->downloadUrl = $this->getEmbedUrl();
-        $this->service = $this->getService();
         
     }
     

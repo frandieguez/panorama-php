@@ -21,10 +21,21 @@
  *  THE SOFTWARE.
  **/
 /**
- * (c) Copyright Mér Xuñ 01 13:46:16 2011 Fran Diéguez. All Rights Reserved.
-*/
+ * Definition of the API for all the video resource clases
+ *
+ * @author Fran Diéguez <fran@openhost.es>
+ * @version \$Id\$
+ * @copyright OpenHost S.L., Mér Xuñ 01 15:58:58 2011
+ * @package Panorama\Video
+ **/
 namespace Panorama\Video;
 
+/**
+ * Interface to define the API for all the video resource clases
+ *
+ * @package Panorama\Video
+ * @author Fran Diéguez
+ **/
 interface VideoInterface {
     
     /**

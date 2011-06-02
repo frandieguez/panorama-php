@@ -20,11 +20,14 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  **/
-/*
+/**
  * Wrapper class for Youtube
  *
- * Example: http://www.youtube.com/watch?v=25AsfkriHQc
- */
+ * @author Fran Diéguez <fran@openhost.es>
+ * @version \$Id\$
+ * @copyright OpenHost S.L., Mér Xuñ 01 15:58:58 2011
+ * @package Panorama\Video
+ **/
 namespace Panorama\Video;
 
 class Youtube  implements VideoInterface {
@@ -44,7 +47,7 @@ class Youtube  implements VideoInterface {
     /*
      * gets the handler for Youtube web service
      * 
-     * @return object, youtube handler
+     * @returns object, youtube handler
      */
     public function getServiceHandler()
     {
@@ -59,7 +62,7 @@ class Youtube  implements VideoInterface {
      * sets the handler for Youtube web service, useful for using mocking objects
      *
      * @params handler, instantiated object that handles youtube web service request
-     * @return object, youtube handler
+     * @returns object, youtube handler
      */
     public function setServiceHandler($handler)
     {
@@ -71,7 +74,7 @@ class Youtube  implements VideoInterface {
     /*
      * Returns the videoEntry for this video
      * 
-     * @param $arg
+     * @returns object, the video entry object from an video id
      */
     public function getVideoEntry()
     {
@@ -169,7 +172,7 @@ class Youtube  implements VideoInterface {
     /*
      * Returns the FLV url 
      *
-     * @return string, the url to the video URL
+     * @returns string, the url to the video URL
      */
     public function getFLV()
     {
@@ -182,7 +185,8 @@ class Youtube  implements VideoInterface {
     
     /*
      * Returns the embed url of the video
-     * 
+     *
+     * @returns string, the embed url of the video
      */
     public function getEmbedUrl()
     {
@@ -194,7 +198,8 @@ class Youtube  implements VideoInterface {
     
     /*
      * Returns the service name for this video
-     * 
+     *
+     * @returns string, the service name of this video
      */
     public function getService()
     {
@@ -203,7 +208,8 @@ class Youtube  implements VideoInterface {
     
     /*
      * Returns the url for downloading the flv video file
-     * 
+     *
+     * @returns string, the url for downloading the flv video file
      */
     public function getDownloadUrl()
     {
@@ -215,7 +221,8 @@ class Youtube  implements VideoInterface {
     
     /*
      * Returns the duration in sec of the video
-     * 
+     *
+     * @returns string, the duration in sec of the video
      */
     public function getDuration()
     {
@@ -227,7 +234,8 @@ class Youtube  implements VideoInterface {
     
     /*
      * Returns the video Thumbnails
-     * 
+     *
+     * @returns mixed, the video thumbnails
      */
     public function getThumbnails()
     {
@@ -239,7 +247,8 @@ class Youtube  implements VideoInterface {
     
     /*
      * Returns the video Thumbnail
-     * 
+     *
+     * @returns string, the video thumbnail url
      */
     public function getThumbnail()
     {
@@ -252,7 +261,8 @@ class Youtube  implements VideoInterface {
     
     /*
      * Returns the video tags
-     * 
+     *
+     * @returns mixed, a list of tags for this video
      */
     public function getTags()
     {
@@ -264,7 +274,8 @@ class Youtube  implements VideoInterface {
     
     /*
      * Returns the watch url for the video
-     * 
+     *
+     * @returns string, the url for watching this video
      */
     public function getWatchUrl()
     {
@@ -274,6 +285,12 @@ class Youtube  implements VideoInterface {
         return $this->watchUrl;
     }
     
+    /**
+     * Returns the value of the param given
+     *
+     * @param string, the param to look for
+     * @return string, the value of the param
+     */
     private function getUrlParam($param)
     {
         $queryParamsRAW = parse_url($this->url, PHP_URL_QUERY);

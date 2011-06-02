@@ -20,13 +20,17 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  **/
-/*
- * class Ted
- * http://www.ted.com/index.php/talks/benjamin_wallace_on_the_price_of_happiness.html
- */
+/**
+ * Wrapper class for Youtube
+ *
+ * @author Fran Diéguez <fran@openhost.es>
+ * @version \$Id\$
+ * @copyright OpenHost S.L., Mér Xuñ 01 15:58:58 2011
+ * @package Panorama\Video
+ **/
 namespace Panorama\Video;
 
-class Ted  {
+class Ted implements VideoInterface {
     
     private $feed = null;
     
@@ -44,31 +48,18 @@ class Ted  {
             throw new \Exception("The url '{$this->url}' is not a valid Ted talk url");
         }
         
-        $this->page = file_get_contents($this->url);
-        
-        $this->videoId = $this->getVideoID();
-        $this->emb = file_get_contents("http://www.ted.com/talks/embed/id/{$this->videoId}");
-        
-        $split = preg_split("@param\sname=\"flashvars\"\svalue=\"@",urldecode((string) $this->emb));
-        $split = preg_split("@\"@", $split[1]);
-        $this->flashvars = $split[0];
-        
-        $parts = explode("&", $this->flashvars);
-        $this->args = array();
-        foreach ($parts as $part) {
-            $elemParts = explode("=",$part);
-            $this->args[$elemParts[0]] = $elemParts[1];
+    }
+    
+    /*
+     * Returns the page contents of the url
+     * 
+     */
+    public function getPage()
+    {
+        if (!isset($this->page)) {
+            $this->page = file_get_contents($this->url);
         }
-        
-        $this->title = $this->getTitle();
-        $this->thumbnail = $this->getThumbnail();
-        $this->duration = $this->getDuration();
-        $this->embedUrl = $this->getEmbedUrl();
-        $this->embedHTML = $this->getEmbedHTML();
-        $this->FLV = $this->getFLV();
-        $this->downloadUrl = $this->getEmbedUrl();
-        $this->service = $this->getService();
-        
+        return $this->page;
     }
     
     /*
@@ -77,7 +68,7 @@ class Ted  {
      */
     public function getTitle()
     {
-        preg_match("@<h1><span id=\"altHeadline\">(.*)</span></h1>@",$this->page, $matches);
+        preg_match("@<h1><span id=\"altHeadline\">(.*)</span></h1>@",$this->getPage(), $matches);
         return trim($matches[1]);
     }
     
@@ -87,7 +78,11 @@ class Ted  {
      */
     public function getThumbnail()
     {
-        return "{$this->args['su']}";
+        if (!isset($this->thumbnail)) {
+            $args = $this->getArgs();
+            $this->thumbnail = $args['su'];
+        }
+        return $this->thumbnail;
     }
     
     /*
@@ -105,7 +100,8 @@ class Ted  {
      */
     public function getEmbedUrl()
     {
-        return "http://video.ted.com/assets/player/swf/EmbedPlayer.swf?{$this->flashvars}";
+        $flashvars = $this->getFlashVars();
+        return "http://video.ted.com/assets/player/swf/EmbedPlayer.swf?{$flashvars}";
     }
     
     /*
@@ -133,12 +129,12 @@ class Ted  {
         $embedUrl = $this->getEmbedUrl();
         
         return "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>
-                    <param name='movie' value='{$this->embedUrl}'></param>
+                    <param name='movie' value='{$embedUrl}'></param>
                     <param name='allowFullScreen' value='true' />
                     <param name='wmode' value='transparent'></param>
                     <param name='bgColor' value='#ffffff'></param>
                     <embed
-                        src='{$this->embedUrl}'
+                        src='{$embedUrl}'
                         pluginspace='http://www.macromedia.com/go/getflashplayer'
                         type='application/x-shockwave-flash'
                         wmode='transparent' bgColor='#ffffff'
@@ -150,12 +146,52 @@ class Ted  {
     }
     
     /*
+     * Returns the flash vars for this video
+     * 
+     */
+    public function getFlashVars()
+    {
+        if (!isset($this->flashvars)) {
+            $videoId = $this->getVideoID();
+            $this->emb = file_get_contents("http://www.ted.com/talks/embed/id/{$videoId}");
+            
+            $split = preg_split("@param\sname=\"flashvars\"\svalue=\"@",urldecode((string) $this->emb));
+            $split = preg_split("@\"@", $split[1]);
+            $this->flashvars = $split[0];
+        }
+        return $this->flashvars;
+    }
+    
+    /*
+     * Returns the arguments from url
+     * 
+     */
+    public function getArgs()
+    {
+        if (!isset($this->args)) {
+            
+            $parts = explode("&", $this->getFlashVars());
+            $this->args = array();
+            foreach ($parts as $part) {
+                $elemParts = explode("=",$part);
+                $args[$elemParts[0]] = $elemParts[1];
+            }
+            $this->args = $args;
+        }
+        return $this->args;
+    }
+    
+    /*
      * Returns the FLV url for this Ted video
      * 
      */
     public function getFLV()
     {
-        return "{$this->args['vu']}";
+        if (!isset($this->FLV)) {
+            $args = $this->getArgs();
+            $this->FLV = (string) $args['vu'];
+        }
+        return $this->FLV;
     }
     
     /*
@@ -164,7 +200,10 @@ class Ted  {
      */
     public function getDownloadUrl()
     {
-        return null;
+        if (!isset($this->downloadUrl)) {
+            $this->downloadUrl =  $this->getFLV();
+        }
+        return $this->downloadUrl;
     }
     
     /*
@@ -183,7 +222,11 @@ class Ted  {
      */
     public function getVideoID()
     {
-        preg_match("@itpc://www.ted.com/talks/podtv/id/(\d*)@", $this->page, $matches);
-        return (int) $matches[1];
+        if (!isset($this->videoId)) {
+            preg_match("@itpc://www.ted.com/talks/podtv/id/(\d*)@", $this->page, $matches);
+            $this->videoId = (int) $matches[1];
+        }
+        return $this->videoId;
     }
+    
 }

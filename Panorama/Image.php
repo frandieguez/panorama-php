@@ -20,11 +20,17 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  **/
+/**
+ * Wrapper class for Marca TV videos
+ *
+ * @author Fran Diéguez <fran@openhost.es>
+ * @version \$Id\$
+ * @copyright OpenHost S.L., Mér Xuñ 01 15:58:58 2011
+ * @package Panorama
+ **/
 namespace Panorama;
- /*
-  * class Video
-  */
-class Video {
+
+class Image {
     
     /**
      * The instance of the object we will work into

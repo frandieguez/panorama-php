@@ -20,13 +20,17 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  **/
-/*
- * class MySpace
- * http://qik.com/video/340982
- */
+/**
+ * Wrapper class for MySpace videos
+ *
+ * @author Fran Diéguez <fran@openhost.es>
+ * @version \$Id\$
+ * @copyright OpenHost S.L., Mér Xuñ 01 15:58:58 2011
+ * @package Panorama\Video
+ **/
 namespace Panorama\Video;
 
-class Myspace  {
+class Myspace implements VideoInterface  {
     
     
     /*
@@ -37,21 +41,22 @@ class Myspace  {
     {
         
         $this->url = $url;
-        $this->videoId = $this->getVideoID();
         
-        $this->page = file_get_contents("http://mediaservices.myspace.com/services/rss.ashx?type=video&videoID={$this->getVideoID()}");
-        
-        $this->feed = simplexml_load_string($this->page);
-        
-        $this->title = $this->getTitle();
-        $this->thumbnail = $this->getThumbnail();
-        $this->duration = $this->getDuration();
-        $this->embedUrl = $this->getEmbedUrl();
-        $this->embedHTML = $this->getEmbedHTML();
-        $this->FLV = $this->getFLV();
-        $this->downloadUrl = $this->getEmbedUrl();
-        $this->service = $this->getService();
-        
+    }
+    
+    /*
+     * Returns the page content for this video
+     * 
+     * @param $arg
+     */
+    public function getPage()
+    {
+        if (!isset($this->page)) {
+            $videoId = $this->getVideoID();
+            $content = file_get_contents("http://mediaservices.myspace.com/services/rss.ashx?type=video&videoID={$videoId}");
+            $this->page = simplexml_load_string($content);
+        }
+        return $this->page;
     }
     
     /*
@@ -61,7 +66,7 @@ class Myspace  {
     public function getTitle()
     {
         if (!isset($this->title)) {
-            $titles = $this->feed->xpath('//item/title');
+            $titles = $this->getPage()->xpath('//item/title');
             $this->title = (string) $titles[0];
         }
         return $this->title;
@@ -75,7 +80,7 @@ class Myspace  {
     {
 
         if (!isset($this->thumbnail)) {
-            $thumbnails = $this->feed->xpath('//item/media:thumbnail');
+            $thumbnails = $this->getPage()->xpath('//item/media:thumbnail');
             $this->thumbnail = (string) $thumbnails[0]["url"];
         }
         return $this->thumbnail;
@@ -98,7 +103,7 @@ class Myspace  {
     public function getEmbedUrl()
     {
         if (!isset($this->embedUrl)) {
-            $item = $this->feed->xpath('//myspace:itemID');
+            $item = $this->getPage()->xpath('//myspace:itemID');
             $itemID = (string) $item[0];
             $this->embedUrl = "http://lads.myspace.com/videos/vplayer.swf?m={$itemID}&v=2&type=video";
         }
@@ -144,9 +149,8 @@ class Myspace  {
      */
     public function getFLV()
     {
-        //REXML::XPath.first(@feed, "//media:content").attributes['url'];
         if (!isset($this->FLV)) {
-            $item = $this->feed->xpath('//media:content');
+            $item = $this->getPage()->xpath('//media:content');
             $this->FLV = (string) $item[0]["url"];
         }
         return $this->FLV;
@@ -179,7 +183,6 @@ class Myspace  {
     {
 
         if (!isset($this->videoId)) {
-            //@video_id = @url.query_param('videoid').blank? ? @url.query_param('VideoID') : @url.query_param('videoid')
             preg_match("@videoid=(\w*)@", $this->url,$matches);
             if (count($matches) > 0) {
                 $this->videoId = $matches[1];

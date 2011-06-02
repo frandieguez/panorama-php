@@ -3,7 +3,7 @@
  *  Copyright (C) 2011 by OpenHost S.L.
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the 'Software'), to deal
+ *  of this software and associated documentation files (the "Software"), to deal
  *  in the Software without restriction, including without limitation the rights
  *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  *  copies of the Software, and to permit persons to whom the Software is
@@ -12,7 +12,7 @@
  *  The above copyright notice and this permission notice shall be included in
  *  all copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
@@ -20,13 +20,17 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  **/
-/*
- * class Metacafe
- * http://www.metacafe.com/watch/476621/experiments_with_the_myth_busters_with_diet_coke_and_mentos_dry/
- */
+/**
+ * Wrapper class for Metacafe videos
+ *
+ * @author Fran Diéguez <fran@openhost.es>
+ * @version \$Id\$
+ * @copyright OpenHost S.L., Mér Xuñ 01 15:58:58 2011
+ * @package Panorama\Video
+ **/
 namespace Panorama\Video;
 
-class Metacafe  {
+class Metacafe implements VideoInterface {
     
     /*
      * __construct()
@@ -34,8 +38,6 @@ class Metacafe  {
      */
     public function __construct($url, $options = null)
     {
-        
-        
         
         $this->url = $url;
         $this->args = $this->getArgs();
@@ -51,15 +53,6 @@ class Metacafe  {
             $output = preg_split("yt-",$this->args[1]);
             $this->object = new Youtube("http://www.youtube.com/watch?v={$output[1]}");
         }
-        
-        $this->title = $this->getTitle();
-        $this->thumbnail = $this->getThumbnail();
-        $this->duration = $this->getDuration();
-        $this->embedUrl = $this->getEmbedUrl();
-        $this->embedHTML = $this->getEmbedHTML();
-        $this->FLV = $this->getFLV();
-        $this->downloadUrl = $this->getEmbedUrl();
-        $this->service = $this->getService();
         
     }
     
@@ -108,7 +101,6 @@ class Metacafe  {
     {
     
         if (!isset($this->title)) {
-            //@youtubed ? @yt.title : (@args[2].humanize unless @args[2].blank?)
             if ($this->youtubed) {
                 $this->title = $this->object->getTitle();
             } else {
@@ -242,7 +234,7 @@ class Metacafe  {
     
     
     /**
-     * get_redirect_url()
+     * getRedirectUrl()
      * Gets the address that the provided URL redirects to,
      * or FALSE if there's no redirect. 
      *
@@ -281,7 +273,7 @@ class Metacafe  {
     }
      
     /**
-     * get_all_redirects()
+     * getAllRedirects()
      * Follows and collects all redirects, in order, for the given URL. 
      *
      * @param string $url
@@ -300,7 +292,7 @@ class Metacafe  {
     }
      
     /**
-     * get_final_url()
+     * getFinalRedirect()
      * Gets the address that the URL ultimately leads to. 
      * Returns $url itself if it isn't a redirect.
      *

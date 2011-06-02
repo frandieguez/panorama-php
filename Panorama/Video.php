@@ -20,10 +20,19 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  **/
+/**
+ * Wrapper class
+ *
+ * @author Fran Diéguez <fran@openhost.es>
+ * @version \$Id\$
+ * @copyright OpenHost S.L., Mér Xuñ 01 15:58:58 2011
+ * @package Panorama
+ **/
+
 namespace Panorama;
- /*
-  * class Video
-  */
+
+use \Panorama\Cache\ServiceCache as sCache;
+
 class Video {
     
     /**
@@ -31,40 +40,44 @@ class Video {
      */
     private $object = null;
     
+    private $className = null;
     /*
      * __construct()
      * @param $arg
      */
     public function __construct($url = null, $options = null)
     {
-        // if nothing is passed in instantiation raise an argument error.
+        
+        // check arguments validation
         if(!isset($url) || is_null($url)) {
             throw new ArgumentException("We need a video url");
         }
+        
+        $this->url = $url;
         
         $serviceName = self::camelize(self::getDomain($url));
         
         // If the service starts with a number prepend a "c" for avoid PHP language error
         if(preg_match("@^\d@",$serviceName)) { $serviceName = "c".$serviceName; }
-        $className = "\Panorama\Video\\" . $serviceName;
+        $this->className = "\Panorama\Video\\" . $serviceName;
         
         // If the Video service is supported instantiate it, otherwise raise Exception
         if (file_exists(dirname(__FILE__).DIRECTORY_SEPARATOR."Video".DIRECTORY_SEPARATOR.$serviceName.".php")) {
-            $this->object = new $className($url, $options);
+            $this->object = new $this->className($url, $options);
         } else {
             throw new \Exception("Video service or Url not supported");
         }
         
     }
-
-  //def initialize(url=nil, options={})
-  //  raise ArgumentError.new("We need a video url") if url.blank?
-  //  @object ||= "vg_#{get_domain(url).downcase}".camelize.constantize.new(url, options) rescue nil
-  //  raise ArgumentError.new("Unsuported url or service") and return if @object.nil?
-  //  unless @object.instance_variable_get("@details").nil? || !@object.instance_variable_get("@details").respond_to?("noembed")
-  //    raise ArgumentError.new("Embedding disabled by request") and return if @object.instance_variable_get("@details").noembed
-  //  end
-  //end
+    
+    /*
+     * Returns the sercice object to operate directly with with
+     * 
+     */
+    public function getObject()
+    {
+        return $this->object;
+    }
   
     /*
      * Returns the video title for the instantiated object.
@@ -73,7 +86,9 @@ class Video {
      */
     public function getTitle()
     {
+
         return $this->object->getTitle();
+
     }
     
     /*
@@ -164,17 +179,18 @@ class Video {
      */
     public function getVideoDetails($width = 425, $height = 344)
     {
-        $details = array(
-                         "title" => $this->object->getTitle(),
-                         "thumbnail" => $this->object->getThumbnail(),
-                         "embedUrl" => $this->object->getEmbedUrl(),
-                         "embedHTML" => $this->object->getEmbedHTML(),
-                         "FLV" => $this->object->getFLV(),
-                         "downloadUrl" => $this->object->getDownloadUrl(),
-                         "service" => $this->object->getService(),
-                         "duration" => $this->object->getDuration(),
-                         );
-        return $details;
+        
+        return array(
+                    "title" => $this->object->getTitle(),
+                    "thumbnail" => $this->object->getThumbnail(),
+                    "embedUrl" => $this->object->getEmbedUrl(),
+                    "embedHTML" => $this->object->getEmbedHTML(),
+                    "FLV" => $this->object->getFLV(),
+                    "downloadUrl" => $this->object->getDownloadUrl(),
+                    "service" => $this->object->getService(),
+                    "duration" => $this->object->getDuration(),
+                 );
+        
     }
   
     /**
