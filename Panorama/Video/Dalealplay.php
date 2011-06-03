@@ -39,18 +39,36 @@ class Dalealplay  {
     public function __construct($url)
     {
 
-        throw new \Exception("Not implemented");
         $this->url = $url;
-        $this->videoId = $this->getVideoID();
-        $this->title = $this->getTitle();
-        $this->thumbnail = $this->getThumbnail();
-        $this->duration = $this->getDuration();
-        $this->embedUrl = $this->getEmbedUrl();
-        $this->embedHTML = $this->getEmbedHTML();
-        $this->FLV = $this->getFLV();
-        $this->downloadUrl = $this->getEmbedUrl();
-        $this->service = $this->getService();
-        
+        $this->getVideoID();
+
+    }
+    
+    /*
+     * Fetchs the contents of the DaleAlPlay video page
+     * 
+     */
+    public function getPage()
+    {
+        if (!isset($this->page)) {
+            $this->page = file_get_contents($this->url);
+        }
+        return $this->page;
+    }
+    
+    /*
+     * Sets the page contents, useful for using mocking objects
+     * 
+     * @param $arg
+     */
+    public function setPage($page = '')
+    {
+        if (!empty($page)
+            && !isset($this->page))
+        {
+            $this->page = $page;
+        }
+        return $this->page;
     }
     
     /*
@@ -60,8 +78,13 @@ class Dalealplay  {
     public function getTitle()
     {
         if (!isset($this->title)) {
-            $title = $this->feed->xpath('//titulo');
-            $this->title = (string) $title[0];
+            
+            //(Iconv.iconv 'utf-8', 'iso-8859-1', @page.search("//title").inner_html.split(" - www.dalealplay.com")[0]).to_s
+            preg_match('@<title>(.*)</title>@', $this->getPage(), $matches);
+            $title = preg_split('@ - www.dalealplay.com@', $matches[1]);
+            $title = $title[0];
+            $this->title = iconv('ISO-8859-1', 'UTF-8', (string) $title);
+            
         }
         return $this->title;
     }
@@ -73,8 +96,8 @@ class Dalealplay  {
     public function getThumbnail()
     {
         if (!isset($this->thumbnail)) {
-            $tmb = $this->feed->xpath('//foto');
-            return (string) $tmb[0];
+            $videoId = $this->getVideoId();
+            $this->thumbnail = "http://thumbs.dalealplay.com/img/dap/{$videoId}/thumb";
         }
         return $this->thumbnail;
     }
@@ -94,7 +117,13 @@ class Dalealplay  {
      */
     public function getEmbedUrl()
     {
-        return "http://www.marca.com/componentes/flash/embed.swf?ba=0&cvol=1&bt=1&lg=1&vID={$this->videoId}&ba=1";
+        //@page.search("//link[@rel='video_src']").first.attributes["href"].sub("autoStart=true", "autoStart=false")
+        if (!isset($this->embedUrl)) {
+            preg_match('@rel="video_src"\shref="(.*)"@', $this->getPage(), $matches);
+            $title = preg_replace('@autoStart=true@', 'autoStart=false', $matches[1]);
+            $this->embedUrl = (string) $title;
+        }
+        return $this->embedUrl;
     }
     
     /*
@@ -120,13 +149,14 @@ class Dalealplay  {
             }
         }
         
-        return "<embed
-                    src='{$this->getEmbedUrl()}'
-                    width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
-                    wmode='transparent' pluginspage='http://www.macromedia.com/go/getflashplayer'
-                    type='application/x-shockwave-flash'
-                    allowfullscreen='true'
-                    quality='high' />";
+        return "<object type='application/x-shockwave-flash'
+                        width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
+                        data='{$this->getEmbedUrl()}'>
+                    <param name='quality' value='best' />
+                    <param name='allowfullscreen' value='true' />
+                    <param name='scale' value='showAll' />
+                    <param name='movie' value='{$this->getEmbedUrl()}' />
+                </object>";
     
     }
     
@@ -136,9 +166,9 @@ class Dalealplay  {
      */
     public function getFLV()
     {
+        //"http://videos.dalealplay.com/contenidos3/#{CGI::parse(URI::parse(embed_url).query)['file']}"
         if (!isset($this->FLV)) {
-            $FLV = $this->feed->xpath('//media');
-            $this->FLV = (string) $FLV[0];
+            $this->FLV = '';
         }
         return $this->FLV;
     }
@@ -166,12 +196,12 @@ class Dalealplay  {
      * 
      * @param $url
      */
-    public function getVideoID()
+    public function getVideoId()
     {
 
         if (!isset($this->videoId)) {
             $path = parse_url($this->url, PHP_URL_QUERY);
-            preg_match("@v=(\w*)@", $path, $matches);
+            preg_match("@con=(\w*)@", $path, $matches);
             $this->videoId = $matches[1];
         }
         return $this->videoId;
