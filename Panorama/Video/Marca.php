@@ -49,15 +49,6 @@ class Marca implements VideoInterface {
         $doc = file_get_contents("http://estaticos.marca.com/consolamultimedia/marcaTV/elementos/{$sub1}/{$sub2}/{$sub3}.xml");
         $this->feed = simplexml_load_string($doc);
         
-        $this->title = $this->getTitle();
-        $this->thumbnail = $this->getThumbnail();
-        $this->duration = $this->getDuration();
-        $this->embedUrl = $this->getEmbedUrl();
-        $this->embedHTML = $this->getEmbedHTML();
-        $this->FLV = $this->getFLV();
-        $this->downloadUrl = $this->getEmbedUrl();
-        $this->service = $this->getService();
-        
     }
     
     /*
@@ -127,14 +118,30 @@ class Marca implements VideoInterface {
             }
         }
         
-        return "<embed
-                    src='{$this->getEmbedUrl()}'
+        
+        $flashvars = "ba=1&amp;cvol=1&amp;bt=1&amp;lg=0&amp;"
+                    ."width={$defaultOptions['width']}&amp;height={$defaultOptions['height']}"
+                    ."&amp;vID={$this->getVideoId()}";
+        
+        return "<object
                     width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
-                    wmode='transparent' pluginspage='http://www.macromedia.com/go/getflashplayer'
-                    type='application/x-shockwave-flash'
-                    allowfullscreen='true'
-                    quality='high' />";
-    
+                    classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000'
+                    codebase='http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0'>
+                    <param name='movie' value='http://estaticos.marca.com/multimedia/reproductores/newPlayer.swf'>
+                    <param name='quality' value='high'>
+                    <param name='allowFullScreen' value='true'>
+                    <param name='wmode' value='transparent'>
+                    <param name='FlashVars' value='{$flashvars}'>
+                    <embed
+                        width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
+                        src='http://estaticos03.marca.com/multimedia/reproductores/newPlayer.swf'
+                        quality='high'
+                        flashvars='ba=1&amp;cvol=1&amp;bt=1&amp;lg=0&amp;vID={$this->getVideoId()}' allowfullscreen='true'
+                        type='application/x-shockwave-flash'
+                        pluginspage='http://www.macromedia.com/go/getflashplayer'
+                        wmode='transparent'>
+                </object>";
+                
     }
     
     /*
@@ -179,7 +186,11 @@ class Marca implements VideoInterface {
         if (!isset($this->videoId)) {
             $path = parse_url($this->url, PHP_URL_QUERY);
             preg_match("@v=(\w*)@", $path, $matches);
-            $this->videoId = $matches[1];
+            if (count($matches) > 1) {
+                $this->videoId = $matches[1];
+            } else {
+                throw new \Exception("This ");
+            }
         }
         return $this->videoId;
 
