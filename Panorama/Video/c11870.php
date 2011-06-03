@@ -34,7 +34,7 @@ class c11870  {
     
     /*
      * __construct()
-     * @param $url
+     * @param string $url the url for this video
      */
     public function __construct($url)
     {
@@ -46,7 +46,8 @@ class c11870  {
     
     /*
      * Fetchs the contents of the 11870 video page
-     * 
+     *
+     * @return string the content of the page
      */
     public function getPage()
     {
@@ -59,7 +60,8 @@ class c11870  {
     /*
      * Sets the page contents, useful for using mocking objects
      * 
-     * @param $arg
+     * @param string $page the content of the page
+     * @return object the object of this video, for allowing chaining methods
      */
     public function setPage($page = '')
     {
@@ -71,7 +73,8 @@ class c11870  {
     
     /*
      * Returns the video id, allways null, not applicable
-     * 
+     *
+     * @return null not aplicable for this service
      */
     public function getVideoId()
     {
@@ -80,7 +83,8 @@ class c11870  {
     
     /*
      * Returns the title for this 11870 video
-     * 
+     *
+     * @return string the title of this video
      */
     public function getTitle()
     {
@@ -97,8 +101,9 @@ class c11870  {
     }
     
     /*
-     * Returns the thumbnail for this 11870 video
-     * 
+     * Returns the thumbnail url for this 11870 video
+     *
+     * @return string the thumbnail url for this video
      */
     public function getThumbnail()
     {
@@ -111,7 +116,8 @@ class c11870  {
     
     /*
      * Returns the duration in secs for this 11870 video
-     * 
+     *
+     * @return null not aplicable for this service
      */
     public function getDuration()
     {
@@ -120,7 +126,8 @@ class c11870  {
     
     /*
      * Returns the embed url for this 11870 video
-     * 
+     *
+     * @return string the embed url for this video, to insert in Flash (C)
      */
     public function getEmbedUrl()
     {
@@ -133,7 +140,8 @@ class c11870  {
     
     /*
      * Returns the HTML object to embed for this 11870 video
-     * 
+     *
+     * @return string the html swf for this video
      */
     public function getEmbedHTML($options = array())
     {
@@ -154,27 +162,25 @@ class c11870  {
             }
         }
         
-        $things = "<object
-                        type='application/x-shockwave-flash'
-                        data='http://11870.com/multimedia/11870/player.swf'
-                        width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
-                        bgcolor='#000000'>
-                        <param name='movie' value='{$this->getEmbedUrl()}' />
-                        <param name='allowfullscreen' value='true'>
-                        <param name='allowscriptaccess' value='always'>
-                        <param name='seamlesstabbing' value='true'>
-                        <param name='wmode' value='window'>
-                        <param name='flashvars' value='{$this->getFlashVars()}'>
-                    </object>";
-                
-                return $things;
-                
+        return "<object
+                    type='application/x-shockwave-flash'
+                    data='http://11870.com/multimedia/11870/player.swf'
+                    width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
+                    bgcolor='#000000'>
+                    <param name='movie' value='{$this->getEmbedUrl()}' />
+                    <param name='allowfullscreen' value='true'>
+                    <param name='allowscriptaccess' value='always'>
+                    <param name='seamlesstabbing' value='true'>
+                    <param name='wmode' value='window'>
+                    <param name='flashvars' value='{$this->getFlashVars()}'>
+                </object>";
     
     }
     
     /*
      * Returns the FLV url for this 11870 video
-     * 
+     *
+     * @return string the FLV url for this 11870 video
      */
     public function getFLV()
     {
@@ -188,7 +194,8 @@ class c11870  {
     
     /*
      * Returns the Download url for this 11870 video
-     * 
+     *
+     * @return strin the FLV url for this 11870 video
      */
     public function getDownloadUrl()
     {
@@ -197,7 +204,8 @@ class c11870  {
     
     /*
      * Returns the name of the Video service
-     * 
+     *
+     * @return string the name of the video service
      */
     public function getService()
     {
@@ -206,8 +214,8 @@ class c11870  {
     
     /*
      * Returns the flashvars
-     * 
-     * @param $arg
+     *
+     * @return string the flash vars, useful for the embedHTML
      */
     public function getFlashVars()
     {
@@ -220,8 +228,8 @@ class c11870  {
     
     /*
      * Calculates the Video ID from an 11870 URL
-     * 
-     * @param $url
+     *
+     * @return array an key-value pairs with information about the video
      */
     public function getHash()
     {

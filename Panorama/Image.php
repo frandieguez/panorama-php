@@ -21,7 +21,7 @@
  *  THE SOFTWARE.
  **/
 /**
- * Wrapper class for Marca TV videos
+ * Wrapper class for Image services
  *
  * @author Fran Diéguez <fran@openhost.es>
  * @version \$Id\$

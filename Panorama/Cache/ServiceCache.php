@@ -1,5 +1,11 @@
 <?php
 /**
+ * Class that allows to store key-value pairs in cache
+ *
+ * @package Panorama\Cache
+ * @author Fran Diéguez <fran@openhost.es>
+ **/
+/**
  *  Copyright (C) 2011 by OpenHost S.L.
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,23 +26,19 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  **/
-/**
- * Handles the cache 
- *
- * @package Panorama\Cache
- * @author Fran Diéguez <fran@openhost.es>
- **/
-
 namespace Panorama\Cache;
 
+/**
+ * Class that allows to store key-value pairs in cache
+ * @package Panorama\Cache
+ */
 class ServiceCache
 {
-
 
     /**
     * Ensures that we always get one single instance
     *
-    * @return object, the unique instance object 
+    * @return object the unique instance object 
     * @author Fran Dieguez <fran@openhsot.es>
     **/
     static public function getInstance($config)
@@ -53,9 +55,9 @@ class ServiceCache
     
     
     /*
-     * __construct()
-     * @param $xmlFile, the XML file that contains information about an EP new
-     */
+    * __construct()
+    * @param $xmlFile the XML file that contains information about an EP new
+    */
     public function __construct($xmlFile) {
         
         return $this;
@@ -64,11 +66,11 @@ class ServiceCache
     
     
     /*
-     * Saves an item in cache
-     * 
-     * @param $name, the name of the value
-     * @param $value, the value to save
-     */
+    * Saves an item in cache
+    * 
+    * @param $name the name of the value
+    * @param $value the value to save
+    */
     static public function setAndReturn($name, $value)
     {
         apc_add($name, $value);
@@ -76,10 +78,10 @@ class ServiceCache
     }
     
     /*
-     * Fetchs an item in cache if exists if not returns the default value
-     * 
-     * @param $key
-     */
+    * Fetchs an item in cache if exists if not returns the default value
+    * 
+    * @param string $key the name of the key we want to fetch
+    */
     static public function get($key="")
     {
         
@@ -91,10 +93,9 @@ class ServiceCache
     }
     
     /*
-     * Check if a value is into data store
-     * 
-     * @param $key
-     */
+    * Check if a value is into data store
+    * @param $key
+    */
     static public function exists($key="")
     {
         if (self::dataStoreAvailable()) {
@@ -106,13 +107,10 @@ class ServiceCache
         }
     }
     
-    
-    
-    
     /*
-     * Check if APC is available
-     * 
-     */
+    * Check if APC is available
+    * @return boolean true if is present
+    */
     static public function dataStoreAvailable()
     {
         return function_exists('apc_exists');
