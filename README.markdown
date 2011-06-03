@@ -4,11 +4,15 @@ Panorama PHP
 What  is this!
 --------------
 
-This is the wrapper class to manage video services in a standarized way. It is an easy way to obtain a few basics about a video only through its url.
+This is the wrapper class to manage video services in a standarized way. It is
+an easy way to obtain a few basics about a video only through its url.
 
 A quick example:
 
-To include [this video](http://www.youtube.com/watch?v=GPQnbtldFyo) in [this post](http://unvlog.com/blat/2008/3/10/otro-pelotazo) we need to know its title, the correct way to embed it and its thumbnail url. With this plugin we have an easy access to this data:
+To include [this video](http://www.youtube.com/watch?v=GPQnbtldFyo) in
+[this post](http://unvlog.com/blat/2008/3/10/otro-pelotazo) we need to know its
+title, the correct way to embed it and its thumbnail url. With this plugin we
+have an easy access to this data:
 
         $video = new \Panorama\Video("http://www.youtube.com/watch?v=GPQnbtldFyo")
         $video.getTitle() => "paradon del portero"
@@ -31,9 +35,8 @@ With this Class we have an unique way to manage multiple services :)
 Install it!
 -----------
 
-1. Install it as a gem:
-
-        gem "acts_as_unvlogable"
+1. Just put in one of your include_path folders, and make sure to use an
+PSR-0-compatible autoloader.
 
 Dependencies
 ------------
@@ -111,7 +114,8 @@ At this moment we support the following video services:
 Broken services
 ---------------
 
-These services were implemented but due to changes in the website they don't work anymore. Any patch for fixing them would be great ;)
+These services were implemented but due to changes in the website they don't work
+anymore. Any patch for fixing them would be great ;)
 
 -   [Qik](http://qik.com/)
 -   [MTV](http://www.mtvhive.com/)
@@ -122,6 +126,7 @@ We are always open to incude new services.
 
 And... what else?
 -----------------
-If you find a bug or want to suggest a new video service, please tell it to us in [a ticket](http://github.com/frandieguez/panorama-php/issues).
+If you find a bug or want to suggest a new video service, please tell it to us
+in [a ticket](http://github.com/frandieguez/panorama-php/issues).
 
 Thanks!!
