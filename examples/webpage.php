@@ -1,7 +1,7 @@
 <?php 
 require("bootstrap.php");
 
-$videos []= new \Panorama\Video("http://11870.com/pro/chic-basic-born/media/b606abfe");
+$videos []= new \Panorama\Video("http://11870.com/pro/la-cabana-argentina/videos/25f8deec");
 $videos []= new \Panorama\Video("http://www.dailymotion.com/visited-week/lang/es/video/x7u5kn_parkour-dayyy_sport");
 $videos []= new \Panorama\Video("http://www.dalealplay.com/informaciondecontenido.php?con=80280");
 // Falta FLICKR

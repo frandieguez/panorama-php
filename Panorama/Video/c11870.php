@@ -126,7 +126,7 @@ class c11870  {
     {
         if (!isset($this->embedUrl)) {
             $hash = $this->getHash();
-            $this->embedUrl = "http://11870.com/multimedia/flvplayer.swf?" . $this->getFlashVars() . "&logo=" . $hash['logo'];
+            $this->embedUrl = "http://m0.11870.com/multimedia/11870/player.swf?" . $this->getFlashVars() . "&logo=" . $hash['logo'];
         }
         return $this->embedUrl;
     }
@@ -154,19 +154,21 @@ class c11870  {
             }
         }
         
-        return "<object
-                        width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
-                        classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000'
-                        codebase='http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0'>
-                    <param name='movie' value='{$this->getEmbedUrl()}' />
-                    <param name='quality' value='high' />
-                    <embed
-                        src='{$this->getEmbedUrl()}'
-                        width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
-                        quality='high'
+        $things = "<object
                         type='application/x-shockwave-flash'
-                        pluginspage='http://www.macromedia.com/go/getflashplayer'/>
-                </object>";
+                        data='http://11870.com/multimedia/11870/player.swf'
+                        width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
+                        bgcolor='#000000'>
+                        <param name='movie' value='{$this->getEmbedUrl()}' />
+                        <param name='allowfullscreen' value='true'>
+                        <param name='allowscriptaccess' value='always'>
+                        <param name='seamlesstabbing' value='true'>
+                        <param name='wmode' value='window'>
+                        <param name='flashvars' value='{$this->getFlashVars()}'>
+                    </object>";
+                
+                return $things;
+                
     
     }
     
