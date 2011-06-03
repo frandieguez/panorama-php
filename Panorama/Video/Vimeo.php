@@ -151,16 +151,16 @@ class Vimeo implements VideoInterface {
             $embedUrl = $this->getEmbedUrl();
             
             $this->embedHTML = "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>
-                      <param name='movie' value='{$embedUrl}{$htmlOptions}'></param>
-                      <param name='allowFullScreen' value='true'></param>
-                      <param name='allowscriptaccess' value='always'></param>
-                      <param name='wmode' value='transparent'></param>
-                      <embed
-                          src='{$embedUrl}{$htmlOptions}' type='application/x-shockwave-flash'
-                          allowscriptaccess='always' allowfullscreen='true'
-                          width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>
-                      </embed>
-                  </object>"; 
+                        <param name='movie' value='{$embedUrl}{$htmlOptions}'></param>
+                        <param name='allowFullScreen' value='true'></param>
+                        <param name='allowscriptaccess' value='always'></param>
+                        <param name='wmode' value='transparent'></param>
+                        <embed
+                            src='{$embedUrl}{$htmlOptions}' type='application/x-shockwave-flash'
+                            allowscriptaccess='always' allowfullscreen='true'
+                            width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>
+                        </embed>
+                    </object>"; 
         }
         return $this->embedHTML;
     
@@ -198,7 +198,6 @@ class Vimeo implements VideoInterface {
     public function getDownloadUrl()
     {
         return $this->getFLV();
-    
     }
     
     /*

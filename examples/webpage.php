@@ -127,7 +127,8 @@ window.onload = function() {
                         <div class="flash-object">
                             <?php echo $video->getEmbedHTML(array('version' => '3')); ?>
                         </div>
-                        <pre><code><?php
+                        <pre><code><strong>URL:</strong>: <?php
+						echo $video->url."\n";
                         foreach ($video->getVideoDetails() as $key => $value ) {
                             $key = ucfirst($key);
                             $value = htmlentities($value);
