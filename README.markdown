@@ -4,15 +4,14 @@ Panorama PHP
 What  is this!
 --------------
 
-This is the wrapper class to manage video services in a standarized way. It is
-an easy way to obtain a few basics about a video only through its url.
+With this wrapper class you can manage any video service in a uniformed and
+unique way. You only need the URL from the video service you are going to use.
 
 A quick example:
 
-To include [this video](http://www.youtube.com/watch?v=GPQnbtldFyo) in
-[this post](http://unvlog.com/blat/2008/3/10/otro-pelotazo) we need to know its
-title, the correct way to embed it and its thumbnail url. With this plugin we
-have an easy access to this data:
+To include [this video](http://www.youtube.com/watch?v=HziGOzKOb9w&feature=player_embedded) in
+[a post](http://www.retrincos.info/video/2011/04/27/2011042717512600207.html) you only need to know the
+url of the video. With Panorama-PHP API you get this information:
 
         $video = new \Panorama\Video("http://www.youtube.com/watch?v=GPQnbtldFyo")
         $video.getTitle() => "paradon del portero"
@@ -28,8 +27,6 @@ have an easy access to this data:
                                                 'embed_html' => ...,
                                                 'flv' => ...
                                               }
-        
-With this Class we have an unique way to manage multiple services :)
 
 
 Install it!
@@ -43,20 +40,20 @@ Dependencies
 This library depends on
 
 1.  [Zend Gdata](http://framework.zend.com/download/gdata) for access the Youtube API.
-2. Obviosly PHP 5.3, we make use of namespaces and some other goodies of 5.3 version.
+2. Obviosly PHP 5.3, you have to use namespaces and some other goodies of 5.3 version.
 
-Please __don't as for PHP < 5.3 support__, you should not be using PHP 5.2 at all.
+Please __don't ask for PHP < 5.3 support__, you shouldn't use PHP 5.2.
 
 Use it!
 -------
 
-The idea is make it as simple as possible. For a given video URL as <http://vimeo.com/1785993>:
+The idea is make it as simple as possible. For a URL video like <http://vimeo.com/1785993>:
 
         $video = new \Panorama\Video("http://vimeo.com/1785993")
 
-Then we have methods to know the 'basics' for use this video on your application.
+Then you have methods to know information about the video in your application.
 
--   __getTitle:__ A method to know the title of the video on the service.
+-   __getTitle:__ A method to know the title of the video of the service.
   
           $video.getTitle()
           => "Beached"
@@ -81,12 +78,15 @@ Then we have methods to know the 'basics' for use this video on your application
           $video.getEmbedHTML(400, 300)
           => "<object width='400' height='300'><param name='mo [...] 300'></embed></object>"
 
--   __getFLV:__ Gets the flv url. In this edition we implement this method in all the services, but is possible that we can't get the flv in some scenarios. Remember that in some services the flv url expires and in most of their terms don't allow use the flv without its player.
+-   __getFLV:__ Gets the flv url. Not all the services has this option. Remember that
+in some services the flv url expires and in their terms don't allow using the
+flv without its player.
 
           $video.getFLV
           => "http://www.vimeo.com/moogaloop/play/clip:1785993/ [...] 8ee400/video.flv"
 
--   __getVideoDetails(width, height):__ All together :), returns all the previous elements in a hash. Width and height can be specified to build the embed\_html.
+-   __getVideoDetails(width, height):__ All together :), returns all the previous elements
+in a hash. Width and height can be specified to build the embed\_html.
 
           $video.getVideoDetails()
           => "array( [...] )"
@@ -114,19 +114,18 @@ At this moment we support the following video services:
 Broken services
 ---------------
 
-These services were implemented but due to changes in the website they don't work
-anymore. Any patch for fixing them would be great ;)
+These services were included in this API but, due changes in their website, don't work
+anymore. Any patch for fixing them are welcome. ;)
 
 -   [Qik](http://qik.com/)
 -   [MTV](http://www.mtvhive.com/)
 
-You can detect new broken services when running the tests.
+If you detect new broken services by running the tests please let me know.
 
 We are always open to incude new services.
 
 And... what else?
 -----------------
-If you find a bug or want to suggest a new video service, please tell it to us
-in [a ticket](http://github.com/frandieguez/panorama-php/issues).
+If you find a bug or want to suggest a new video service, please let us know in [a ticket](http://github.com/frandieguez/panorama-php/issues).
 
 Thanks!!
