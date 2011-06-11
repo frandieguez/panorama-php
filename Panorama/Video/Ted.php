@@ -223,7 +223,7 @@ class Ted implements VideoInterface {
     public function getVideoID()
     {
         if (!isset($this->videoId)) {
-            preg_match("@itpc://www.ted.com/talks/podtv/id/(\d*)@", $this->getFeed(), $matches);
+            preg_match("@itpc://www.ted.com/talks/podtv/id/(\d*)@", $this->getPage(), $matches);
             $this->videoId = (int) $matches[1];
         }
         return $this->videoId;

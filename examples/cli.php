@@ -3,9 +3,10 @@ require_once('bootstrap.php');
 
 //$video = stdClass();
 //$video = new \Panorama\Video("http://www.youtube.com/watch?v=4buJaPd4Wuc&feature=topvideos_entertainment");
-$video = new \Panorama\Video("http://11870.com/pro/chic-basic-born/media/b606abfe");
+//$video = new \Panorama\Video("http://11870.com/pro/chic-basic-born/media/b606abfe");
 //$video = new \Panorama\Video("http://www.youtube.com/watch?v=5YXEcvaz3hI");
 //$video = new \Panorama\Video("http://vimeo.com/5362441");
+$video = new \Panorama\Video("http://www.flickr.com/photos/kalkor/2373395246");
 //$video = new \Panorama\Video("http://www.ted.com/index.php/talks/benjamin_wallace_on_the_price_of_happiness.html");
 //$video = new \Panorama\Video("http://rutube.ru/tracks/4436308.html?v=da5ede8f5aa5832e74b8afec8bd1818f");
 //$video = new \Panorama\Video("http://qik.com/video/340982");

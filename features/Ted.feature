@@ -2,8 +2,6 @@ Feature: Vimeo service provider
     In order to get information from Vimeo videos
     I want to get all the information of the video
 
-        
-    
     #Scenario: Get the download url of the Vimeo video
     #    Given The url http://www.ted.com/index.php/talks/benjamin_wallace_on_the_price_of_happiness.html
     #    When I get the download url

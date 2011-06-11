@@ -4,7 +4,7 @@ require("bootstrap.php");
 $videos []= new \Panorama\Video("http://11870.com/pro/la-cabana-argentina/videos/25f8deec");
 $videos []= new \Panorama\Video("http://www.dailymotion.com/visited-week/lang/es/video/x7u5kn_parkour-dayyy_sport");
 $videos []= new \Panorama\Video("http://www.dalealplay.com/informaciondecontenido.php?con=80280");
-// Falta FLICKR
+$videos []= new \Panorama\Video("http://www.flickr.com/photos/schill/3702803081");
 $videos []= new \Panorama\Video("http://www.metacafe.com/watch/476621/experiments_with_the_myth_busters_with_diet_coke_and_mentos_dry/");
 $videos []= new \Panorama\Video("http://www.marca.com/tv/?v=DN23wG8c1Rj");
 //$videos []= new \Panorama\Video("http://www.mtvhive.com/artist/florence_and_the_machine/videos/599614/dog_days_are_over_live");
