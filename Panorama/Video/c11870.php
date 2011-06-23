@@ -23,27 +23,25 @@
 /**
  * Wrapper class for 11870 videos
  *
+ * @package Panorama\Video
  * @author Fran Diéguez <fran@openhost.es>
  * @version \$Id\$
  * @copyright OpenHost S.L., Mér Xuñ 01 15:58:58 2011
- * @package Panorama\Video
  **/
 namespace Panorama\Video;
 
-class c11870  {
-    
+class c11870 implements VideoInterface {
+
     /*
      * __construct()
      * @param string $url the url for this video
      */
     public function __construct($url)
     {
-
         $this->url = $url;
         $this->getHash();
-
     }
-    
+
     /*
      * Fetchs the contents of the 11870 video page
      *
@@ -56,10 +54,10 @@ class c11870  {
         }
         return $this->page;
     }
-    
+
     /*
      * Sets the page contents, useful for using mocking objects
-     * 
+     *
      * @param string $page the content of the page
      * @return object the object of this video, for allowing chaining methods
      */
@@ -70,7 +68,7 @@ class c11870  {
         }
         return $this;
     }
-    
+
     /*
      * Returns the video id, allways null, not applicable
      *
@@ -80,7 +78,7 @@ class c11870  {
     {
         return null;
     }
-    
+
     /*
      * Returns the title for this 11870 video
      *
@@ -89,17 +87,13 @@ class c11870  {
     public function getTitle()
     {
         if (!isset($this->title)) {
-            
-            //(Iconv.iconv 'utf-8', 'iso-8859-1', @page.search("//title").inner_html.split(" - www.11870.com")[0]).to_s
             preg_match('@<title>(.*)</title>@', $this->getPage(), $matches);
             $title = preg_split('@ - www.11870.com@', $matches[1]);
-            $title = $title[0];
-            $this->title = iconv('ISO-8859-1', 'UTF-8', (string) $title);
-            
+            $this->title = iconv('ISO-8859-1', 'UTF-8', (string) $title[0]);
         }
         return $this->title;
     }
-    
+
     /*
      * Returns the thumbnail url for this 11870 video
      *
@@ -113,7 +107,7 @@ class c11870  {
         }
         return $this->thumbnail;
     }
-    
+
     /*
      * Returns the duration in secs for this 11870 video
      *
@@ -123,7 +117,7 @@ class c11870  {
     {
         return null;
     }
-    
+
     /*
      * Returns the embed url for this 11870 video
      *
@@ -133,11 +127,12 @@ class c11870  {
     {
         if (!isset($this->embedUrl)) {
             $hash = $this->getHash();
-            $this->embedUrl = "http://m0.11870.com/multimedia/11870/player.swf?" . $this->getFlashVars() . "&logo=" . $hash['logo'];
+            $this->embedUrl = "http://m0.11870.com/multimedia/11870/player.swf?"
+                            . $this->getFlashVars() . "&logo=" . $hash['logo'];
         }
         return $this->embedUrl;
     }
-    
+
     /*
      * Returns the HTML object to embed for this 11870 video
      *
@@ -147,21 +142,21 @@ class c11870  {
     {
         $defaultOptions = array(
               'width' => 560,
-              'height' => 349 
-              );
-        
+              'height' => 349
+            );
+
         $options = array_merge($defaultOptions, $options);
         unset($options['width']);
         unset($options['height']);
-        
-        // convert options into 
+
+        // convert options into url encoded string
         $htmlOptions = "";
         if (count($options) > 0) {
             foreach ($options as $key => $value ) {
                 $htmlOptions .= "&" . $key . "=" . $value;
             }
         }
-        
+
         return "<object
                     type='application/x-shockwave-flash'
                     data='http://11870.com/multimedia/11870/player.swf'
@@ -174,9 +169,8 @@ class c11870  {
                     <param name='wmode' value='window'>
                     <param name='flashvars' value='{$this->getFlashVars()}'>
                 </object>";
-    
     }
-    
+
     /*
      * Returns the FLV url for this 11870 video
      *
@@ -184,14 +178,13 @@ class c11870  {
      */
     public function getFLV()
     {
-        //"http://videos.11870.com/contenidos3/#{CGI::parse(URI::parse(embed_url).query)['file']}"
         if (!isset($this->FLV)) {
             $hash = $this->getHash();
             $this->FLV = $hash['file'];
         }
         return $this->FLV;
     }
-    
+
     /*
      * Returns the Download url for this 11870 video
      *
@@ -201,7 +194,7 @@ class c11870  {
     {
         return $this->getFLV();
     }
-    
+
     /*
      * Returns the name of the Video service
      *
@@ -211,7 +204,7 @@ class c11870  {
     {
         return "11870";
     }
-    
+
     /*
      * Returns the flashvars
      *
@@ -225,7 +218,7 @@ class c11870  {
         }
         return $this->flashvars;
     }
-    
+
     /*
      * Calculates the Video ID from an 11870 URL
      *
@@ -233,17 +226,14 @@ class c11870  {
      */
     public function getHash()
     {
-
         if (!isset($this->hash)) {
-            $matches = $this->getFlashVars();
-            $matches =  preg_split('@&@', $matches);
-            foreach ($matches as $match) {
+            $flashVarsArray = preg_split('@&@', $this->getFlashVars());
+            foreach ($flashVarsArray as $match) {
                 $partialMatch = preg_split('@=@', $match);
                 $this->hash[$partialMatch[0]] = $partialMatch[1];
             }
             unset($this->hash['displaywidth']);
         }
         return $this->hash;
-
     }
 }

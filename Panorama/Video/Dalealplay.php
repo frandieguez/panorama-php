@@ -31,7 +31,7 @@
 namespace Panorama\Video;
 
 class Dalealplay  {
-    
+
     /*
      * __construct()
      * @param $url
@@ -43,10 +43,10 @@ class Dalealplay  {
         $this->getVideoID();
 
     }
-    
+
     /*
      * Fetchs the contents of the DaleAlPlay video page
-     * 
+     *
      */
     public function getPage()
     {
@@ -55,10 +55,10 @@ class Dalealplay  {
         }
         return $this->page;
     }
-    
+
     /*
      * Sets the page contents, useful for using mocking objects
-     * 
+     *
      * @param $arg
      */
     public function setPage($page = '')
@@ -70,28 +70,25 @@ class Dalealplay  {
         }
         return $this->page;
     }
-    
+
     /*
      * Returns the title for this Dalealplay video
-     * 
+     *
      */
     public function getTitle()
     {
         if (!isset($this->title)) {
-            
-            //(Iconv.iconv 'utf-8', 'iso-8859-1', @page.search("//title").inner_html.split(" - www.dalealplay.com")[0]).to_s
             preg_match('@<title>(.*)</title>@', $this->getPage(), $matches);
             $title = preg_split('@ - www.dalealplay.com@', $matches[1]);
             $title = $title[0];
             $this->title = iconv('ISO-8859-1', 'UTF-8', (string) $title);
-            
         }
         return $this->title;
     }
-    
+
     /*
      * Returns the thumbnail for this Dalealplay video
-     * 
+     *
      */
     public function getThumbnail()
     {
@@ -101,19 +98,19 @@ class Dalealplay  {
         }
         return $this->thumbnail;
     }
-    
+
     /*
      * Returns the duration in secs for this Dalealplay video
-     * 
+     *
      */
     public function getDuration()
     {
         return null;
     }
-    
+
     /*
      * Returns the embed url for this Dalealplay video
-     * 
+     *
      */
     public function getEmbedUrl()
     {
@@ -125,30 +122,30 @@ class Dalealplay  {
         }
         return $this->embedUrl;
     }
-    
+
     /*
      * Returns the HTML object to embed for this Dalealplay video
-     * 
+     *
      */
     public function getEmbedHTML($options = array())
     {
         $defaultOptions = array(
               'width' => 560,
-              'height' => 349 
+              'height' => 349
               );
-        
+
         $options = array_merge($defaultOptions, $options);
         unset($options['width']);
         unset($options['height']);
-        
-        // convert options into 
+
+        // convert options into
         $htmlOptions = "";
         if (count($options) > 0) {
             foreach ($options as $key => $value ) {
                 $htmlOptions .= "&" . $key . "=" . $value;
             }
         }
-        
+
         return "<object type='application/x-shockwave-flash'
                         width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
                         data='{$this->getEmbedUrl()}'>
@@ -157,12 +154,12 @@ class Dalealplay  {
                     <param name='scale' value='showAll' />
                     <param name='movie' value='{$this->getEmbedUrl()}' />
                 </object>";
-    
+
     }
-    
+
     /*
      * Returns the FLV url for this Dalealplay video
-     * 
+     *
      */
     public function getFLV()
     {
@@ -172,28 +169,28 @@ class Dalealplay  {
         }
         return $this->FLV;
     }
-    
+
     /*
      * Returns the Download url for this Dalealplay video
-     * 
+     *
      */
     public function getDownloadUrl()
     {
         return null;
     }
-    
+
     /*
      * Returns the name of the Video service
-     * 
+     *
      */
     public function getService()
     {
         return "Dalealplay";
     }
-    
+
     /*
      * Calculates the Video ID from an Dalealplay URL
-     * 
+     *
      * @param $url
      */
     public function getVideoId()

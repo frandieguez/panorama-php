@@ -30,24 +30,23 @@
  **/
 namespace Panorama\Video;
 
-class Dailymotion implements VideoInterface  {
-    
-    
+class Dailymotion implements VideoInterface {
+
+
     /*
-     * __construct()
-     * @param $url
+     * Initializes the Dailymotion video wrapper from one url
+     *
+     * @return null
      */
     public function __construct($url, $options = null)
     {
-        
         $this->url = $url;
-        
     }
-    
+
     /*
      * Returns the page content for this video
-     * 
-     * @param $arg
+     *
+     * @return simplexmlobject The SimpleXML object for the web page XML
      */
     public function getPage()
     {
@@ -58,10 +57,11 @@ class Dailymotion implements VideoInterface  {
         }
         return $this->page;
     }
-    
+
     /*
      * Returns the title for this Dailymotion video
-     * 
+     *
+     * @return string the title for this video
      */
     public function getTitle()
     {
@@ -71,10 +71,11 @@ class Dailymotion implements VideoInterface  {
         }
         return $this->title;
     }
-    
+
     /*
      * Returns the thumbnail for this Dailymotion video
-     * 
+     *
+     * @return string the url to the thumbnail for this video
      */
     public function getThumbnail()
     {
@@ -86,19 +87,21 @@ class Dailymotion implements VideoInterface  {
         return $this->thumbnail;
 
     }
-    
+
     /*
      * Returns the duration in secs for this Dailymotion video
-     * 
+     *
+     * @return null this service doesn't allow to get duration of the video
      */
     public function getDuration()
     {
         return null;
     }
-    
+
     /*
      * Returns the embed url for this Dailymotion video
-     * 
+     *
+     * @return string the url to the embedurl of this video
      */
     public function getEmbedUrl()
     {
@@ -108,23 +111,24 @@ class Dailymotion implements VideoInterface  {
         }
         return $this->embedUrl;
     }
-    
+
     /*
      * Returns the HTML object to embed for this Dailymotion video
-     * 
+     *
+     * @return string the html object to embed for this video
      */
     public function getEmbedHTML($options = array())
     {
         if (!isset($this->embedHTML)) {
             $defaultOptions = array(
                   'width' => 560,
-                  'height' => 349 
+                  'height' => 349
                   );
-            
+
             $options = array_merge($defaultOptions, $options);
             unset($options['width']);
             unset($options['height']);
-            
+
             // convert options into and url encoded vars
             $htmlOptions = "";
             if (count($options) > 0) {
@@ -132,7 +136,7 @@ class Dailymotion implements VideoInterface  {
                     $htmlOptions .= "&" . $key . "=" . $value;
                 }
             }
-                  
+
             $this->embedHTML =
                 "<object
                     width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>
@@ -148,12 +152,13 @@ class Dailymotion implements VideoInterface  {
                 </object>";
         }
         return $this->embedHTML;
-    
+
     }
-    
+
     /*
      * Returns the FLV url for this Dailymotion video
-     * 
+     *
+     * @return string the url for downloading the video in FLV format
      */
     public function getFLV()
     {
@@ -163,29 +168,32 @@ class Dailymotion implements VideoInterface  {
         }
         return $this->FLV;
     }
-    
+
     /*
      * Returns the Download url for this Dailymotion video
-     * 
+     *
+     * @return null not implemented for this video service
      */
     public function getDownloadUrl()
     {
         return null;
     }
-    
+
     /*
      * Returns the name of the Video service
-     * 
+     *
+     * @return string the name of this video service
      */
     public function getService()
     {
         return "Dailymotion";
     }
-    
+
     /*
      * Calculates the Video ID from an Dailymotion URL
-     * 
-     * @param $url
+     *
+     * @return string the video ID for this video
+     * @throws Exception if url doesn't seem to be a Dailymotion video url
      */
     public function getVideoID()
     {
