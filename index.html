@@ -1,32 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset='utf-8'>
+    <meta charset='utf-8'>
 
-  <title>frandieguez/Panorama-PHP @ GitHub</title>
+    <title>frandieguez/Panorama-PHP @ GitHub</title>
+    <meta name="description" content="PHP wrapper class for accessing video web services in a standarized way.">
+    <meta name="keywords" content="php, wrapper, frandieguez, fran dieguez, mabishu, video, web services, PHP 5.3">
 
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #9a53c1;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #000000;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #65ac3e; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #65ac3e; }
-    h3 { text-align: center; color: #65ac3e; }
-    a { color: #65ac3e; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
+    <link href="prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="prettify/prettify.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('pre').addClass('prettyprint')
+        prettyPrint()
+      });
+    </script>
+
+    <style type="text/css">
+      body {
+        margin-top: 1.0em;
+        background-color: White;
+        font-family: Helvetica, Arial, FreeSans, san-serif;
+        color: #000000;
+      }
+      #container {
+        margin: 0 auto;
+        width: 700px;
+      }
+      h1 { font-size: 3em; color: #1e1e1e; margin-bottom: 3px; }
+      h1 .small { font-size: 0.4em; }
+      h1 a { text-decoration: none ; color: #1e1e1e;}
+      h2 { font-size: 1.5em; color: #1e1e1e; }
+      h3 { text-align: center; color: #1e1e1e; }
+      a { color: #65ac3e; }
+      .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
+      .download { float: right; }
+      hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
+      .footer { text-align:center; padding-top:30px; font-style: italic; }
+      pre { background: #e0e0e0; color: #000; padding: 15px;}
+      ul li{ margin-bottom: 3px;}
+      img { border: none; }
   </style>
 </head>
 
@@ -46,13 +60,147 @@
       <span class="small">by <a href="http://github.com/frandieguez">frandieguez</a></span></h1>
 
     <div class="description">
-      Wrapper class to manage video services in a standarized way. It is an easy way to obtain a few basics about a video only through its url.
+      Wrapper PHP 5.3 class for accessing video services informtion in a standarized way. It is an easy way to obtain a few basics about a video only through its url.
     </div>
 
+    <h2>What's this?</h2>
+    <p>
+        With this wrapper class you can manage any video service in a uniformed and
+        unique way. You only need the URL from the video service you are going to use.
+    </p>
+
+    <h2>A quick example</h2>
+    <p>
+        To include <a href="http://www.youtube.com/watch?v=HziGOzKOb9w&feature=player_embedded">this video</a> in
+        <a href="http://www.retrincos.info/video/2011/04/27/2011042717512600207.html">a post</a> you only need to know the
+        url of the video. Panorama-PHP API will handle all the background connections to supported video services for getting
+        all the video information:
+    </p>
+
+    <pre>$video = new \Panorama\Video("http://www.youtube.com/watch?v=GPQnbtldFyo")
+
+$video.getTitle() => "paradon del portero"
+$video.getThumbnail() => "http://i4.ytimg.com/vi/GPQnbtldFyo/default.jpg"
+$video.getEmbedUrl() => "http://www.youtube.com/v/GPQnbtldFyo"
+$video.getEmbedHTML()(width, height) => "&lt;object> [...]&lt;/object>"
+$video.getFLV() => "http://...flv"
+# all together :)
+$video.getVideoDetails(width, height) => {
+                                        'title' => ...,
+                                        'thumbnail' => ...,
+                                        'embed_url' => ...,
+                                        'embed_html' => ...,
+                                        'flv' => ...
+                                      }</pre>
+
+    <h2>Instalation</h2>
+    <ol>
+        <li>Put Panorama library in one of your include_path folders</li>
+        <li>Make sure to use an PSR-0-compatible autoloader.</li>
+    </ol>
+
+    <h2>Dependencies</h2>
+    <p>This library depends on</p>
+    <ol>
+        <li><a href="http://framework.zend.com/download/gdata">Zend GData</a> for access the Youtube API.</li>
+        <li>Obviosly PHP 5.3, you have to use namespaces and some other goodies of 5.3 version.</li>
+    </ol>
+    <p>Please <em>don't ask for PHP < 5.3 support</em>, you shouldn't use PHP 5.2 at all.</p>
+
+
+    <h2>How to use it!</h2>
+
+    <p>The idea is make it as simple as possible. For a URL video like <a href="http://vimeo.com/1785993">http://vimeo.com/1785993</a>:</p>
+
+    <pre><code>$video = new \Panorama\Video("http://vimeo.com/1785993")</code></pre>
+
+    <p>Then you have methods to know information about the video in your application.</p>
+
+    <ul>
+    <li>
+    <p><strong>getTitle:</strong> A method to know the title of the video of the service.</p>
+
+    <pre><code>$video.getTitle() =&gt; "Beached"</code></pre>
+    </li>
+    <li>
+    <p><strong>getService:</strong> A method to know the name of the video provider service.</p>
+
+    <pre><code>$video.getService()=&gt; "Vimeo"</code></pre>
+    </li>
+    <li>
+    <p><strong>getThumbnail:</strong> An image representation of the video. Each service has a different size, but... it works :)</p>
+
+    <pre><code>$video.getThumbnail()
+=&gt; "http://bc1.vimeo.com/vimeo/thumbs/143104745_640.jpg"</code></pre>
+    </li>
+    <li>
+    <p><strong>getEmbedUrl:</strong> The url (with flashvars) of the video player.</p>
+
+    <pre><code>$video.getEmbedUrl()
+=&gt; "http://vimeo.com/moogaloop.swf?clip_id=1785993 [...] &amp;show_portrait=1" </code></pre>
+    </li>
+    <li>
+    <p><strong>getEmbedHTML(width, height):</strong> Uses the embed_url to build an oembed string. The default width x height is 425 x 344, but we can specify a different one.</p>
+
+    <pre><code>$video.getEmbedHTML(400, 300)
+=&gt; "&lt;object width='400' height='300'&gt;&lt;param name='mo [...] 300'&gt;&lt;/embed&gt;&lt;/object&gt;"</code></pre>
+    </li>
+    <li>
+    <p><strong>getFLV:</strong> Gets the flv url. Not all the services has this option. Remember that
+    in some services the flv url expires and in their terms don't allow using the
+    flv without its player.</p>
+
+    <pre><code>$video.getFLV
+=&gt; "http://www.vimeo.com/moogaloop/play/clip:1785993/ [...] 8ee400/video.flv"</code></pre>
+    </li>
+    <li>
+    <p><strong>getVideoDetails(width, height):</strong> All together :), returns all the previous elements
+    in a hash. Width and height can be specified to build the embed_html.</p>
+
+    <pre><code>$video.getVideoDetails() =&gt; "array( [...] )" </code></pre>
+    </li>
+    </ul><h2>Supported services</h2>
+
+    <p>At this moment we support the following video services:</p>
+
+    <ul>
+    <li>  <a href="http://www.youtube.com/">Youtube</a> </li>
+    <li>  <a href="http://vimeo.com/">Vimeo</a> </li>
+    <li>  <a href="http://flickr.com/">Flickr (videos)</a> </li>
+    <li>  <a href="http://metacafe.com/">Metacafe</a> </li>
+    <li>  <a href="http://dailymotion.com/">Dailymotion</a></li>
+    <li>  <a href="http://collegehumor.com/">Collegehumor</a></li>
+    <li>  <a href="http://blip.tv/">Blip.tv</a></li>
+    <li>  <a href="http://vids.myspace.com/">Myspace</a></li>
+    <li>  <a href="http://www.ted.com/talks/">Ted Talks</a></li>
+    <li>  <a href="http://11870.com/">11870.com</a></li>
+    <li>  <a href="http://www.marca.tv/">Marca.tv</a></li>
+    <li>  <a href="http://www.dalealplay.com/">Dalealplay</a></li>
+    <li>  <a href="http://www.rutube.ru/">RuTube</a></li>
+    </ul>
+    <h2>Broken services</h2>
+
+    <p>These services were included in this API but, due changes in their website, don't work
+    anymore. Any patch for fixing them are welcome. ;)</p>
+
+    <ul>
+    <li>  <a href="http://qik.com/">Qik</a>
+    </li>
+    <li>  <a href="http://www.mtvhive.com/">MTV</a>
+    </li>
+    </ul><p>If you detect new broken services by running the tests please let me know.</p>
+
+    <p>We are always open to incude new services.</p>
+
+
+
     <h2>Authors</h2>
-<p>Fran Diéguez (fran.dieguez@mabishu.com)<br/><br/>      </p>
-<h2>Contact</h2>
-<p>Fran Diéguez (fran.dieguez@mabishu.com)<br/>      </p>
+    <p>Fran Diéguez (fran@openhost.es)
+    <br/>
+    <br/>      </p>
+    <h2>Contact</h2>
+    <p>Fran Diéguez (fran@openhost.es)
+    <br/>      </p>
 
 
     <h2>Download</h2>
@@ -72,6 +220,6 @@
 
   </div>
 
-  
+
 </body>
 </html>
