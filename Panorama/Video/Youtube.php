@@ -294,7 +294,7 @@ class Youtube  implements VideoInterface {
     private function getUrlParam($param)
     {
         $queryParamsRAW = parse_url($this->url, PHP_URL_QUERY);
-        preg_match("@v=([a-zA-Z0-9]*)@", $queryParamsRAW, $matches);
+        preg_match("@v=([a-zA-Z0-9_-]*)@", $queryParamsRAW, $matches);
         
         return $matches[1];
     }
