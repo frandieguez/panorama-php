@@ -42,6 +42,7 @@ class Vimeo implements VideoInterface {
     {
         $this->url = $url;
         $this->videoId = $this->getVideoID($this->url);
+        $this->getFeed();
     }
 
     /*
@@ -53,6 +54,9 @@ class Vimeo implements VideoInterface {
         if (!isset($this->feed)) {
             $videoId = $this->getVideoID();
             $document = file_get_contents("http://vimeo.com/moogaloop/load/clip:{$videoId}/embed?param_server=vimeo.com&param_clip_id={$videoId}");
+            if (!$document) {
+                throw new \Exception('Video Id not valid.');
+            }
             $this->feed = simplexml_load_string($document);
         }
         return $this->feed;

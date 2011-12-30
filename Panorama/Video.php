@@ -64,6 +64,9 @@ class Video {
         // If the Video service is supported instantiate it, otherwise raise Exception
         if (file_exists(dirname(__FILE__).DIRECTORY_SEPARATOR."Video".DIRECTORY_SEPARATOR.$serviceName.".php")) {
             $this->object = new $this->className($url, $options);
+            if (!($this->object instanceof \Panorama\Video\VideoInterface)) {
+                throw new \Exception("Video ID not valid.");
+            }
         } else {
             throw new \Exception("Video service or Url not supported");
         }
