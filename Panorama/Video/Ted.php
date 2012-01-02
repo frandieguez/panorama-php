@@ -31,50 +31,54 @@
 namespace Panorama\Video;
 
 class Ted implements VideoInterface {
-    
+
     private $feed = null;
-    
+
     /*
      * __construct()
      * @param $url
      */
     public function __construct($url)
     {
-        
+
         $this->url = $url;
-        
+
         $path = parse_url($url,PHP_URL_PATH);
         if (!preg_match("@talks@",$path)) {
             throw new \Exception("The url '{$this->url}' is not a valid Ted talk url");
         }
-        
     }
-    
+
     /*
      * Returns the page contents of the url
-     * 
+     *
      */
     public function getPage()
     {
         if (!isset($this->page)) {
             $this->page = file_get_contents($this->url);
+            if (!$this->page) {
+                throw new \Exception("Video id not valid or found.", 1);
+            }
         }
         return $this->page;
     }
-    
+
     /*
      * Returns the title for this Ted video
-     * 
+     *
      */
     public function getTitle()
     {
-        preg_match("@<h1><span id=\"altHeadline\">(.*)</span></h1>@",$this->getPage(), $matches);
+
+        preg_match("@<title>(.*)</title>@",$this->getPage(), $matches);
+
         return trim($matches[1]);
     }
-    
+
     /*
      * Returns the thumbnail for this Ted video
-     * 
+     *
      */
     public function getThumbnail()
     {
@@ -84,42 +88,42 @@ class Ted implements VideoInterface {
         }
         return $this->thumbnail;
     }
-    
+
     /*
      * Returns the duration in secs for this Ted video
-     * 
+     *
      */
     public function getDuration()
     {
         return null;
     }
-    
+
     /*
      * Returns the embed url for this Ted video
-     * 
+     *
      */
     public function getEmbedUrl()
     {
         $flashvars = $this->getFlashVars();
         return "http://video.ted.com/assets/player/swf/EmbedPlayer.swf?{$flashvars}";
     }
-    
+
     /*
      * Returns the HTML object to embed for this Ted video
-     * 
+     *
      */
     public function getEmbedHTML($options = array())
     {
         $defaultOptions = array(
               'width' => 560,
-              'height' => 349 
+              'height' => 349
               );
-        
+
         $options = array_merge($defaultOptions, $options);
         unset($options['width']);
         unset($options['height']);
-        
-        // convert options into 
+
+        // convert options into
         $htmlOptions = "";
         if (count($options) > 0) {
             foreach ($options as $key => $value ) {
@@ -127,7 +131,7 @@ class Ted implements VideoInterface {
             }
         }
         $embedUrl = $this->getEmbedUrl();
-        
+
         return "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>
                     <param name='movie' value='{$embedUrl}'></param>
                     <param name='allowFullScreen' value='true' />
@@ -142,34 +146,34 @@ class Ted implements VideoInterface {
                         allowFullScreen='true'>
                     </embed>
                 </object>";
-    
+
     }
-    
+
     /*
      * Returns the flash vars for this video
-     * 
+     *
      */
     public function getFlashVars()
     {
         if (!isset($this->flashvars)) {
             $videoId = $this->getVideoID();
             $this->emb = file_get_contents("http://www.ted.com/talks/embed/id/{$videoId}");
-            
+
             $split = preg_split("@param\sname=\"flashvars\"\svalue=\"@",urldecode((string) $this->emb));
             $split = preg_split("@\"@", $split[1]);
             $this->flashvars = $split[0];
         }
         return $this->flashvars;
     }
-    
+
     /*
      * Returns the arguments from url
-     * 
+     *
      */
     public function getArgs()
     {
         if (!isset($this->args)) {
-            
+
             $parts = explode("&", $this->getFlashVars());
             $this->args = array();
             foreach ($parts as $part) {
@@ -180,10 +184,10 @@ class Ted implements VideoInterface {
         }
         return $this->args;
     }
-    
+
     /*
      * Returns the FLV url for this Ted video
-     * 
+     *
      */
     public function getFLV()
     {
@@ -193,10 +197,10 @@ class Ted implements VideoInterface {
         }
         return $this->FLV;
     }
-    
+
     /*
      * Returns the Download url for this Ted video
-     * 
+     *
      */
     public function getDownloadUrl()
     {
@@ -205,28 +209,30 @@ class Ted implements VideoInterface {
         }
         return $this->downloadUrl;
     }
-    
+
     /*
      * Returns the name of the Video service
-     * 
+     *
      */
     public function getService()
     {
         return "Ted";
     }
-    
+
     /*
      * Calculate the Video ID from an Ted URL
-     * 
+     *
      * @param $url
      */
     public function getVideoID()
     {
+        echo("<iframe>{$this->getPage()}</iframe>");die();
+        
         if (!isset($this->videoId)) {
             preg_match("@itpc://www.ted.com/talks/podtv/id/(\d*)@", $this->getPage(), $matches);
             $this->videoId = (int) $matches[1];
         }
         return $this->videoId;
     }
-    
+
 }

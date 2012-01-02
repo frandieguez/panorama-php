@@ -30,7 +30,7 @@
  **/
 namespace Panorama\Video;
 
-class Dalealplay  {
+class Dalealplay  implements VideoInterface{
 
     /*
      * __construct()

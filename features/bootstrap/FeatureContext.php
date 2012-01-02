@@ -1,43 +1,28 @@
 <?php
+require_once 'PHPUnit/Autoload.php';
+require_once 'PHPUnit/Framework/Assert/Functions.php';
 
 use Behat\Behat\Context\ClosuredContextInterface,
     Behat\Behat\Context\TranslatedContextInterface,
     Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\Pending;
+    Behat\Behat\Exception\PendingException;
 use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
 
-   require_once 'PHPUnit/Autoload.php';
-   require_once 'PHPUnit/Framework/Assert/Functions.php';
-
+//
+// Require 3rd-party libraries here:
+//
+//   require_once 'PHPUnit/Autoload.php';
+//   require_once 'PHPUnit/Framework/Assert/Functions.php';
+//
 
 /**
- * Panorama-PHP test suite context.
- *
- * @author     Fran Dieguez <fran@openhost.es>
+ * Features context.
  */
 class FeatureContext extends BehatContext
 {
 
-    /**
-    * Last runned command name.
-    *
-    * @var string
-    */
-    private $command;
-    /**
-    * Last runned command output.
-    *
-    * @var string
-    */
-    private $output;
-    /**
-    * Last runned command return code.
-    *
-    * @var integer
-    */
-    private $return;
-
+    public $url =  '';
     /**
      * Initializes context.
      * Every scenario gets it's own context object.
@@ -46,78 +31,88 @@ class FeatureContext extends BehatContext
      */
     public function __construct(array $parameters)
     {
-
+        // Initialize your context here
     }
 
     /**
-     * @Given /^The url (.+)$/
+     * @Given /^The url (.*)$/
      */
     public function theUrl($url)
     {
-        throw new Pending();
-        $this->video = new \Panorama\Video($url);
+        $this->url = $url;
+        $this->videoService = new \Panorama\Video($this->url);
     }
 
     /**
-     * @When /^I get the (.+)$/
+     * @When /^I get the (.*)$/
      */
-    public function getProperty($arg="")
+    public function iGetTheProperty($propertyName)
     {
-        switch ($method) {
-            case 'title':
-                $this->result = $this->video->getTitle();
-                break;
-
-            case 'thumbnail':
-                $this->result = $this->video->getThumbnail();
-                break;
-
-            case 'duration':
-                $this->result = $this->video->getDuration();
+        switch ($propertyName) {
+            case 'service name':
+                $this->value = $this->videoService->getService();
                 break;
 
             case 'download url':
-                $this->result = $this->video->getDownloadUrl();
+                $this->value = $this->videoService->getDownloadUrl();
                 break;
 
-            case 'embed':
-                $this->result = $this->video->getEmbedUrl();
+            case 'title':
+                $this->value = $this->videoService->getTitle();
+                break;
+
+            case 'thumbnail':
+                $this->value = $this->videoService->getThumbnail();
+                break;
+
+            case 'duration':
+                $this->value = $this->videoService->getDuration();
+                break;
+
+            case 'embed url':
+                $this->value = $this->videoService->getEmbedUrl();
+                break;
+
+            case 'embed HTML':
+                $this->value = $this->videoService->getEmbedHTML();
                 break;
 
             case 'embedHTML':
-                $this->result = $this->video->getEmbedHTML(array());
+                $this->value = $this->videoService->getEmbedUrl();
                 break;
 
-            case 'service name':
-                $this->result = $this->video->getService();
+            case 'video id':
+                $this->value = $this->videoService->getVideoID();
                 break;
 
             case 'FLV url':
-                $this->result = $this->video->getFLV();
-            break;
-
-            default:
-                throw new Behat\Behat\Exception\Pending("not implemented");
-
+                $this->value = $this->videoService->getFLV();
+                break;
         }
     }
 
     /**
      * @Then /^The result should be "([^"]*)"$/
      */
-    public function theResultShouldBe($argument1)
+    public function theResultShouldBe($value)
     {
-        throw new Pending();
+        assertEquals($value, $this->value);
+    }
+
+    /**
+     * @Then /^The result should be like "([^"]*)"$/
+     */
+    public function theResultShouldBeLike($value)
+    {
+        assertTrue((bool)preg_match($value, $this->value));
     }
 
     /**
      * @Then /^The result should be:$/
-     *
-     * @param   Behat\Gherkin\Node\PyStringNode $text   PyString text instance
      */
-    public function theResultShouldBeStringBlock(PyStringNode $text)
+    public function theResultShouldBeAnString(PyStringNode $string)
     {
-        throw new Pending();
+        assertEquals($string, $this->value);
     }
 
 }

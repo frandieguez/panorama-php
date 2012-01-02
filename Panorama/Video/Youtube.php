@@ -153,12 +153,10 @@ class Youtube  implements VideoInterface {
      */
     public function getFLV()
     {
-        if (!isset($this->embedUrl)) {
-            $this->embedUrl =  $this->getFeed()->xpath('//enty/media:group/media:content');
-            var_dump($this->embedUrl);die();
-            
+        if (!isset($this->FLV)) {
+            $this->FLV =  $this->getEmbedUrl();
         }
-        return $this->embedUrl;
+        return $this->FLV;
 
     }
 
@@ -193,8 +191,8 @@ class Youtube  implements VideoInterface {
      */
     public function getDownloadUrl()
     {
-        if (!isset($this->embedUrl)) {
-            $this->embedUrl =  $this->getFeed()->getFlashPlayerUrl();
+        if (!isset($this->downloadUrl)) {
+            $this->downloadUrl = $this->getEmbedUrl();
         }
         return $this->embedUrl;
     }

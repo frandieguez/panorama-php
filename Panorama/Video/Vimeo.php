@@ -31,9 +31,9 @@
 namespace Panorama\Video;
 
 class Vimeo implements VideoInterface {
-    
+
     private $feed = null;
-    
+
     /*
      * __construct()
      * @param $url
@@ -47,7 +47,7 @@ class Vimeo implements VideoInterface {
 
     /*
      * Returns the feed that contains information of video
-     * 
+     *
      */
     public function getFeed()
     {
@@ -61,17 +61,17 @@ class Vimeo implements VideoInterface {
         }
         return $this->feed;
     }
-    
+
     /*
      * Sets the feed that contains information of video, usefull for using mocking objects
-     * 
+     *
      * @param $feed,
      */
     public function setFeed($feed)
     {
         $this->feed = $feed;
     }
-    
+
     /*
      * Returns the title for this Vimeo video
      *
@@ -85,7 +85,7 @@ class Vimeo implements VideoInterface {
         }
         return $this->title;
     }
-    
+
     /*
      * Returns the thumbnails for this Vimeo video
      *
@@ -99,10 +99,10 @@ class Vimeo implements VideoInterface {
         }
         return $this->thumbnail;
     }
-    
+
     /*
      * Returns the duration in secs for this Vimeo video
-     * 
+     *
      */
     public function getDuration()
     {
@@ -112,7 +112,7 @@ class Vimeo implements VideoInterface {
         }
         return $this->duration;
     }
-    
+
     /*
      * Returns the embed url for this Vimeo video
      *
@@ -126,7 +126,7 @@ class Vimeo implements VideoInterface {
         }
         return $this->embedUrl;
     }
-    
+
     /*
      * Returns the HTML object to embed for this Vimeo video
      *
@@ -138,14 +138,14 @@ class Vimeo implements VideoInterface {
         if (!isset($this->embedHTML)) {
             $defaultOptions = array(
                 'width' => 560,
-                'height' => 349 
+                'height' => 349
                 );
-            
+
             $options = array_merge($defaultOptions, $options);
             unset($options['width']);
             unset($options['height']);
-            
-            // convert options into 
+
+            // convert options into
             $htmlOptions = "";
             if (count($options) > 0) {
               foreach ($options as $key => $value ) {
@@ -153,23 +153,24 @@ class Vimeo implements VideoInterface {
               }
             }
             $embedUrl = $this->getEmbedUrl();
-            
-            $this->embedHTML = "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>
-                        <param name='movie' value='{$embedUrl}{$htmlOptions}'></param>
-                        <param name='allowFullScreen' value='true'></param>
-                        <param name='allowscriptaccess' value='always'></param>
-                        <param name='wmode' value='transparent'></param>
-                        <embed
-                            src='{$embedUrl}{$htmlOptions}' type='application/x-shockwave-flash'
-                            allowscriptaccess='always' allowfullscreen='true'
-                            width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>
-                        </embed>
-                    </object>"; 
+
+            $this->embedHTML =
+            "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>"
+            ."<param name='movie' value='{$embedUrl}{$htmlOptions}'></param>"
+            ."<param name='allowFullScreen' value='true'></param>"
+            ."<param name='allowscriptaccess' value='always'></param>"
+            ."<param name='wmode' value='transparent'></param>"
+            ."<embed"
+            ."    src='{$embedUrl}{$htmlOptions}' type='application/x-shockwave-flash'"
+            ."    allowscriptaccess='always' allowfullscreen='true'"
+            ."    width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>"
+            ."</embed>"
+            ."</object>";
         }
         return $this->embedHTML;
-    
+
     }
-    
+
     /*
      * Returns the FLV url for this Vimeo video
      *
@@ -177,23 +178,24 @@ class Vimeo implements VideoInterface {
      */
     public function getFLV()
     {
-        
+
         if (!isset($this->FLV)) {
-            
+
             $requestSignature = $this->feed->xpath('//request_signature');
             $requestSignature = (string) $requestSignature[0];
-            
+
             $requestSignatureExpires = $this->feed->xpath('//request_signature_expires');
             $requestSignatureExpires = (string) $requestSignature[0];
-            
+
             $videoId = $this->getVideoID();
             $this->FLV =  "http://www.vimeo.com/moogaloop/play/clip:{$videoId}/{$requestSignature}/{$requestSignatureExpires}/";
+            var_dump($this->FLV);
 
         }
         return $this->FLV;
-    
+
     }
-    
+
     /*
      * Returns the Download url for this Vimeo video
      *
@@ -203,53 +205,53 @@ class Vimeo implements VideoInterface {
     {
         return $this->getFLV();
     }
-    
+
     /*
      * Returns the name of the Video service
      *
      * @returns string, the name of the Video service
-     * 
+     *
      */
     public function getService()
     {
         return "Vimeo";
     }
-    
+
     /*
      * Calculate the Video ID from an Vimeo URL
-     * 
+     *
      * @param $url
      * @return string, the Video ID from an Vimeo URL
      * @throws Exception, if path is not valid
      */
     public function getVideoID($url="")
     {
-        
+
         if (!isset($this->videoId)) {
             try {
-            
+
                 $uri = parse_url($url);
-                
+
                 if (isset($uri['fragment'])) {
-                    
+
                     $this->videoId = $uri['fragment'];
-                    
+
                 } elseif (isset($uri["path"])) {
-                    
+
                     $pathParts = preg_split("@/@",$uri['path']);
                     if (count($pathParts) > 0) {
                         $this->videoId = $pathParts[1];
                     } else {
                         throw \Exception("The path {$url} sems to be invalid");
                     }
-                    
+
                 }
-                
+
             } catch (Exception $e) {
                 throw \Exception("The path {$url} sems to be invalid");
             }
         }
         return $this->videoId;
-        
+
     }
 }
