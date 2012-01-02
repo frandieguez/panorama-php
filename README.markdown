@@ -37,10 +37,7 @@ PSR-0-compatible autoloader.
 
 Dependencies
 ------------
-This library depends on
-
-1.  [Zend Gdata](http://framework.zend.com/download/gdata) for access the Youtube API.
-2. Obviosly PHP 5.3, you have to use namespaces and some other goodies of 5.3 version.
+This library only depends on PHP 5.3, you have to use namespaces and some other goodies of 5.3 version.
 
 Please __don't ask for PHP < 5.3 support__, you shouldn't use PHP 5.2.
 
@@ -105,7 +102,6 @@ At this moment we support the following video services:
 -   [Collegehumor](http://collegehumor.com/)
 -   [Blip.tv](http://blip.tv/)
 -   [Myspace](http://vids.myspace.com/)
--   [Ted Talks](http://www.ted.com/talks/)
 -   [11870.com](http://11870.com/)
 -   [Marca.tv](http://www.marca.tv/)
 -   [Dalealplay](http://www.dalealplay.com/)
@@ -117,12 +113,25 @@ Broken services
 These services were included in this API but, due changes in their website, don't work
 anymore. Any patch for fixing them are welcome. ;)
 
+-   [Ted Talks](http://www.ted.com/talks/)
 -   [Qik](http://qik.com/)
 -   [MTV](http://www.mtvhive.com/)
 
 If you detect new broken services by running the tests please let me know.
 
 We are always open to incude new services.
+
+Test it!
+--------
+Help us to mantain this library updated. Run our behaviour tests with behat to
+give us feedback about what services don't work anymore.
+
+For running tests:
+
+1. Install in your system Behat: http://docs.behat.org/quick_intro.html#method-1-pear
+2. Install Symfony 2 ClassLoader: http://pear.symfony.com/
+3. By using your terminal go to the features/ folder
+4. And simply run behat from there: behat
 
 And... what else?
 -----------------
