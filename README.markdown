@@ -133,6 +133,8 @@ For running tests:
 3. By using your terminal go to the features/ folder
 4. And simply run behat from there: behat
 
+== Build Status [<img src="https://secure.travis-ci.org/frandieguez/Panorama-PHP.png"/>](http://travis-ci.org/frandieguez/Panorama-PHP)
+
 And... what else?
 -----------------
 If you find a bug or want to suggest a new video service, please let us know in [a ticket](http://github.com/frandieguez/panorama-php/issues).
