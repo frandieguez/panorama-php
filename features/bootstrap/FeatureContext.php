@@ -74,11 +74,8 @@ class FeatureContext extends BehatContext
                 break;
 
             case 'embed HTML':
-                $this->value = $this->videoService->getEmbedHTML();
-                break;
-
             case 'embedHTML':
-                $this->value = $this->videoService->getEmbedUrl();
+                $this->value = $this->videoService->getEmbedHTML(array());
                 break;
 
             case 'video id':

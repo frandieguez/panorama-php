@@ -31,7 +31,7 @@
 namespace Panorama\Video;
 
 class Marca implements VideoInterface {
-    
+
     /*
      * __construct()
      * @param $url
@@ -41,19 +41,19 @@ class Marca implements VideoInterface {
 
         $this->url = $url;
         $this->videoId = $this->getVideoID();
-        
+
         $sub1 = substr($this->videoId,0,1);
         $sub2 = substr($this->videoId,1,1);
         $sub3 = substr($this->videoId,2,100);
-        
+
         $doc = file_get_contents("http://estaticos.marca.com/consolamultimedia/marcaTV/elementos/{$sub1}/{$sub2}/{$sub3}.xml");
         $this->feed = simplexml_load_string($doc);
-        
+
     }
-    
+
     /*
      * Returns the title for this Marca video
-     * 
+     *
      */
     public function getTitle()
     {
@@ -63,10 +63,10 @@ class Marca implements VideoInterface {
         }
         return $this->title;
     }
-    
+
     /*
      * Returns the thumbnail for this Marca video
-     * 
+     *
      */
     public function getThumbnail()
     {
@@ -76,77 +76,76 @@ class Marca implements VideoInterface {
         }
         return $this->thumbnail;
     }
-    
+
     /*
      * Returns the duration in secs for this Marca video
-     * 
+     *
      */
     public function getDuration()
     {
         return null;
     }
-    
+
     /*
      * Returns the embed url for this Marca video
-     * 
+     *
      */
     public function getEmbedUrl()
     {
         return "http://www.marca.com/componentes/flash/embed.swf?ba=0&cvol=1&bt=1&lg=1&vID={$this->videoId}&ba=1";
     }
-    
+
     /*
      * Returns the HTML object to embed for this Marca video
-     * 
+     *
      */
     public function getEmbedHTML($options = array())
     {
         $defaultOptions = array(
               'width' => 560,
-              'height' => 349 
+              'height' => 349
               );
-        
+
         $options = array_merge($defaultOptions, $options);
         unset($options['width']);
         unset($options['height']);
-        
-        // convert options into 
+
+        // convert options into
         $htmlOptions = "";
         if (count($options) > 0) {
             foreach ($options as $key => $value ) {
                 $htmlOptions .= "&" . $key . "=" . $value;
             }
         }
-        
-        
+
+
         $flashvars = "ba=1&amp;cvol=1&amp;bt=1&amp;lg=0&amp;"
                     ."width={$defaultOptions['width']}&amp;height={$defaultOptions['height']}"
                     ."&amp;vID={$this->getVideoId()}";
-        
-        return "<object
-                    width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
-                    classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000'
-                    codebase='http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0'>
-                    <param name='movie' value='http://estaticos.marca.com/multimedia/reproductores/newPlayer.swf'>
-                    <param name='quality' value='high'>
-                    <param name='allowFullScreen' value='true'>
-                    <param name='wmode' value='transparent'>
-                    <param name='FlashVars' value='{$flashvars}'>
-                    <embed
-                        width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
-                        src='http://estaticos03.marca.com/multimedia/reproductores/newPlayer.swf'
-                        quality='high'
-                        flashvars='ba=1&amp;cvol=1&amp;bt=1&amp;lg=0&amp;vID={$this->getVideoId()}' allowfullscreen='true'
-                        type='application/x-shockwave-flash'
-                        pluginspage='http://www.macromedia.com/go/getflashplayer'
-                        wmode='transparent'>
-                </object>";
-                
+
+        return "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}' \n"
+                ."    classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000'\n"
+                ."    codebase='http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0'>\n"
+                ."    <param name='movie' value='http://estaticos.marca.com/multimedia/reproductores/newPlayer.swf'>\n"
+                ."    <param name='quality' value='high'>\n"
+                ."    <param name='allowFullScreen' value='true'>\n"
+                ."    <param name='wmode' value='transparent'>\n"
+                ."    <param name='FlashVars' value='{$flashvars}'>\n"
+                ."    <embed\n"
+                ."        width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'\n"
+                ."        src='http://estaticos03.marca.com/multimedia/reproductores/newPlayer.swf'\n"
+                ."        quality='high'\n"
+                ."        flashvars='ba=1&amp;cvol=1&amp;bt=1&amp;lg=0&amp;vID={$this->getVideoId()}' allowfullscreen='true'\n"
+                ."        type='application/x-shockwave-flash'\n"
+                ."        pluginspage='http://www.macromedia.com/go/getflashplayer'\n"
+                ."        wmode='transparent'>\n"
+                ."</object>";
+
     }
-    
+
     /*
      * Returns the FLV url for this Marca video
-     * 
+     *
      */
     public function getFLV()
     {
@@ -156,28 +155,28 @@ class Marca implements VideoInterface {
         }
         return $this->FLV;
     }
-    
+
     /*
      * Returns the Download url for this Marca video
-     * 
+     *
      */
     public function getDownloadUrl()
     {
         return null;
     }
-    
+
     /*
      * Returns the name of the Video service
-     * 
+     *
      */
     public function getService()
     {
         return "Marca";
     }
-    
+
     /*
      * Calculates the Video ID from an Marca URL
-     * 
+     *
      * @param $url
      */
     public function getVideoID()

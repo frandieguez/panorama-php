@@ -31,22 +31,22 @@
 namespace Panorama\Video;
 
 class Myspace implements VideoInterface  {
-    
-    
+
+
     /*
      * __construct()
      * @param $url
      */
     public function __construct($url, $options = null)
     {
-        
+
         $this->url = $url;
-        
+
     }
-    
+
     /*
      * Returns the page content for this video
-     * 
+     *
      * @param $arg
      */
     public function getPage()
@@ -58,10 +58,10 @@ class Myspace implements VideoInterface  {
         }
         return $this->page;
     }
-    
+
     /*
      * Returns the title for this MySpace video
-     * 
+     *
      */
     public function getTitle()
     {
@@ -71,10 +71,10 @@ class Myspace implements VideoInterface  {
         }
         return $this->title;
     }
-    
+
     /*
      * Returns the thumbnail for this MySpace video
-     * 
+     *
      */
     public function getThumbnail()
     {
@@ -86,19 +86,19 @@ class Myspace implements VideoInterface  {
         return $this->thumbnail;
 
     }
-    
+
     /*
      * Returns the duration in secs for this MySpace video
-     * 
+     *
      */
     public function getDuration()
     {
         return null;
     }
-    
+
     /*
      * Returns the embed url for this MySpace video
-     * 
+     *
      */
     public function getEmbedUrl()
     {
@@ -109,23 +109,23 @@ class Myspace implements VideoInterface  {
         }
         return $this->embedUrl;
     }
-    
+
     /*
      * Returns the HTML object to embed for this MySpace video
-     * 
+     *
      */
     public function getEmbedHTML($options = array())
     {
         if (!isset($this->embedHTML)) {
             $defaultOptions = array(
                   'width' => 560,
-                  'height' => 349 
+                  'height' => 349
                   );
-            
+
             $options = array_merge($defaultOptions, $options);
             unset($options['width']);
             unset($options['height']);
-            
+
             // convert options into and url encoded vars
             $htmlOptions = "";
             if (count($options) > 0) {
@@ -133,19 +133,19 @@ class Myspace implements VideoInterface  {
                     $htmlOptions .= "&" . $key . "=" . $value;
                 }
             }
-                  
+
             $this->embedHTML = "<embed src='{$this->getEmbedUrl()}'
                                     width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
                                     type='application/x-shockwave-flash'>
                                 </embed>";
         }
         return $this->embedHTML;
-    
+
     }
-    
+
     /*
      * Returns the FLV url for this MySpace video
-     * 
+     *
      */
     public function getFLV()
     {
@@ -155,28 +155,28 @@ class Myspace implements VideoInterface  {
         }
         return $this->FLV;
     }
-    
+
     /*
      * Returns the Download url for this MySpace video
-     * 
+     *
      */
     public function getDownloadUrl()
     {
         return null;
     }
-    
+
     /*
      * Returns the name of the Video service
-     * 
+     *
      */
     public function getService()
     {
         return "Myspace";
     }
-    
+
     /*
      * Calculates the Video ID from an MySpace URL
-     * 
+     *
      * @param $url
      */
     public function getVideoID()

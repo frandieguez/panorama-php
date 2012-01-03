@@ -16,7 +16,7 @@ require("bootstrap.php");
     $videos []= new \Panorama\Video("http://vids.myspace.com/index.cfm?fuseaction=vids.individual&VideoID=27111431");
     // $videos []= new \Panorama\Video("http://qik.com/video/340982");
     $videos []= new \Panorama\Video("http://rutube.ru/tracks/4436308.html?v=da5ede8f5aa5832e74b8afec8bd1818f");
-    // $videos []= new \Panorama\Video("http://www.ted.com/index.php/talks/benjamin_wallace_on_the_price_of_happiness.html");
+    $videos []= new \Panorama\Video("http://www.ted.com/talks/benjamin_wallace_on_the_price_of_happiness.html");
     $videos []= new \Panorama\Video("http://vimeo.com/5362441");
 // }
 apc_clear_cache();

@@ -31,23 +31,23 @@
 namespace Panorama\Video;
 
 class Rutube implements VideoInterface {
-    
+
     private $rtXmlAPIUrl = "http://rutube.ru/cgi-bin/xmlapi.cgi";
-    
+
     /*
      * __construct()
      * @param $url
      */
     public function __construct($url)
     {
-        
+
         $this->url = $url;
-        
+
     }
-    
+
     /*
      * Returns the title for this Rutube video
-     * 
+     *
      */
     public function getTitle()
     {
@@ -56,12 +56,13 @@ class Rutube implements VideoInterface {
             $rtInfo = $this->getRtInfo();
             $this->title = trim((string) $rtInfo->movie[0]->title);
         }
+
         return $this->title;
     }
-    
+
     /*
      * Returns the thumbnail for this Rutube video
-     * 
+     *
      */
     public function getThumbnail()
     {
@@ -74,65 +75,65 @@ class Rutube implements VideoInterface {
         }
         return $this->thumbnail;
     }
-    
+
     /*
      * Returns the duration in secs for this Rutube video
-     * 
+     *
      */
     public function getDuration()
     {
         return null;
     }
-    
+
     /*
      * Returns the embed url for this Rutube video
-     * 
+     *
      */
     public function getEmbedUrl()
     {
         $movieHash = $this->getMovieHash();
         return "http://video.rutube.ru/{$movieHash}";
     }
-    
+
     /*
      * Returns the movie hash to make request to Rutube
-     * 
+     *
      */
     public function getMovieHash()
     {
-        
+
         if (!isset($this->movieHash)) {
             $rtInfo = $this->getRtInfo();
             preg_match("@[a-f0-9]+$@", $rtInfo->movie->playerLink[0],$matches);
             $this->movieHash = $matches[0];
         }
         return $this->movieHash;
-        
+
     }
-    
+
     /*
      * Returns the HTML object to embed for this Rutube video
-     * 
+     *
      */
     public function getEmbedHTML($options = array())
     {
         $defaultOptions = array(
               'width' => 560,
-              'height' => 349 
+              'height' => 349
               );
-        
+
         $options = array_merge($defaultOptions, $options);
         unset($options['width']);
         unset($options['height']);
-        
-        // convert options into 
+
+        // convert options into
         $htmlOptions = "";
         if (count($options) > 0) {
             foreach ($options as $key => $value ) {
                 $htmlOptions .= "&" . $key . "=" . $value;
             }
         }
-        
+
         return "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>
                     <param name='movie' value='{$this->getEmbedUrl()}'></param>
                     <param name='wmode' value='window'></param>
@@ -145,46 +146,46 @@ class Rutube implements VideoInterface {
                         allowFullScreen='true'>
                     </embed>
                 </object>";
-                
-                
-    
+
+
+
     }
-    
+
     /*
      * Returns the FLV url for this Rutube video
-     * 
+     *
      */
     public function getFLV()
     {
         $movieHash = $this->getMovieHash();
         return "http://bl.rutube.ru/{$movieHash}.iflv";
     }
-    
+
     /*
      * Returns the Download url for this Rutube video
-     * 
+     *
      */
     public function getDownloadUrl()
     {
         return null;
     }
-    
+
     /*
      * Returns the name of the Video service
-     * 
+     *
      */
     public function getService()
     {
         return "Rutube";
     }
-    
+
     /*
      * Loads the video information from Rutube API
-     * 
+     *
      */
     public function getRtInfo()
     {
-        
+
         $videoId = (string) $this->getVideoId();
         $url = $this->rtXmlAPIUrl . "?rt_movie_id={$videoId}&rt_mode=movie";
 
@@ -193,13 +194,13 @@ class Rutube implements VideoInterface {
             $this->rtInfo = simplexml_load_string($content);
         }
         return $this->rtInfo;
-        
+
     }
 
-    
+
     /*
      * Calculates the Video ID from an Rutube URL
-     * 
+     *
      * @param $url
      */
     public function getVideoID()

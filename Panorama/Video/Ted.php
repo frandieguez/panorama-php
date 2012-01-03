@@ -71,8 +71,7 @@ class Ted implements VideoInterface {
     public function getTitle()
     {
 
-        preg_match("@<title>(.*)</title>@",$this->getPage(), $matches);
-
+        preg_match('@<span class="notranslate" id="altHeadline" >(.*)</span>@'   ,$this->getPage(), $matches);
         return trim($matches[1]);
     }
 
@@ -205,7 +204,8 @@ class Ted implements VideoInterface {
     public function getDownloadUrl()
     {
         if (!isset($this->downloadUrl)) {
-            $this->downloadUrl =  $this->getFLV();
+            preg_match('@<a href="(*.)">download the video</a>@', $this->getPage(), $matches);
+            $this->downloadUrl =  $matches[1];
         }
         return $this->downloadUrl;
     }
@@ -226,10 +226,8 @@ class Ted implements VideoInterface {
      */
     public function getVideoID()
     {
-        echo("<iframe>{$this->getPage()}</iframe>");die();
-        
         if (!isset($this->videoId)) {
-            preg_match("@itpc://www.ted.com/talks/podtv/id/(\d*)@", $this->getPage(), $matches);
+            preg_match("@/talks/subtitles/id/(\d*)/lang/@", $this->getPage(), $matches);
             $this->videoId = (int) $matches[1];
         }
         return $this->videoId;
