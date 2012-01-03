@@ -204,7 +204,7 @@ class Ted implements VideoInterface {
     public function getDownloadUrl()
     {
         if (!isset($this->downloadUrl)) {
-            preg_match('@<a href="(*.)">download the video</a>@', $this->getPage(), $matches);
+            preg_match('@<a href="(.*)">download the video</a>@', $this->getPage(), $matches);
             $this->downloadUrl =  $matches[1];
         }
         return $this->downloadUrl;
