@@ -134,10 +134,11 @@ class Myspace implements VideoInterface  {
                 }
             }
 
-            $this->embedHTML = "<embed src='{$this->getEmbedUrl()}'
-                                    width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
-                                    type='application/x-shockwave-flash'>
-                                </embed>";
+            $this->embedHTML = 
+                "<embed src='{$this->getEmbedUrl()}'\n"
+                ."width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'\n"
+                ."type='application/x-shockwave-flash'>\n"
+                ."</embed>";
         }
         return $this->embedHTML;
 

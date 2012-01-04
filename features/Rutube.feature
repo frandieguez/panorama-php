@@ -23,17 +23,14 @@ Feature: Rutube service provider
         Then The result should be:
         """
         <object width='560' height='349'>
-                    <param name='movie' value='http://video.rutube.ru/da5ede8f5aa5832e74b8afec8bd1818f'></param>
-                    <param name='wmode' value='window'></param>
-                    <param name='allowFullScreen' value='true'></param>
-                    <embed
-                        src='http://video.rutube.ru/da5ede8f5aa5832e74b8afec8bd1818f'
-                        type='application/x-shockwave-flash'
-                        wmode='window'
-                        width='560' height='349'
-                        allowFullScreen='true'>
-                    </embed>
-                </object>
+        <param name='movie' value='http://video.rutube.ru/da5ede8f5aa5832e74b8afec8bd1818f'></param>
+        <param name='wmode' value='window'></param>
+        <param name='allowFullScreen' value='true'></param>
+        <embed type='application/x-shockwave-flash
+        src='http://video.rutube.ru/da5ede8f5aa5832e74b8afec8bd1818f'
+        width='560' height='349'
+        wmode='window' allowFullScreen='true'></embed>
+        </object>
         """
 
     Scenario: Get the embed url of the Rutube video

@@ -22,17 +22,16 @@ Feature: Youtube service provider
         When I get the embedHTML
         Then The result should be:
         """
-<object width='560' height='349'>'
-                    <param name='movie' value='http://www.youtube.com/v/uO3GYt47YQs?f=videos&app=youtube_gdata'>'
-                    <param name='allowFullScreen' value='true'>'
-                    <param name='allowscriptaccess' value='always'>'
-                    <param name='wmode' value='transparent'>'
-                    <embed'
-                        src='http://www.youtube.com/v/uO3GYt47YQs?f=videos&app=youtube_gdata' type='application/x-shockwave-flash''
-                        allowscriptaccess='always' allowfullscreen='true''
-                        width='560' height='349'>'
-              </object>
-"""
+        <object width='560' height='349'>
+        <param name='movie' value='http://www.youtube.com/v/uO3GYt47YQs?version=3&f=videos&app=youtube_gdata'>
+        <param name='allowFullScreen' value='true'>
+        <param name='allowscriptaccess' value='always'>
+        <param name='wmode' value='transparent'>
+        <embed src='http://www.youtube.com/v/uO3GYt47YQs?version=3&f=videos&app=youtube_gdata' type='application/x-shockwave-flash'
+        allowscriptaccess='always' allowfullscreen='true'
+        width='560' height='349'>
+        </object>
+        """
 
     Scenario: Get the embed url of the Youtube video
         Given The url http://www.youtube.com/watch?v=uO3GYt47YQs&feature=topvideos_entertainment

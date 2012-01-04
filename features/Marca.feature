@@ -22,23 +22,22 @@ Feature: Marca service provider
         When I get the embedHTML
         Then The result should be:
         """
-        <object
-            width='560' height='349'
-            classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000'
-            codebase='http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0'>
-            <param name='movie' value='http://estaticos.marca.com/multimedia/reproductores/newPlayer.swf'>
-            <param name='quality' value='high'>
-            <param name='allowFullScreen' value='true'>
-            <param name='wmode' value='transparent'>
-            <param name='FlashVars' value='ba=1&amp;cvol=1&amp;bt=1&amp;lg=0&amp;width=560&amp;height=349&amp;vID=DN23wG8c1Rj'>
-            <embed
-                width='560' height='349'
-                src='http://estaticos03.marca.com/multimedia/reproductores/newPlayer.swf'
-                quality='high'
-                flashvars='ba=1&amp;cvol=1&amp;bt=1&amp;lg=0&amp;vID=DN23wG8c1Rj' allowfullscreen='true'
-                type='application/x-shockwave-flash'
-                pluginspage='http://www.macromedia.com/go/getflashplayer'
-                wmode='transparent'>
+        <object width='560' height='349' 
+        classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000'
+        codebase='http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0'>
+        <param name='movie' value='http://estaticos.marca.com/multimedia/reproductores/newPlayer.swf'>
+        <param name='quality' value='high'>
+        <param name='allowFullScreen' value='true'>
+        <param name='wmode' value='transparent'>
+        <param name='FlashVars' value='ba=1&amp;cvol=1&amp;bt=1&amp;lg=0&amp;width=560&amp;height=349&amp;vID=DN23wG8c1Rj'>
+        <embed
+        width='560' height='349'
+        src='http://estaticos03.marca.com/multimedia/reproductores/newPlayer.swf'
+        quality='high'
+        flashvars='ba=1&amp;cvol=1&amp;bt=1&amp;lg=0&amp;vID=DN23wG8c1Rj' allowfullscreen='true'
+        type='application/x-shockwave-flash'
+        pluginspage='http://www.macromedia.com/go/getflashplayer'
+        wmode='transparent'>
         </object>
         """
 

@@ -138,18 +138,16 @@ class Dailymotion implements VideoInterface {
             }
 
             $this->embedHTML =
-                "<object
-                    width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>
-                    <param name='movie' value='{$this->getEmbedUrl()}&related=1'></param>
-                    <param name='allowFullScreen' value='true'></param>
-                    <param name='allowScriptAccess' value='always'></param>
-                    <embed
-                        src='{$this->getEmbedUrl()}&related=1'
-                        type='application/x-shockwave-flash'
-                        width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
-                        allowFullScreen='true' allowScriptAccess='always'>
-                    </embed>
-                </object>";
+                "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>\n"
+                ."<param name='movie' value='{$this->getEmbedUrl()}&related=1'></param>\n"
+                ."<param name='allowFullScreen' value='true'></param>\n"
+                ."<param name='allowScriptAccess' value='always'></param>\n"
+                ."<embed type='application/x-shockwave-flash'\n"
+                ."src='{$this->getEmbedUrl()}&related=1'\n"
+                ."width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'\n"
+                ."allowFullScreen='true' allowScriptAccess='always'>\n"
+                ."</embed>\n"
+                ."</object>";
         }
         return $this->embedHTML;
 

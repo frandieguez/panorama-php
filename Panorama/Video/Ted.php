@@ -104,6 +104,7 @@ class Ted implements VideoInterface {
     public function getEmbedUrl()
     {
         $flashvars = $this->getFlashVars();
+        echo "http://video.ted.com/assets/player/swf/EmbedPlayer.swf?{$flashvars}";
         return "http://video.ted.com/assets/player/swf/EmbedPlayer.swf?{$flashvars}";
     }
 
@@ -131,20 +132,17 @@ class Ted implements VideoInterface {
         }
         $embedUrl = $this->getEmbedUrl();
 
-        return "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>
-                    <param name='movie' value='{$embedUrl}'></param>
-                    <param name='allowFullScreen' value='true' />
-                    <param name='wmode' value='transparent'></param>
-                    <param name='bgColor' value='#ffffff'></param>
-                    <embed
-                        src='{$embedUrl}'
-                        pluginspace='http://www.macromedia.com/go/getflashplayer'
-                        type='application/x-shockwave-flash'
-                        wmode='transparent' bgColor='#ffffff'
-                        width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
-                        allowFullScreen='true'>
-                    </embed>
-                </object>";
+        return "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>\n"
+                ."<param name='movie' value='{$embedUrl}'></param>\n"
+                ."<param name='allowFullScreen' value='true'></param>\n"
+                ."<param name='wmode' value='transparent'></param>\n"
+                ."<param name='bgColor' value='#ffffff'></param>\n"
+                ."<embed pluginspace='http://www.macromedia.com/go/getflashplayer\n"
+                ."type='application/x-shockwave-flash'\n"
+                ."wmode='transparent' allowFullScreen='true' bgColor='#ffffff'\n"
+                ."src='{$embedUrl}'\n"
+                ."width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'></embed>\n"
+                ."</object>";
 
     }
 

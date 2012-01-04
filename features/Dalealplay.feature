@@ -23,13 +23,12 @@ Feature: Dalealplay service provider
         Then The result should be:
         """
         <object type='application/x-shockwave-flash'
-                        width='560' height='349'
-                        data='http://c.brightcove.com/services/viewer/federated_f9/71239000001?isVid=1&isUI=1&publisherID=35140843001&playerID=71239000001&domain=embed&autoStart=false&videoId=DAP-403408'>
-                    <param name='quality' value='best' />
-                    <param name='allowfullscreen' value='true' />
-                    <param name='scale' value='showAll' />
-                    <param name='movie' value='{$this->getEmbedUrl()}' />
-                </object>
+        width='560' height='349'
+        data='http://c.brightcove.com/services/viewer/federated_f9/71239000001?isVid=1&isUI=1&publisherID=35140843001&playerID=71239000001&domain=embed&autoStart=false&videoId=DAP-403408'>
+        <param name='quality' value='best' />
+        <param name='allowfullscreen' value='true' />
+        <param name='movie' value='http://c.brightcove.com/services/viewer/federated_f9/71239000001?isVid=1&isUI=1&publisherID=35140843001&playerID=71239000001&domain=embed&autoStart=false&videoId=DAP-403408' />
+        </object>
         """
 
     Scenario: Get the embed url of the Dalealplay video

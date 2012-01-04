@@ -155,16 +155,15 @@ class Vimeo implements VideoInterface {
             $embedUrl = $this->getEmbedUrl();
 
             $this->embedHTML =
-            "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>"
-            ."<param name='movie' value='{$embedUrl}{$htmlOptions}'></param>"
-            ."<param name='allowFullScreen' value='true'></param>"
-            ."<param name='allowscriptaccess' value='always'></param>"
-            ."<param name='wmode' value='transparent'></param>"
-            ."<embed"
-            ."    src='{$embedUrl}{$htmlOptions}' type='application/x-shockwave-flash'"
-            ."    allowscriptaccess='always' allowfullscreen='true'"
-            ."    width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>"
-            ."</embed>"
+            "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>\n"
+                ."<param name='movie' value='{$embedUrl}{$htmlOptions}'></param>\n"
+                ."<param name='allowFullScreen' value='true'></param>\n"
+                ."<param name='allowscriptaccess' value='always'></param>\n"
+                ."<param name='wmode' value='transparent'></param>\n"
+                ."<embed src='{$embedUrl}{$htmlOptions}'\n"
+                    ."allowscriptaccess='always' allowfullscreen='true' type='application/x-shockwave-flash' \n"
+                    ."width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>\n"
+                ."</embed>\n"
             ."</object>";
         }
         return $this->embedHTML;

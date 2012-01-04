@@ -146,15 +146,13 @@ class Dalealplay  implements VideoInterface{
             }
         }
 
-        return "<object type='application/x-shockwave-flash'
-                        width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
-                        data='{$this->getEmbedUrl()}'>
-                    <param name='quality' value='best' />
-                    <param name='allowfullscreen' value='true' />
-                    <param name='scale' value='showAll' />
-                    <param name='movie' value='{$this->getEmbedUrl()}' />
-                </object>";
-
+        return  "<object type='application/x-shockwave-flash'\n"
+                ."width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'\n"
+                ."data='{$this->getEmbedUrl()}'>\n"
+                ."<param name='quality' value='best' />\n"
+                ."<param name='allowfullscreen' value='true' />\n"
+                ."<param name='movie' value='{$this->getEmbedUrl()}' />\n"
+                ."</object>";
     }
 
     /*

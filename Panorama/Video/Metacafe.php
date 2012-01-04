@@ -31,34 +31,34 @@
 namespace Panorama\Video;
 
 class Metacafe implements VideoInterface {
-    
+
     /*
      * __construct()
      * @param $url
      */
     public function __construct($url, $options = null)
     {
-        
+
         $this->url = $url;
         $this->args = $this->getArgs();
         $this->videoId = $this->getVideoId();
-        
+
         $pos = stripos("yt-", $this->args[0]);
-        
+
         $this->youtubed = ($pos == false) ? false : true;
-        
+
         // I can't find a video that comes from Youtube so this snippet is
         // untestable for now
         if ($this->youtubed) {
             $output = preg_split("yt-",$this->args[1]);
             $this->object = new Youtube("http://www.youtube.com/watch?v={$output[1]}");
         }
-        
+
     }
-    
+
     /*
      * Return the video id
-     * 
+     *
      */
     public function getVideoId()
     {
@@ -68,20 +68,20 @@ class Metacafe implements VideoInterface {
         }
         return $this->videoId;
     }
-    
+
     /*
      * Returns the args from video url
-     * 
+     *
      */
     public function getArgs()
     {
-        
+
         if (!isset($this->args)) {
-            
+
             $uri = parse_url($this->url);
             $path = $uri["path"];
             $this->args = null;
-            
+
             if (isset($path)
                 && count(preg_split("@/@", $path)) > 1)
             {
@@ -90,84 +90,79 @@ class Metacafe implements VideoInterface {
             }
         }
         return $this->args;
-    
+
     }
-    
+
     /*
      * Returns the title for this Metacafe video
-     * 
+     *
      */
     public function getTitle()
     {
-    
+
         if (!isset($this->title)) {
             if ($this->youtubed) {
                 $this->title = $this->object->getTitle();
             } else {
-                $this->title = ucfirst(str_replace("_", " ", $this->args[1]));  
+                $this->title = ucfirst(str_replace("_", " ", $this->args[1]));
             }
         }
-        
+
         return $this->title;
-    
+
     }
-    
+
     /*
      * Returns the thumbnail for this Metacafe video
-     * 
+     *
      */
     public function getThumbnail()
     {
-        
         if (!isset($this->thumbnail)) {
             $args = $this->getArgs();
             $this->thumbnail = "http://www.metacafe.com/thumb/{$args[0]}.jpg";
         }
         return $this->thumbnail;
-
     }
-    
+
     /*
      * Returns the duration in secs for this Metacafe video
-     * 
+     *
      */
     public function getDuration()
     {
         return null;
     }
-    
+
     /*
      * Returns the embed url for this Metacafe video
-     * 
+     *
      */
     public function getEmbedUrl()
     {
-
         if (!isset($this->embedUrl)) {
             $params = implode("/", $this->getArgs());
             $this->embedUrl = "http://www.metacafe.com/fplayer/{$params}.swf";
         }
         return $this->embedUrl;
-    
     }
-    
+
     /*
      * Returns the HTML object to embed for this Metacafe video
-     * 
+     *
      */
     public function getEmbedHTML($options = array())
     {
-        
         if (!isset($this->embedHTML)) {
             $defaultOptions = array(
                   'width' => 560,
-                  'height' => 349 
+                  'height' => 349
                   );
-            
+
             $options = array_merge($defaultOptions, $options);
             unset($options['width']);
             unset($options['height']);
-            
+
             // convert options into and url encoded vars
             $htmlOptions = '';
             if (count($options) > 0) {
@@ -175,22 +170,22 @@ class Metacafe implements VideoInterface {
                     $htmlOptions .= '&' . $key . '=' . $value;
                 }
             }
-                                    
-            $this->embedHTML = "<embed
-                                    src='{$this->getEmbedUrl()}'
-                                    width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
-                                    wmode='transparent'
-                                    pluginspage='http://www.macromedia.com/go/getflashplayer'
-                                    type='application/x-shockwave-flash'>
-                                </embed>";
+
+            $this->embedHTML = 
+                "<embed\n"
+                ." src='{$this->getEmbedUrl()}'\n"
+                ." width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'\n"
+                ." wmode='transparent'\n"
+                ." pluginspage='http://www.macromedia.com/go/getflashplayer'\n"
+                ." type='application/x-shockwave-flash'>\n"
+                ."</embed>";
         }
         return $this->embedHTML;
-    
     }
-    
+
     /*
      * Returns the FLV url for this Metacafe video
-     * 
+     *
      */
     public function getFLV()
     {
@@ -207,74 +202,74 @@ class Metacafe implements VideoInterface {
 
             preg_match("@mediaURL\":\"(.*)\",@", $finalUrl, $params);
             $mediaUrl = preg_replace("/\\\/", "", $params[1]);
-            
+
             $this->FLV = "{$mediaUrl}?__gdk__={$key}";
-            
+
         }
         return $this->FLV;
     }
-    
+
     /*
      * Returns the Download url for this Metacafe video
-     * 
+     *
      */
     public function getDownloadUrl()
     {
         return null;
     }
-    
+
     /*
      * Returns the name of the Video service
-     * 
+     *
      */
     public function getService()
     {
         return 'Metacafe';
     }
-    
-    
+
+
     /**
      * getRedirectUrl()
      * Gets the address that the provided URL redirects to,
-     * or FALSE if there's no redirect. 
+     * or FALSE if there's no redirect.
      *
      * @param string $url
      * @return string
      */
     static public function getRedirectUrl($url){
-        $redirect_url = null; 
-     
+        $redirect_url = null;
+
         $url_parts = @parse_url($url);
         if (!$url_parts) return false;
         if (!isset($url_parts['host'])) return false; //can't process relative URLs
         if (!isset($url_parts['path'])) $url_parts['path'] = '/';
-     
+
         $sock = fsockopen($url_parts['host'], (isset($url_parts['port']) ? (int)$url_parts['port'] : 80), $errno, $errstr, 30);
         if (!$sock) return false;
-     
-        $request = "HEAD " . $url_parts['path'] . (isset($url_parts['query']) ? '?'.$url_parts['query'] : '') . " HTTP/1.1\r\n"; 
-        $request .= 'Host: ' . $url_parts['host'] . "\r\n"; 
-        $request .= "Connection: Close\r\n\r\n"; 
+
+        $request = "HEAD " . $url_parts['path'] . (isset($url_parts['query']) ? '?'.$url_parts['query'] : '') . " HTTP/1.1\r\n";
+        $request .= 'Host: ' . $url_parts['host'] . "\r\n";
+        $request .= "Connection: Close\r\n\r\n";
         fwrite($sock, $request);
         $response = '';
         while(!feof($sock)) $response .= fread($sock, 8192);
         fclose($sock);
-     
+
         if (preg_match('/^Location: (.+?)$/m', $response, $matches)){
             if ( substr($matches[1], 0, 1) == "/" )
                 return $url_parts['scheme'] . "://" . $url_parts['host'] . trim($matches[1]);
             else
                 return trim($matches[1]);
-     
+
         } else {
             return false;
         }
-     
+
     }
-     
+
     /**
      * getAllRedirects()
-     * Follows and collects all redirects, in order, for the given URL. 
+     * Follows and collects all redirects, in order, for the given URL.
      *
      * @param string $url
      * @return array
@@ -290,10 +285,10 @@ class Metacafe implements VideoInterface {
         }
         return $redirects;
     }
-     
+
     /**
      * getFinalRedirect()
-     * Gets the address that the URL ultimately leads to. 
+     * Gets the address that the URL ultimately leads to.
      * Returns $url itself if it isn't a redirect.
      *
      * @param string $url

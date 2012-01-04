@@ -23,11 +23,11 @@ Feature: Metacafe service provider
         Then  The result should be:
         """
         <embed
-            src='http://www.metacafe.com/fplayer/476621/experiments_with_the_myth_busters_with_diet_coke_and_mentos_dry.swf'
-            width='560' height='349'
-            wmode='transparent'
-            pluginspage='http://www.macromedia.com/go/getflashplayer'
-            type='application/x-shockwave-flash'>
+         src='http://www.metacafe.com/fplayer/476621/experiments_with_the_myth_busters_with_diet_coke_and_mentos_dry.swf'
+         width='560' height='349'
+         wmode='transparent'
+         pluginspage='http://www.macromedia.com/go/getflashplayer'
+         type='application/x-shockwave-flash'>
         </embed>
         """
 

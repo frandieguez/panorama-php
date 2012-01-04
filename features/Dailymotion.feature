@@ -22,17 +22,15 @@ Feature: Dailymotion service provider
         When  I get the embedHTML
         Then  The result should be:
         """
-        <object
-            width='560' height='349'>
-            <param name='movie' value='http://www.dailymotion.com/swf/video/x7u5kn&related=1'></param>
-            <param name='allowFullScreen' value='true'></param>
-            <param name='allowScriptAccess' value='always'></param>
-            <embed
-                src='http://www.dailymotion.com/swf/video/x7u5kn&related=1'
-                type='application/x-shockwave-flash'
-                width='560' height='349'
-                allowFullScreen='true' allowScriptAccess='always'>
-            </embed>
+        <object width='560' height='349'>
+        <param name='movie' value='http://www.dailymotion.com/swf/video/x7u5kn&related=1'></param>
+        <param name='allowFullScreen' value='true'></param>
+        <param name='allowScriptAccess' value='always'></param>
+        <embed type='application/x-shockwave-flash'
+        src='http://www.dailymotion.com/swf/video/x7u5kn&related=1'
+        width='560' height='349'
+        allowFullScreen='true' allowScriptAccess='always'>
+        </embed>
         </object>
         """
 

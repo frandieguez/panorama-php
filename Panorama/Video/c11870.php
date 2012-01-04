@@ -157,18 +157,17 @@ class c11870 implements VideoInterface {
             }
         }
 
-        return "<object
-                    type='application/x-shockwave-flash'
-                    data='http://11870.com/multimedia/11870/player.swf'
-                    width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
-                    bgcolor='#000000'>
-                    <param name='movie' value='{$this->getEmbedUrl()}' />
-                    <param name='allowfullscreen' value='true'>
-                    <param name='allowscriptaccess' value='always'>
-                    <param name='seamlesstabbing' value='true'>
-                    <param name='wmode' value='window'>
-                    <param name='flashvars' value='{$this->getFlashVars()}'>
-                </object>";
+        return "<object type='application/x-shockwave-flash'\n"
+                ."data='http://11870.com/multimedia/11870/player.swf'\n"
+                ."width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'\n"
+                ."bgcolor='#000000'>\n"
+                ."<param name='movie' value='{$this->getEmbedUrl()}' />\n"
+                ."<param name='allowfullscreen' value='true'>\n"
+                ."<param name='allowscriptaccess' value='always'>\n"
+                ."<param name='seamlesstabbing' value='true'>\n"
+                ."<param name='wmode' value='window'>\n"
+                ."<param name='flashvars' value='{$this->getFlashVars()}'>\n"
+                ."</object>";
     }
 
     /*

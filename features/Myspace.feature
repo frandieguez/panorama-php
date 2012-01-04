@@ -23,8 +23,8 @@ Feature: MySpace service provider
         Then The result should be:
         """
         <embed src='http://lads.myspace.com/videos/vplayer.swf?m=27111431&v=2&type=video'
-            width='560' height='349'
-            type='application/x-shockwave-flash'>
+        width='560' height='349'
+        type='application/x-shockwave-flash'>
         </embed>
         """
 
@@ -36,7 +36,7 @@ Feature: MySpace service provider
     Scenario: Get the FLV url of the MySpace video
         Given The url http://vids.myspace.com/index.cfm?fuseaction=vids.individual&VideoID=27111431
         When I get the FLV url
-        Then The result should be like "@http://l.ec-videos.myspacecdn.com:80/videos02/182/f851034266294de3b1feda7de0dc1bf9/vid.flv?t=@"
+        Then The result should be like "@http://l.ec-videos.myspacecdn.com:80/videos02/182/f851034266294de3b1feda7de0dc1bf9/vid\.flv\?t=(.*)@"
 
     Scenario: Get the service name of the MySpace video
         Given The url http://vids.myspace.com/index.cfm?fuseaction=vids.individual&VideoID=27111431

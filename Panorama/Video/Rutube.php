@@ -40,9 +40,7 @@ class Rutube implements VideoInterface {
      */
     public function __construct($url)
     {
-
         $this->url = $url;
-
     }
 
     /*
@@ -118,9 +116,9 @@ class Rutube implements VideoInterface {
     public function getEmbedHTML($options = array())
     {
         $defaultOptions = array(
-              'width' => 560,
-              'height' => 349
-              );
+            'width' => 560,
+            'height' => 349
+        );
 
         $options = array_merge($defaultOptions, $options);
         unset($options['width']);
@@ -134,21 +132,15 @@ class Rutube implements VideoInterface {
             }
         }
 
-        return "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>
-                    <param name='movie' value='{$this->getEmbedUrl()}'></param>
-                    <param name='wmode' value='window'></param>
-                    <param name='allowFullScreen' value='true'></param>
-                    <embed
-                        src='{$this->getEmbedUrl()}'
-                        type='application/x-shockwave-flash'
-                        wmode='window'
-                        width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'
-                        allowFullScreen='true'>
-                    </embed>
-                </object>";
-
-
-
+        return  "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>\n"
+                ."<param name='movie' value='{$this->getEmbedUrl()}'></param>\n"
+                ."<param name='wmode' value='window'></param>\n"
+                ."<param name='allowFullScreen' value='true'></param>\n"
+                ."<embed type='application/x-shockwave-flash\n"
+                ."src='{$this->getEmbedUrl()}'\n"
+                ."width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'\n"
+                ."wmode='window' allowFullScreen='true'></embed>\n"
+                ."</object>";
     }
 
     /*
@@ -197,7 +189,6 @@ class Rutube implements VideoInterface {
 
     }
 
-
     /*
      * Calculates the Video ID from an Rutube URL
      *
@@ -205,13 +196,11 @@ class Rutube implements VideoInterface {
      */
     public function getVideoID()
     {
-
         if (!isset($this->videoId)) {
             $path = parse_url($this->url,PHP_URL_PATH);
             preg_match("@(\d+)@", $path, $matches);
             $this->videoId = (int) $matches[1];
         }
         return $this->videoId;
-
     }
 }

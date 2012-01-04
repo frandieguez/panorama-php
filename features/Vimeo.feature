@@ -27,10 +27,9 @@ Feature: Vimeo service provider
         <param name='allowFullScreen' value='true'></param>
         <param name='allowscriptaccess' value='always'></param>
         <param name='wmode' value='transparent'></param>
-        <embed
-            src='http://vimeo.com/moogaloop.swf?clip_id=5362441&server=vimeo.com&fullscreen=1&show_title=1&show_byline=1&show_portrait=1' type='application/x-shockwave-flash'
-            allowscriptaccess='always' allowfullscreen='true'
-            width='560' height='349'>
+        <embed src='http://vimeo.com/moogaloop.swf?clip_id=5362441&server=vimeo.com&fullscreen=1&show_title=1&show_byline=1&show_portrait=1'
+        allowscriptaccess='always' allowfullscreen='true' type='application/x-shockwave-flash' 
+        width='560' height='349'>
         </embed>
         </object>
         """

@@ -23,13 +23,16 @@ Feature: 11870 service provider
         Then The result should be:
         """
         <object type='application/x-shockwave-flash'
-                        width='560' height='349'
-                        data='http://c.brightcove.com/services/viewer/federated_f9/71239000001?isVid=1&isUI=1&publisherID=35140843001&playerID=71239000001&domain=embed&autoStart=false&videoId=DAP-403408'>
-                    <param name='quality' value='best' />
-                    <param name='allowfullscreen' value='true' />
-                    <param name='scale' value='showAll' />
-                    <param name='movie' value='{$this->getEmbedUrl()}' />
-                </object>
+        data='http://11870.com/multimedia/11870/player.swf'
+        width='560' height='349'
+        bgcolor='#000000'>
+        <param name='movie' value='http://m0.11870.com/multimedia/11870/player.swf?file=http://m0.11870.com/multimedia/videos/22c16ba2bb50b4adfe67271f4fa8a345.mp4&image=http://m1.11870.com/multimedia/videos/vlp_22c16ba2bb50b4adfe67271f4fa8a345.jpg&logo=http://m0.11870.com/multimedia/11870/embed_watermark.png&icons=false&logo=http://m0.11870.com/multimedia/11870/embed_watermark.png' />
+        <param name='allowfullscreen' value='true'>
+        <param name='allowscriptaccess' value='always'>
+        <param name='seamlesstabbing' value='true'>
+        <param name='wmode' value='window'>
+        <param name='flashvars' value='file=http://m0.11870.com/multimedia/videos/22c16ba2bb50b4adfe67271f4fa8a345.mp4&image=http://m1.11870.com/multimedia/videos/vlp_22c16ba2bb50b4adfe67271f4fa8a345.jpg&logo=http://m0.11870.com/multimedia/11870/embed_watermark.png&icons=false'>
+        </object>
         """
 
     Scenario: Get the embed url of the 11870 video

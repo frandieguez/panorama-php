@@ -123,24 +123,23 @@ class Marca implements VideoInterface {
                     ."width={$defaultOptions['width']}&amp;height={$defaultOptions['height']}"
                     ."&amp;vID={$this->getVideoId()}";
 
-        return "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}' \n"
-                ."    classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000'\n"
-                ."    codebase='http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0'>\n"
-                ."    <param name='movie' value='http://estaticos.marca.com/multimedia/reproductores/newPlayer.swf'>\n"
-                ."    <param name='quality' value='high'>\n"
-                ."    <param name='allowFullScreen' value='true'>\n"
-                ."    <param name='wmode' value='transparent'>\n"
-                ."    <param name='FlashVars' value='{$flashvars}'>\n"
-                ."    <embed\n"
-                ."        width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'\n"
-                ."        src='http://estaticos03.marca.com/multimedia/reproductores/newPlayer.swf'\n"
-                ."        quality='high'\n"
-                ."        flashvars='ba=1&amp;cvol=1&amp;bt=1&amp;lg=0&amp;vID={$this->getVideoId()}' allowfullscreen='true'\n"
-                ."        type='application/x-shockwave-flash'\n"
-                ."        pluginspage='http://www.macromedia.com/go/getflashplayer'\n"
-                ."        wmode='transparent'>\n"
+        return   "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}' \n"
+                ."classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000'\n"
+                ."codebase='http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0'>\n"
+                ."<param name='movie' value='http://estaticos.marca.com/multimedia/reproductores/newPlayer.swf'>\n"
+                ."<param name='quality' value='high'>\n"
+                ."<param name='allowFullScreen' value='true'>\n"
+                ."<param name='wmode' value='transparent'>\n"
+                ."<param name='FlashVars' value='{$flashvars}'>\n"
+                ."<embed\n"
+                ."width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'\n"
+                ."src='http://estaticos03.marca.com/multimedia/reproductores/newPlayer.swf'\n"
+                ."quality='high'\n"
+                ."flashvars='ba=1&amp;cvol=1&amp;bt=1&amp;lg=0&amp;vID={$this->getVideoId()}' allowfullscreen='true'\n"
+                ."type='application/x-shockwave-flash'\n"
+                ."pluginspage='http://www.macromedia.com/go/getflashplayer'\n"
+                ."wmode='transparent'>\n"
                 ."</object>";
-
     }
 
     /*

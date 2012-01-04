@@ -134,16 +134,15 @@ class Youtube  implements VideoInterface {
         $embedUrl = $this->getEmbedUrl();
 
         // if this video is not embed
-        return "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>
-                    <param name='movie' value='{$embedUrl}{$htmlOptions}'>
-                    <param name='allowFullScreen' value='true'>
-                    <param name='allowscriptaccess' value='always'>
-                    <param name='wmode' value='transparent'>
-                    <embed
-                        src='{$embedUrl}{$htmlOptions}' type='application/x-shockwave-flash'
-                        allowscriptaccess='always' allowfullscreen='true'
-                        width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>
-                </object>";
+        return   "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>\n"
+                ."<param name='movie' value='{$embedUrl}{$htmlOptions}'>\n"
+                ."<param name='allowFullScreen' value='true'>\n"
+                ."<param name='allowscriptaccess' value='always'>\n"
+                ."<param name='wmode' value='transparent'>\n"
+                ."<embed src='{$embedUrl}{$htmlOptions}' type='application/x-shockwave-flash'\n"
+                    ."allowscriptaccess='always' allowfullscreen='true'\n"
+                    ."width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>\n"
+                ."</object>";
     }
 
     /*
