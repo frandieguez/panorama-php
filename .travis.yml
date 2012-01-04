@@ -4,4 +4,8 @@ php:
   - 5.3
   - 5.4
 
+before_script:
+  - pyrus channel-discover pear.symfony.com
+  - pyrus install symfony2/ClassLoader
+
 script: bash run-test.sh
