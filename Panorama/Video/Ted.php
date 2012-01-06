@@ -104,7 +104,6 @@ class Ted implements VideoInterface {
     public function getEmbedUrl()
     {
         $flashvars = $this->getFlashVars();
-        echo "http://video.ted.com/assets/player/swf/EmbedPlayer.swf?{$flashvars}";
         return "http://video.ted.com/assets/player/swf/EmbedPlayer.swf?{$flashvars}";
     }
 
