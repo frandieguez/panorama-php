@@ -90,6 +90,7 @@ class c11870 implements VideoInterface {
             preg_match('@<title>(.*)</title>@', $this->getPage(), $matches);
             $title = preg_split('@ - www.11870.com@', $matches[1]);
             $this->title = iconv('ISO-8859-1', 'UTF-8', (string) $title[0]);
+
         }
         return $this->title;
     }
@@ -127,7 +128,7 @@ class c11870 implements VideoInterface {
     {
         if (!isset($this->embedUrl)) {
             $hash = $this->getHash();
-            $this->embedUrl = "http://m0.11870.com/multimedia/11870/player.swf?"
+            $this->embedUrl = "http://m2.11870.com/multimedia/11870/player.swf?"
                             . $this->getFlashVars() . "&logo=" . $hash['logo'];
         }
         return $this->embedUrl;

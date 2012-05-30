@@ -112,4 +112,12 @@ class FeatureContext extends BehatContext
         assertEquals($string, $this->value);
     }
 
+    /**
+     * @Then /^The result should be like:$/
+     */
+    public function theResultShouldBeLikeAnString(PyStringNode $string)
+    {
+        assertEquals($string, $this->value);
+    }
+
 }
