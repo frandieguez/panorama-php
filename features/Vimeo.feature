@@ -22,27 +22,18 @@ Feature: Vimeo service provider
         When  I get the embedHTML
         Then  The result should be:
         """
-        <object width='560' height='349'>
-        <param name='movie' value='http://vimeo.com/moogaloop.swf?clip_id=5362441&server=vimeo.com&fullscreen=1&show_title=1&show_byline=1&show_portrait=1'></param>
-        <param name='allowFullScreen' value='true'></param>
-        <param name='allowscriptaccess' value='always'></param>
-        <param name='wmode' value='transparent'></param>
-        <embed src='http://vimeo.com/moogaloop.swf?clip_id=5362441&server=vimeo.com&fullscreen=1&show_title=1&show_byline=1&show_portrait=1'
-        allowscriptaccess='always' allowfullscreen='true' type='application/x-shockwave-flash' 
-        width='560' height='349'>
-        </embed>
-        </object>
+        <iframe src="http://player.vimeo.com/video/5362441" width="560" height="349" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
         """
 
     Scenario: Get the embed url of the Vimeo video
         Given The url http://vimeo.com/5362441
         When I get the embed url
-        Then The result should be "http://vimeo.com/moogaloop.swf?clip_id=5362441&server=vimeo.com&fullscreen=1&show_title=1&show_byline=1&show_portrait=1"
+        Then The result should be "http://player.vimeo.com/video/5362441"
 
     Scenario: Get the FLV url of the Vimeo video
         Given The url http://vimeo.com/5362441
         When  I get the FLV url
-        Then  The result should be like "@http://www.vimeo.com/moogaloop/play/clip:5362441/(.*)/(.)/@"
+        Then  The result should be "http://player.vimeo.com/video/5362441"
 
     Scenario: Get the service name of the Vimeo video
         Given The url http://vimeo.com/5362441

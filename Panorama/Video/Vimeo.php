@@ -53,11 +53,13 @@ class Vimeo implements VideoInterface {
     {
         if (!isset($this->feed)) {
             $videoId = $this->getVideoID();
-            $document = file_get_contents("http://vimeo.com/moogaloop/load/clip:{$videoId}/embed?param_server=vimeo.com&param_clip_id={$videoId}");
+
+            $document = file_get_contents("http://vimeo.com/api/v2/video/".$videoId.".php");
             if (!$document) {
                 throw new \Exception('Video Id not valid.');
             }
-            $this->feed = simplexml_load_string($document);
+            $information = unserialize($document);
+            $this->feed = $information[0];
         }
         return $this->feed;
     }
@@ -80,8 +82,7 @@ class Vimeo implements VideoInterface {
     public function getTitle()
     {
         if (!isset($this->title)) {
-            $titles = $this->getFeed()->xpath('//caption');
-            $this->title = (string) $titles[0];
+            $this->title = (string) $this->feed['title'];
         }
         return $this->title;
     }
@@ -94,8 +95,7 @@ class Vimeo implements VideoInterface {
     public function getThumbnail()
     {
         if (!isset($this->thumbnail)) {
-            $thumbnails = $this->getFeed()->xpath('//thumbnail');
-            $this->thumbnail = (string) $thumbnails[0];
+            $this->thumbnail = (string) $this->feed['thumbnail_large'];
         }
         return $this->thumbnail;
     }
@@ -107,8 +107,7 @@ class Vimeo implements VideoInterface {
     public function getDuration()
     {
         if (!isset($this->duration)) {
-            $duration = $this->getFeed()->xpath('//duration');
-            $this->duration = (string) $duration[0];
+            $this->duration = (string) $this->feed['duration'];
         }
         return $this->duration;
     }
@@ -122,7 +121,7 @@ class Vimeo implements VideoInterface {
     {
         if (!isset($this->embedUrl)) {
             $videoId = $this->getVideoId();
-            $this->embedUrl = "http://vimeo.com/moogaloop.swf?clip_id={$videoId}&server=vimeo.com&fullscreen=1&show_title=1&show_byline=1&show_portrait=1";;
+            $this->embedUrl = "http://player.vimeo.com/video/".$this->getVideoID();;
         }
         return $this->embedUrl;
     }
@@ -155,16 +154,9 @@ class Vimeo implements VideoInterface {
             $embedUrl = $this->getEmbedUrl();
 
             $this->embedHTML =
-            "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>\n"
-                ."<param name='movie' value='{$embedUrl}{$htmlOptions}'></param>\n"
-                ."<param name='allowFullScreen' value='true'></param>\n"
-                ."<param name='allowscriptaccess' value='always'></param>\n"
-                ."<param name='wmode' value='transparent'></param>\n"
-                ."<embed src='{$embedUrl}{$htmlOptions}'\n"
-                    ."allowscriptaccess='always' allowfullscreen='true' type='application/x-shockwave-flash' \n"
-                    ."width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>\n"
-                ."</embed>\n"
-            ."</object>";
+            '<iframe src="'.$this->getEmbedUrl()
+            .'" width="'.$defaultOptions['width'].'" height="'.$defaultOptions['height'].'" '
+            .'frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
         }
         return $this->embedHTML;
 
@@ -179,17 +171,7 @@ class Vimeo implements VideoInterface {
     {
 
         if (!isset($this->FLV)) {
-
-            $requestSignature = $this->feed->xpath('//request_signature');
-            $requestSignature = (string) $requestSignature[0];
-
-            $requestSignatureExpires = $this->feed->xpath('//request_signature_expires');
-            $requestSignatureExpires = (string) $requestSignature[0];
-
-            $videoId = $this->getVideoID();
-            $this->FLV =  "http://www.vimeo.com/moogaloop/play/clip:{$videoId}/{$requestSignature}/{$requestSignatureExpires}/";
-            var_dump($this->FLV);
-
+            $this->FLV =  "http://player.vimeo.com/video/".$this->getVideoID();
         }
         return $this->FLV;
 
