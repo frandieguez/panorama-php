@@ -1,7 +1,7 @@
 {
     "name": "frandieguez/panorama-php",
     "type": "library",
-    "version":"1.0",
+    "version":"1.0.0",
     "description": "Wrapper class for accessing video services information in a standarized way",
     "keywords": ["library"],
     "homepage": "http://frandieguez.github.com/Panorama-PHP/",
