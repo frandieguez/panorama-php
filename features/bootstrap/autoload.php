@@ -13,7 +13,7 @@ use Symfony\Component\ClassLoader\UniversalClassLoader;
 
 $loader = new UniversalClassLoader();
 $loader->registerNamespaces(array(
-    'Panorama'              => __DIR__.'/../../',
+    'Panorama'              => __DIR__.'/../../lib/',
 ));
 $loader->registerNamespaceFallbacks(array(
     __DIR__.'/bundles',
