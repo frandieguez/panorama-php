@@ -110,7 +110,7 @@
     <target name="phpcs"
         description="Find coding standard violations using PHP_CodeSniffer">
         <exec executable="phpcs">
-            <arg value="--standard=${basedir}/build/phpcs.xml" />
+            <arg value="--standard=PSR" />
             <arg value="--ignore=autoload.php" />
             <arg path="${basedir}/lib/Panorama" />
         </exec>
