@@ -1,24 +1,11 @@
 <?php
 /**
- *  Copyright (C) 2011 by OpenHost S.L.
+ * This file is part of the Onm package.
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ * (c)  OpenHost S.L. <developers@openhost.es>
  *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  **/
 /**
  * Wrapper class for Marca TV videos
@@ -42,11 +29,13 @@ class Marca implements VideoInterface
         $this->url = $url;
         $this->videoId = $this->getVideoID();
 
-        $sub1 = substr($this->videoId,0,1);
-        $sub2 = substr($this->videoId,1,1);
-        $sub3 = substr($this->videoId,2,100);
+        $sub1 = substr($this->videoId, 0, 1);
+        $sub2 = substr($this->videoId, 1, 1);
+        $sub3 = substr($this->videoId, 2, 100);
 
-        $doc = file_get_contents("http://estaticos.marca.com/consolamultimedia/marcaTV/elementos/{$sub1}/{$sub2}/{$sub3}.xml");
+        $doc = file_get_contents(
+            "http://estaticos.marca.com/consolamultimedia/marcaTV/elementos/{$sub1}/{$sub2}/{$sub3}.xml"
+        );
         $this->feed = simplexml_load_string($doc);
 
     }
@@ -58,7 +47,7 @@ class Marca implements VideoInterface
     public function getTitle()
     {
         if (!isset($this->title)) {
-            $title = $this->feed->xpath('//titulo');
+            $title       = $this->feed->xpath('//titulo');
             $this->title = (string) $title[0];
         }
 
@@ -95,7 +84,8 @@ class Marca implements VideoInterface
      */
     public function getEmbedUrl()
     {
-        return "http://www.marca.com/componentes/flash/embed.swf?ba=0&cvol=1&bt=1&lg=1&vID={$this->videoId}&ba=1";
+        return "http://www.marca.com/componentes/flash/embed.swf"
+            ."?ba=0&cvol=1&bt=1&lg=1&vID={$this->videoId}&ba=1";
     }
 
     /*
@@ -116,7 +106,7 @@ class Marca implements VideoInterface
         // convert options into
         $htmlOptions = "";
         if (count($options) > 0) {
-            foreach ($options as $key => $value ) {
+            foreach ($options as $key => $value) {
                 $htmlOptions .= "&" . $key . "=" . $value;
             }
         }
@@ -125,7 +115,8 @@ class Marca implements VideoInterface
                     ."width={$defaultOptions['width']}&amp;height={$defaultOptions['height']}"
                     ."&amp;vID={$this->getVideoId()}";
 
-        return   "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}' \n"
+        return   "<object width='{$defaultOptions['width']}' "
+                ."height='{$defaultOptions['height']}' \n"
                 ."classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000'\n"
                 ."codebase='http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0'>\n"
                 ."<param name='movie' value='http://estaticos.marca.com/multimedia/reproductores/newPlayer.swf'>\n"

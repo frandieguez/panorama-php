@@ -1,24 +1,11 @@
 <?php
 /**
- *  Copyright (C) 2011 by OpenHost S.L.
+ * This file is part of the Onm package.
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ * (c)  OpenHost S.L. <developers@openhost.es>
  *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  **/
 /**
  * Wrapper class for Youtube
@@ -43,9 +30,11 @@ class Ted implements VideoInterface
 
         $this->url = $url;
 
-        $path = parse_url($url,PHP_URL_PATH);
-        if (!preg_match("@talks@",$path)) {
-            throw new \Exception("The url '{$this->url}' is not a valid Ted talk url");
+        $path = parse_url($url, PHP_URL_PATH);
+        if (!preg_match("@talks@", $path)) {
+            throw new \Exception(
+                "The url '{$this->url}' is not a valid Ted talk url"
+            );
         }
     }
 
@@ -71,8 +60,11 @@ class Ted implements VideoInterface
      */
     public function getTitle()
     {
-
-        preg_match('@<span class="notranslate" id="altHeadline" >(.*)</span>@'   ,$this->getPage(), $matches);
+        preg_match(
+            '@<span class="notranslate" id="altHeadline" >(.*)</span>@',
+            $this->getPage(),
+            $matches
+        );
 
         return trim($matches[1]);
     }
@@ -129,23 +121,25 @@ class Ted implements VideoInterface
         // convert options into
         $htmlOptions = "";
         if (count($options) > 0) {
-            foreach ($options as $key => $value ) {
+            foreach ($options as $key => $value) {
                 $htmlOptions .= "&" . $key . "=" . $value;
             }
         }
         $embedUrl = $this->getEmbedUrl();
 
-        return "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>\n"
-                ."<param name='movie' value='{$embedUrl}'></param>\n"
-                ."<param name='allowFullScreen' value='true'></param>\n"
-                ."<param name='wmode' value='transparent'></param>\n"
-                ."<param name='bgColor' value='#ffffff'></param>\n"
-                ."<embed pluginspace='http://www.macromedia.com/go/getflashplayer\n"
-                ."type='application/x-shockwave-flash'\n"
-                ."wmode='transparent' allowFullScreen='true' bgColor='#ffffff'\n"
-                ."src='{$embedUrl}'\n"
-                ."width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'></embed>\n"
-                ."</object>";
+        return "<object width='{$defaultOptions['width']}' "
+            ."height='{$defaultOptions['height']}'>\n"
+            ."<param name='movie' value='{$embedUrl}'></param>\n"
+            ."<param name='allowFullScreen' value='true'></param>\n"
+            ."<param name='wmode' value='transparent'></param>\n"
+            ."<param name='bgColor' value='#ffffff'></param>\n"
+            ."<embed pluginspace='http://www.macromedia.com/go/getflashplayer\n"
+            ."type='application/x-shockwave-flash'\n"
+            ."wmode='transparent' allowFullScreen='true' bgColor='#ffffff'\n"
+            ."src='{$embedUrl}'\n"
+            ."width='{$defaultOptions['width']}' "
+            ."height='{$defaultOptions['height']}'></embed>\n"
+            ."</object>";
 
     }
 
@@ -157,9 +151,14 @@ class Ted implements VideoInterface
     {
         if (!isset($this->flashvars)) {
             $videoId = $this->getVideoID();
-            $this->emb = file_get_contents("http://www.ted.com/talks/embed/id/{$videoId}");
+            $this->emb = file_get_contents(
+                "http://www.ted.com/talks/embed/id/{$videoId}"
+            );
 
-            $split = preg_split("@param\sname=\"flashvars\"\svalue=\"@",urldecode((string) $this->emb));
+            $split = preg_split(
+                "@param\sname=\"flashvars\"\svalue=\"@",
+                urldecode((string) $this->emb)
+            );
             $split = preg_split("@\"@", $split[1]);
             $this->flashvars = $split[0];
         }
@@ -178,7 +177,7 @@ class Ted implements VideoInterface
             $parts = explode("&", $this->getFlashVars());
             $this->args = array();
             foreach ($parts as $part) {
-                $elemParts = explode("=",$part);
+                $elemParts = explode("=", $part);
                 $args[$elemParts[0]] = $elemParts[1];
             }
             $this->args = $args;
@@ -208,7 +207,11 @@ class Ted implements VideoInterface
     public function getDownloadUrl()
     {
         if (!isset($this->downloadUrl)) {
-            preg_match('@<a href="(.*)">download the video</a>@', $this->getPage(), $matches);
+            preg_match(
+                '@<a href="(.*)">download the video</a>@',
+                $this->getPage(),
+                $matches
+            );
             $this->downloadUrl =  $matches[1];
         }
 
@@ -232,7 +235,10 @@ class Ted implements VideoInterface
     public function getVideoID()
     {
         if (!isset($this->videoId)) {
-            preg_match("@/talks/subtitles/id/(\d*)/lang/@", $this->getPage(), $matches);
+            preg_match("@/talks/subtitles/id/(\d*)/lang/@",
+                $this->getPage(),
+                $matches
+            );
             $this->videoId = (int) $matches[1];
         }
 

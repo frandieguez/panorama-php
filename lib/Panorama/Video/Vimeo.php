@@ -1,24 +1,11 @@
 <?php
 /**
- *  Copyright (C) 2011 by OpenHost S.L.
+ * This file is part of the Onm package.
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ * (c)  OpenHost S.L. <developers@openhost.es>
  *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  **/
 /**
  * Wrapper class for Vimeo
@@ -54,7 +41,9 @@ class Vimeo implements VideoInterface
         if (!isset($this->feed)) {
             $videoId = $this->getVideoID();
 
-            $document = file_get_contents("http://vimeo.com/api/v2/video/".$videoId.".php");
+            $document = file_get_contents(
+                "http://vimeo.com/api/v2/video/".$videoId.".php"
+            );
             if (!$document) {
                 throw new \Exception('Video Id not valid.');
             }
@@ -66,7 +55,8 @@ class Vimeo implements VideoInterface
     }
 
     /*
-     * Sets the feed that contains information of video, usefull for using mocking objects
+     * Sets the feed that contains information of video,
+     * usefull for using mocking objects
      *
      * @param $feed,
      */
@@ -125,7 +115,8 @@ class Vimeo implements VideoInterface
     {
         if (!isset($this->embedUrl)) {
             $videoId = $this->getVideoId();
-            $this->embedUrl = "http://player.vimeo.com/video/".$this->getVideoID();;
+            $this->embedUrl =
+                "http://player.vimeo.com/video/".$this->getVideoID();;
         }
 
         return $this->embedUrl;
@@ -152,16 +143,19 @@ class Vimeo implements VideoInterface
             // convert options into
             $htmlOptions = "";
             if (count($options) > 0) {
-              foreach ($options as $key => $value ) {
-                  $htmlOptions .= "&" . $key . "=" . $value;
-              }
+                foreach ($options as $key => $value) {
+                    $htmlOptions .= "&" . $key . "=" . $value;
+                }
             }
             $embedUrl = $this->getEmbedUrl();
 
             $this->embedHTML =
             '<iframe src="'.$this->getEmbedUrl()
-            .'" width="'.$defaultOptions['width'].'" height="'.$defaultOptions['height'].'" '
-            .'frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+            .'" width="'.$defaultOptions['width']
+            .'" height="'.$defaultOptions['height'].'" '
+            .'frameborder="0" webkitAllowFullScreen '
+            .'mozallowfullscreen allowFullScreen>'
+            .'</iframe>';
         }
 
         return $this->embedHTML;
@@ -217,24 +211,18 @@ class Vimeo implements VideoInterface
 
         if (!isset($this->videoId)) {
             try {
-
                 $uri = parse_url($url);
 
                 if (isset($uri['fragment'])) {
-
                     $this->videoId = $uri['fragment'];
-
                 } elseif (isset($uri["path"])) {
-
-                    $pathParts = preg_split("@/@",$uri['path']);
+                    $pathParts = preg_split("@/@", $uri['path']);
                     if (count($pathParts) > 0) {
                         $this->videoId = $pathParts[1];
                     } else {
                         throw \Exception("The path {$url} sems to be invalid");
                     }
-
                 }
-
             } catch (Exception $e) {
                 throw \Exception("The path {$url} sems to be invalid");
             }

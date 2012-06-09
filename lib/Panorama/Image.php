@@ -1,24 +1,11 @@
 <?php
 /**
- *  Copyright (C) 2011 by OpenHost S.L.
+ * This file is part of the Onm package.
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ * (c)  OpenHost S.L. <developers@openhost.es>
  *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  **/
 /**
  * Wrapper class for Image services
@@ -50,17 +37,22 @@ class Image
 
         $serviceName = self::camelize(self::getDomain($url));
 
-        // If the service starts with a number prepend a "c" for avoid PHP language error
-        if (preg_match("@^\d@",$serviceName)) { $serviceName = "c".$serviceName; }
+        // If the service starts with a number prepend a "c"
+        // for avoid PHP language error
+        if (preg_match("@^\d@",$serviceName)) {
+            $serviceName = "c".$serviceName;
+        }
         $className = "\Panorama\Image\\" . $serviceName;
 
-        // If the Video service is supported instantiate it, otherwise raise Exception
-        if (file_exists(dirname(__FILE__).DIRECTORY_SEPARATOR."Video".DIRECTORY_SEPARATOR.$serviceName.".php")) {
+        // If the Video service is supported instantiate it,
+        // otherwise raise Exception
+        $classFile = dirname(__FILE__).DIRECTORY_SEPARATOR."Image"
+            .DIRECTORY_SEPARATOR.$serviceName.".php";
+        if (file_exists($file)) {
             $this->object = new $className($url, $options);
         } else {
-            throw new \Exception("Video service or Url not supported");
+            throw new \Exception("Image service or Url not supported");
         }
-
     }
 
     /**
@@ -74,7 +66,12 @@ class Image
     */
     private function camelize($lowerCaseAndUnderscoredWord)
     {
-        return str_replace(" ", "", ucwords(str_replace("_", " ", $lowerCaseAndUnderscoredWord)));
+
+        return str_replace(
+            " ",
+            "",
+            ucwords(str_replace("_", " ", $lowerCaseAndUnderscoredWord))
+        );
     }
 
     /*
@@ -84,17 +81,14 @@ class Image
      */
     private function getDomain($url="")
     {
-        $host = parse_url($url);
+        $host        = parse_url($url);
         $domainParts = preg_split("@\.@",$host["host"]);
 
-        /**
-         * If domain name has a subdomain return the second part
-         * if not return the first part
-        */
+        // If domain name has a subdomain return the second part
+        // if not return the first part
         $domainPartsCount = count($domainParts);
 
         return $domainParts[$domainPartsCount - 2];
-
     }
 
 }

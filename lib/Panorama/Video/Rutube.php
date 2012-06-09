@@ -1,24 +1,11 @@
 <?php
 /**
- *  Copyright (C) 2011 by OpenHost S.L.
+ * This file is part of the Onm package.
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ * (c)  OpenHost S.L. <developers@openhost.es>
  *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  **/
 /**
  * Wrapper class for Rutube videos
@@ -67,8 +54,8 @@ class Rutube implements VideoInterface
         if (!isset($this->thumbnail)) {
             $size = 2;
             $movieHash = $this->getMovieHash();
-            $sub1 = substr($movieHash,0,2);
-            $sub2 = substr($movieHash,2,2);
+            $sub1 = substr($movieHash, 0, 2);
+            $sub2 = substr($movieHash, 2, 2);
             $this->thumbnail = "http://img.rutube.ru/thumbs/{$sub1}/{$sub2}/{$movieHash}-{$size}.jpg";
         }
 
@@ -104,7 +91,7 @@ class Rutube implements VideoInterface
 
         if (!isset($this->movieHash)) {
             $rtInfo = $this->getRtInfo();
-            preg_match("@[a-f0-9]+$@", $rtInfo->movie->playerLink[0],$matches);
+            preg_match("@[a-f0-9]+$@", $rtInfo->movie->playerLink[0], $matches);
             $this->movieHash = $matches[0];
         }
 
@@ -130,20 +117,22 @@ class Rutube implements VideoInterface
         // convert options into
         $htmlOptions = "";
         if (count($options) > 0) {
-            foreach ($options as $key => $value ) {
+            foreach ($options as $key => $value) {
                 $htmlOptions .= "&" . $key . "=" . $value;
             }
         }
 
-        return  "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>\n"
-                ."<param name='movie' value='{$this->getEmbedUrl()}'></param>\n"
-                ."<param name='wmode' value='window'></param>\n"
-                ."<param name='allowFullScreen' value='true'></param>\n"
-                ."<embed type='application/x-shockwave-flash\n"
-                ."src='{$this->getEmbedUrl()}'\n"
-                ."width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'\n"
-                ."wmode='window' allowFullScreen='true'></embed>\n"
-                ."</object>";
+        return  "<object width='{$defaultOptions['width']}' "
+            ."height='{$defaultOptions['height']}'>\n"
+            ."<param name='movie' value='{$this->getEmbedUrl()}'></param>\n"
+            ."<param name='wmode' value='window'></param>\n"
+            ."<param name='allowFullScreen' value='true'></param>\n"
+            ."<embed type='application/x-shockwave-flash\n"
+            ."src='{$this->getEmbedUrl()}'\n"
+            ."width='{$defaultOptions['width']}' "
+            ."height='{$defaultOptions['height']}'\n"
+            ."wmode='window' allowFullScreen='true'></embed>\n"
+            ."</object>";
     }
 
     /*
@@ -202,7 +191,7 @@ class Rutube implements VideoInterface
     public function getVideoID()
     {
         if (!isset($this->videoId)) {
-            $path = parse_url($this->url,PHP_URL_PATH);
+            $path = parse_url($this->url, PHP_URL_PATH);
             preg_match("@(\d+)@", $path, $matches);
             $this->videoId = (int) $matches[1];
         }

@@ -1,24 +1,11 @@
 <?php
 /**
- *  Copyright (C) 2011 by OpenHost S.L.
+ * This file is part of the Onm package.
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ * (c)  OpenHost S.L. <developers@openhost.es>
  *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  **/
 /**
  * Wrapper class for MySpace videos
@@ -38,9 +25,7 @@ class Myspace implements VideoInterface
      */
     public function __construct($url, $options = null)
     {
-
         $this->url = $url;
-
     }
 
     /*
@@ -52,7 +37,9 @@ class Myspace implements VideoInterface
     {
         if (!isset($this->page)) {
             $videoId = $this->getVideoID();
-            $content = file_get_contents("http://mediaservices.myspace.com/services/rss.ashx?type=video&videoID={$videoId}");
+            $content = file_get_contents(
+                "http://mediaservices.myspace.com/services/rss.ashx?type=video&videoID={$videoId}"
+            );
             $this->page = simplexml_load_string($content);
         }
 
@@ -121,9 +108,9 @@ class Myspace implements VideoInterface
     {
         if (!isset($this->embedHTML)) {
             $defaultOptions = array(
-                  'width' => 560,
-                  'height' => 349
-                  );
+                'width' => 560,
+                'height' => 349
+            );
 
             $options = array_merge($defaultOptions, $options);
             unset($options['width']);
@@ -132,14 +119,15 @@ class Myspace implements VideoInterface
             // convert options into and url encoded vars
             $htmlOptions = "";
             if (count($options) > 0) {
-                foreach ($options as $key => $value ) {
+                foreach ($options as $key => $value) {
                     $htmlOptions .= "&" . $key . "=" . $value;
                 }
             }
 
             $this->embedHTML =
                 "<embed src='{$this->getEmbedUrl()}'\n"
-                ."width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'\n"
+                ."width='{$defaultOptions['width']}' "
+                ."height='{$defaultOptions['height']}'\n"
                 ."type='application/x-shockwave-flash'>\n"
                 ."</embed>";
         }
@@ -168,6 +156,7 @@ class Myspace implements VideoInterface
      */
     public function getDownloadUrl()
     {
+
         return null;
     }
 
@@ -177,6 +166,7 @@ class Myspace implements VideoInterface
      */
     public function getService()
     {
+
         return "Myspace";
     }
 
@@ -187,13 +177,12 @@ class Myspace implements VideoInterface
      */
     public function getVideoID()
     {
-
         if (!isset($this->videoId)) {
-            preg_match("@videoid=(\w*)@", $this->url,$matches);
+            preg_match("@videoid=(\w*)@", $this->url, $matches);
             if (count($matches) > 0) {
                 $this->videoId = $matches[1];
             } else {
-                preg_match("@VideoID=(\w*)@", $this->url,$matches);
+                preg_match("@VideoID=(\w*)@", $this->url, $matches);
                 $this->videoId = $matches[1];
             }
         }

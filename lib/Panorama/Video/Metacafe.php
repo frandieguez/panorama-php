@@ -1,31 +1,16 @@
 <?php
 /**
- *  Copyright (C) 2011 by OpenHost S.L.
+ * This file is part of the Onm package.
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ * (c)  OpenHost S.L. <developers@openhost.es>
  *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  **/
 /**
  * Wrapper class for Metacafe videos
  *
  * @author Fran Diéguez <fran@openhost.es>
- * @version \$Id\$
- * @copyright OpenHost S.L., Mér Xuñ 01 15:58:58 2011
  * @package Panorama\Video
  **/
 namespace Panorama\Video;
@@ -50,7 +35,7 @@ class Metacafe implements VideoInterface
         // I can't find a video that comes from Youtube so this snippet is
         // untestable for now
         if ($this->youtubed) {
-            $output = preg_split("yt-",$this->args[1]);
+            $output = preg_split("yt-", $this->args[1]);
             $this->object = new Youtube("http://www.youtube.com/watch?v={$output[1]}");
         }
 
@@ -76,16 +61,12 @@ class Metacafe implements VideoInterface
      */
     public function getArgs()
     {
-
         if (!isset($this->args)) {
-
             $uri = parse_url($this->url);
             $path = $uri["path"];
             $this->args = null;
 
-            if (isset($path)
-                && count(preg_split("@/@", $path)) > 1)
-            {
+            if (isset($path) && count(preg_split("@/@", $path)) > 1) {
                 $args = preg_split("@/@", $path);
                 $this->args = array($args[2], $args[3]);
             }
@@ -101,7 +82,6 @@ class Metacafe implements VideoInterface
      */
     public function getTitle()
     {
-
         if (!isset($this->title)) {
             if ($this->youtubed) {
                 $this->title = $this->object->getTitle();
@@ -134,6 +114,7 @@ class Metacafe implements VideoInterface
      */
     public function getDuration()
     {
+
         return null;
     }
 
@@ -159,9 +140,9 @@ class Metacafe implements VideoInterface
     {
         if (!isset($this->embedHTML)) {
             $defaultOptions = array(
-                  'width' => 560,
-                  'height' => 349
-                  );
+                'width' => 560,
+                'height' => 349
+            );
 
             $options = array_merge($defaultOptions, $options);
             unset($options['width']);
@@ -170,7 +151,7 @@ class Metacafe implements VideoInterface
             // convert options into and url encoded vars
             $htmlOptions = '';
             if (count($options) > 0) {
-                foreach ($options as $key => $value ) {
+                foreach ($options as $key => $value) {
                     $htmlOptions .= '&' . $key . '=' . $value;
                 }
             }
@@ -178,7 +159,8 @@ class Metacafe implements VideoInterface
             $this->embedHTML =
                 "<embed\n"
                 ." src='{$this->getEmbedUrl()}'\n"
-                ." width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'\n"
+                ." width='{$defaultOptions['width']}'"
+                ." height='{$defaultOptions['height']}'\n"
                 ." wmode='transparent'\n"
                 ." pluginspage='http://www.macromedia.com/go/getflashplayer'\n"
                 ." type='application/x-shockwave-flash'>\n"
@@ -195,9 +177,7 @@ class Metacafe implements VideoInterface
     public function getFLV()
     {
         return "";
-
         if (!isset($this->FLV)) {
-
             // Translate ruby code
             $finalUrl = urldecode(self::getFinalRedirect($this->getEmbedUrl()));
 
@@ -209,7 +189,6 @@ class Metacafe implements VideoInterface
             $mediaUrl = preg_replace("/\\\/", "", $params[1]);
 
             $this->FLV = "{$mediaUrl}?__gdk__={$key}";
-
         }
 
         return $this->FLV;
@@ -237,7 +216,7 @@ class Metacafe implements VideoInterface
     /**
      * getRedirectUrl()
      * Gets the address that the provided URL redirects to,
-     * or FALSE if there's no redirect.
+     * or false if there's no redirect.
      *
      * @param  string $url
      * @return string
