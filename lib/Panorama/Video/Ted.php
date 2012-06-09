@@ -30,8 +30,8 @@
  **/
 namespace Panorama\Video;
 
-class Ted implements VideoInterface {
-
+class Ted implements VideoInterface
+{
     private $feed = null;
 
     /*
@@ -61,6 +61,7 @@ class Ted implements VideoInterface {
                 throw new \Exception("Video id not valid or found.", 1);
             }
         }
+
         return $this->page;
     }
 
@@ -72,6 +73,7 @@ class Ted implements VideoInterface {
     {
 
         preg_match('@<span class="notranslate" id="altHeadline" >(.*)</span>@'   ,$this->getPage(), $matches);
+
         return trim($matches[1]);
     }
 
@@ -85,6 +87,7 @@ class Ted implements VideoInterface {
             $args = $this->getArgs();
             $this->thumbnail = $args['su'];
         }
+
         return $this->thumbnail;
     }
 
@@ -104,6 +107,7 @@ class Ted implements VideoInterface {
     public function getEmbedUrl()
     {
         $flashvars = $this->getFlashVars();
+
         return "http://video.ted.com/assets/player/swf/EmbedPlayer.swf?{$flashvars}";
     }
 
@@ -159,6 +163,7 @@ class Ted implements VideoInterface {
             $split = preg_split("@\"@", $split[1]);
             $this->flashvars = $split[0];
         }
+
         return $this->flashvars;
     }
 
@@ -178,6 +183,7 @@ class Ted implements VideoInterface {
             }
             $this->args = $args;
         }
+
         return $this->args;
     }
 
@@ -191,6 +197,7 @@ class Ted implements VideoInterface {
             $args = $this->getArgs();
             $this->FLV = (string) $args['vu'];
         }
+
         return $this->FLV;
     }
 
@@ -204,6 +211,7 @@ class Ted implements VideoInterface {
             preg_match('@<a href="(.*)">download the video</a>@', $this->getPage(), $matches);
             $this->downloadUrl =  $matches[1];
         }
+
         return $this->downloadUrl;
     }
 
@@ -227,6 +235,7 @@ class Ted implements VideoInterface {
             preg_match("@/talks/subtitles/id/(\d*)/lang/@", $this->getPage(), $matches);
             $this->videoId = (int) $matches[1];
         }
+
         return $this->videoId;
     }
 

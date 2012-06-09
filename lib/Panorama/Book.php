@@ -28,6 +28,7 @@ echo $content;
 function get_match($regex,$content)
 {
   preg_match($regex,$content,$matches);
+
   return $matches[1];
 }
 
@@ -41,5 +42,6 @@ function get_data($url)
   curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
   $data = curl_exec($ch);
   curl_close($ch);
+
   return $data;
 }

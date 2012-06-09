@@ -30,8 +30,8 @@
  **/
 namespace Panorama\Video;
 
-class c11870 implements VideoInterface {
-
+class c11870 implements VideoInterface
+{
     /*
      * __construct()
      * @param string $url the url for this video
@@ -52,13 +52,14 @@ class c11870 implements VideoInterface {
         if (!isset($this->page)) {
             $this->page = file_get_contents($this->url);
         }
+
         return $this->page;
     }
 
     /*
      * Sets the page contents, useful for using mocking objects
      *
-     * @param string $page the content of the page
+     * @param  string $page the content of the page
      * @return object the object of this video, for allowing chaining methods
      */
     public function setPage($page = '')
@@ -66,6 +67,7 @@ class c11870 implements VideoInterface {
         if (!empty($page)) {
             $this->page = $page;
         }
+
         return $this;
     }
 
@@ -92,6 +94,7 @@ class c11870 implements VideoInterface {
             $this->title = iconv('ISO-8859-1', 'UTF-8', (string) $title[0]);
 
         }
+
         return $this->title;
     }
 
@@ -106,6 +109,7 @@ class c11870 implements VideoInterface {
             $hash = $this->getHash();
             $this->thumbnail = $hash['image'];
         }
+
         return $this->thumbnail;
     }
 
@@ -131,6 +135,7 @@ class c11870 implements VideoInterface {
             $this->embedUrl = "http://m2.11870.com/multimedia/11870/player.swf?"
                             . $this->getFlashVars() . "&logo=" . $hash['logo'];
         }
+
         return $this->embedUrl;
     }
 
@@ -182,6 +187,7 @@ class c11870 implements VideoInterface {
             $hash = $this->getHash();
             $this->FLV = $hash['file'];
         }
+
         return $this->FLV;
     }
 
@@ -216,6 +222,7 @@ class c11870 implements VideoInterface {
             preg_match('@flashvars=&quot;(\S+)&quot;@', $this->getPage(), $matches);
             $this->flashvars = $matches[1];
         }
+
         return $this->flashvars;
     }
 
@@ -234,6 +241,7 @@ class c11870 implements VideoInterface {
             }
             unset($this->hash['displaywidth']);
         }
+
         return $this->hash;
     }
 }

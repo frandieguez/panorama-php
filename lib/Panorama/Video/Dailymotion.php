@@ -30,9 +30,8 @@
  **/
 namespace Panorama\Video;
 
-class Dailymotion implements VideoInterface {
-
-
+class Dailymotion implements VideoInterface
+{
     /*
      * Initializes the Dailymotion video wrapper from one url
      *
@@ -55,6 +54,7 @@ class Dailymotion implements VideoInterface {
             $content = file_get_contents("http://www.dailymotion.com/rss/video/{$videoId}");
             $this->page = simplexml_load_string($content);
         }
+
         return $this->page;
     }
 
@@ -69,6 +69,7 @@ class Dailymotion implements VideoInterface {
             $titles = $this->getPage()->xpath('//item/title');
             $this->title = (string) $titles[0];
         }
+
         return $this->title;
     }
 
@@ -84,6 +85,7 @@ class Dailymotion implements VideoInterface {
             $thumbnail = $this->getPage()->xpath('//media:thumbnail');
             $this->thumbnail = preg_replace('@preview_large@', 'preview_medium', $thumbnail[0]["url"]);
         }
+
         return $this->thumbnail;
 
     }
@@ -109,6 +111,7 @@ class Dailymotion implements VideoInterface {
             $embed = $this->getPage()->xpath("//media:content[@type='application/x-shockwave-flash']");
             $this->embedUrl = (string) $embed[0]["url"];
         }
+
         return $this->embedUrl;
     }
 
@@ -149,6 +152,7 @@ class Dailymotion implements VideoInterface {
                 ."</embed>\n"
                 ."</object>";
         }
+
         return $this->embedHTML;
 
     }
@@ -164,6 +168,7 @@ class Dailymotion implements VideoInterface {
             $item = $this->getPage()->xpath('//media:content');
             $this->FLV = (string) $item[0]["url"];
         }
+
         return $this->FLV;
     }
 
@@ -190,7 +195,7 @@ class Dailymotion implements VideoInterface {
     /*
      * Calculates the Video ID from an Dailymotion URL
      *
-     * @return string the video ID for this video
+     * @return string    the video ID for this video
      * @throws Exception if url doesn't seem to be a Dailymotion video url
      */
     public function getVideoID()
@@ -205,6 +210,7 @@ class Dailymotion implements VideoInterface {
                 throw new \Exception("This url doesn't seem to be a Dailymotion video url");
             }
         }
+
         return $this->videoId;
 
     }

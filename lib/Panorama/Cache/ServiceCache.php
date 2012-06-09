@@ -38,82 +38,83 @@ class ServiceCache
     /**
     * Ensures that we always get one single instance
     *
-    * @return object the unique instance object 
+    * @return object the unique instance object
     * @author Fran Dieguez <fran@openhsot.es>
     **/
-    static public function getInstance($config)
+    public static function getInstance($config)
     {
 
         if ((!self::$instance instanceof self) or
             (count(array_diff($this->config, $config)) > 0))
-        { 
-            self::$instance = new self($config); 
-        } 
+        {
+            self::$instance = new self($config);
+        }
+
         return self::$instance;
 
     }
-    
-    
+
     /*
     * __construct()
     * @param $xmlFile the XML file that contains information about an EP new
     */
-    public function __construct($xmlFile) {
-        
+    public function __construct($xmlFile)
+    {
         return $this;
-    
+
     }
-    
-    
+
     /*
     * Saves an item in cache
-    * 
+    *
     * @param $name the name of the value
     * @param $value the value to save
     */
-    static public function setAndReturn($name, $value)
+    public static function setAndReturn($name, $value)
     {
         apc_add($name, $value);
+
         return $value;
     }
-    
+
     /*
     * Fetchs an item in cache if exists if not returns the default value
-    * 
+    *
     * @param string $key the name of the key we want to fetch
     */
-    static public function get($key="")
+    public static function get($key="")
     {
-        
+
         if (self::dataStoreAvailable()) {
             $value = apc_fetch($key);
+
             return $value;
         }
-    
+
     }
-    
+
     /*
     * Check if a value is into data store
     * @param $key
     */
-    static public function exists($key="")
+    public static function exists($key="")
     {
         if (self::dataStoreAvailable()) {
-            
+
             return apc_exists($key);
-        
+
         } else {
             return false;
         }
     }
-    
+
     /*
     * Check if APC is available
     * @return boolean true if is present
     */
-    static public function dataStoreAvailable()
+    public static function dataStoreAvailable()
     {
         return function_exists('apc_exists');
     }
-    
+
 } // END class

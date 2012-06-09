@@ -37,52 +37,50 @@ namespace Panorama\Video;
  * @author Fran Diéguez
  **/
 interface VideoInterface {
-    
+
     /**
      * Returns the download url for the video
     */
     public function getDownloadUrl();
-    
+
     /**
      * Returns the video duration in secs
     */
     public function getDuration();
-    
+
     /**
      * Returns the video embedHTML for put in a webpage
     */
     public function getEmbedHTML();
-    
+
     /**
-     * Returns the url of the video for embed in custom flash player 
+     * Returns the url of the video for embed in custom flash player
     */
     public function getEmbedUrl();
-    
+
     /**
      * Returns the url of the video in FLV format
     */
     public function getFLV();
-    
+
     /**
      * Returns the service name of the video
     */
     public function getService();
-    
+
     /**
      * Returns the default thumbnail of this video
     */
     public function getThumbnail();
-    
+
     /**
-     * Returns the title of this video 
+     * Returns the title of this video
     */
     public function getTitle();
-    
+
     /**
      * Returns the internal video id in the particular service
     */
     public function getVideoId();
 
-
-    
 }

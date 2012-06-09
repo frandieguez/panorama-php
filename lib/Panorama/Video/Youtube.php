@@ -30,20 +30,22 @@
  **/
 namespace Panorama\Video;
 
-class Youtube  implements VideoInterface {
-
+class Youtube  implements VideoInterface
+{
     /*
      * __construct()
      * @param $url
      */
-    function __construct($url, $options) {
-
+    public function __construct($url, $options)
+    {
         $this->url = $url;
         if (!($this->videoId = $this->getvideoId())) {
             throw new \Exception("Video ID not valid.", 1);
+
             return null;
         }
         $this->getFeed();
+
         return $this;
     }
 
@@ -61,6 +63,7 @@ class Youtube  implements VideoInterface {
             }
             $this->feed = new \SimpleXMLElement($document);
         }
+
         return $this->feed;
     }
 
@@ -74,6 +77,7 @@ class Youtube  implements VideoInterface {
         if (!isset($this->videoId)) {
             $this->videoId =  $this->getUrlParam('v');
         }
+
         return $this->videoId;
     }
 
@@ -87,6 +91,7 @@ class Youtube  implements VideoInterface {
         if (!isset($this->title)) {
             $this->title = $this->getFeed()->title;
         }
+
         return $this->title;
     }
 
@@ -99,8 +104,9 @@ class Youtube  implements VideoInterface {
     {
         if (!isset($this->description)) {
             $content = $this->getFeed()->xpath('//media:description');
-            $this->description = (string)$content;
+            $this->description = (string) $content;
         }
+
         return $this->description;
     }
 
@@ -155,6 +161,7 @@ class Youtube  implements VideoInterface {
         if (!isset($this->FLV)) {
             $this->FLV =  $this->getEmbedUrl();
         }
+
         return $this->FLV;
 
     }
@@ -168,8 +175,9 @@ class Youtube  implements VideoInterface {
     {
         if (!isset($this->embedUrl)) {
             $mediaGroup =  $this->getFeed()->xpath('//media:content');
-            $this->embedUrl = (string)$mediaGroup[0]->attributes()->url;
+            $this->embedUrl = (string) $mediaGroup[0]->attributes()->url;
         }
+
         return $this->embedUrl;
     }
 
@@ -193,6 +201,7 @@ class Youtube  implements VideoInterface {
         if (!isset($this->downloadUrl)) {
             $this->downloadUrl = $this->getEmbedUrl();
         }
+
         return $this->embedUrl;
     }
 
@@ -205,8 +214,9 @@ class Youtube  implements VideoInterface {
     {
         if (!isset($this->duration)) {
             $mediaGroup =  $this->getFeed()->xpath('//media:content');
-            $this->duration = (string)$mediaGroup[0]->attributes()->duration;
+            $this->duration = (string) $mediaGroup[0]->attributes()->duration;
         }
+
         return $this->duration;
     }
 
@@ -221,6 +231,7 @@ class Youtube  implements VideoInterface {
             $mediaGroup =  $this->getFeed()->xpath('//media:thumbnail');
             $this->thumbnails = $mediaGroup;
         }
+
         return $this->thumbnails;
     }
 
@@ -233,8 +244,9 @@ class Youtube  implements VideoInterface {
     {
         if (!isset($this->thumbnail)) {
             $thumbnails = $this->getThumbnails();
-            $this->thumbnail = (string)$thumbnails[0]->attributes()->url;
+            $this->thumbnail = (string) $thumbnails[0]->attributes()->url;
         }
+
         return $this->thumbnail;
     }
 
@@ -247,8 +259,9 @@ class Youtube  implements VideoInterface {
     {
         if (!isset($this->tags)) {
             $mediaGroup =  $this->getFeed()->xpath('//media:keywords');
-            $this->tags = (string)$mediaGroup[0];
+            $this->tags = (string) $mediaGroup[0];
         }
+
         return $this->tags;
     }
 
@@ -262,6 +275,7 @@ class Youtube  implements VideoInterface {
         if (!isset($this->watchUrl)) {
             $this->watchUrl = $this->getFeed()->getVideoWatchPageUrl();
         }
+
         return $this->watchUrl;
     }
 
@@ -275,6 +289,7 @@ class Youtube  implements VideoInterface {
     {
         $queryParamsRAW = parse_url($this->url, PHP_URL_QUERY);
         preg_match("@v=([a-zA-Z0-9_-]*)@", $queryParamsRAW, $matches);
+
         return $matches[1];
     }
 

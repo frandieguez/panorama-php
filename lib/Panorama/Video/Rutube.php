@@ -30,8 +30,8 @@
  **/
 namespace Panorama\Video;
 
-class Rutube implements VideoInterface {
-
+class Rutube implements VideoInterface
+{
     private $rtXmlAPIUrl = "http://rutube.ru/cgi-bin/xmlapi.cgi";
 
     /*
@@ -71,6 +71,7 @@ class Rutube implements VideoInterface {
             $sub2 = substr($movieHash,2,2);
             $this->thumbnail = "http://img.rutube.ru/thumbs/{$sub1}/{$sub2}/{$movieHash}-{$size}.jpg";
         }
+
         return $this->thumbnail;
     }
 
@@ -90,6 +91,7 @@ class Rutube implements VideoInterface {
     public function getEmbedUrl()
     {
         $movieHash = $this->getMovieHash();
+
         return "http://video.rutube.ru/{$movieHash}";
     }
 
@@ -105,6 +107,7 @@ class Rutube implements VideoInterface {
             preg_match("@[a-f0-9]+$@", $rtInfo->movie->playerLink[0],$matches);
             $this->movieHash = $matches[0];
         }
+
         return $this->movieHash;
 
     }
@@ -150,6 +153,7 @@ class Rutube implements VideoInterface {
     public function getFLV()
     {
         $movieHash = $this->getMovieHash();
+
         return "http://bl.rutube.ru/{$movieHash}.iflv";
     }
 
@@ -185,6 +189,7 @@ class Rutube implements VideoInterface {
             $content = file_get_contents($url);
             $this->rtInfo = simplexml_load_string($content);
         }
+
         return $this->rtInfo;
 
     }
@@ -201,6 +206,7 @@ class Rutube implements VideoInterface {
             preg_match("@(\d+)@", $path, $matches);
             $this->videoId = (int) $matches[1];
         }
+
         return $this->videoId;
     }
 }

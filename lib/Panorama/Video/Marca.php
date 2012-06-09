@@ -30,8 +30,8 @@
  **/
 namespace Panorama\Video;
 
-class Marca implements VideoInterface {
-
+class Marca implements VideoInterface
+{
     /*
      * __construct()
      * @param $url
@@ -61,6 +61,7 @@ class Marca implements VideoInterface {
             $title = $this->feed->xpath('//titulo');
             $this->title = (string) $title[0];
         }
+
         return $this->title;
     }
 
@@ -72,8 +73,10 @@ class Marca implements VideoInterface {
     {
         if (!isset($this->thumbnail)) {
             $tmb = $this->feed->xpath('//foto');
+
             return (string) $tmb[0];
         }
+
         return $this->thumbnail;
     }
 
@@ -118,7 +121,6 @@ class Marca implements VideoInterface {
             }
         }
 
-
         $flashvars = "ba=1&amp;cvol=1&amp;bt=1&amp;lg=0&amp;"
                     ."width={$defaultOptions['width']}&amp;height={$defaultOptions['height']}"
                     ."&amp;vID={$this->getVideoId()}";
@@ -152,6 +154,7 @@ class Marca implements VideoInterface {
             $FLV = $this->feed->xpath('//media');
             $this->FLV = (string) $FLV[0];
         }
+
         return $this->FLV;
     }
 
@@ -190,6 +193,7 @@ class Marca implements VideoInterface {
                 throw new \Exception("This ");
             }
         }
+
         return $this->videoId;
 
     }

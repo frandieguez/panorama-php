@@ -25,11 +25,11 @@ namespace Panorama\Video;
 /*
  * class Flickr
  */
-class Flickr implements VideoInterface {
-    
+class Flickr implements VideoInterface
+{
     public $flickrConnection = null;
     public $flickrAuthKeys   = null;
-    
+
     /*
      * __construct()
      * @param $params
@@ -37,7 +37,7 @@ class Flickr implements VideoInterface {
     public function __construct($url)
     {
         $this->url = $url;
-        
+
         $this->setFlickrAuth();
         $this->params = array(
             'api_key'	=> $this->flickrAuthKeys['flickr_key'],
@@ -45,28 +45,28 @@ class Flickr implements VideoInterface {
             'photo_id'	=> $this->getVideoId(),
             'format'	=> 'php_serial',
         );
-        
+
         //$this->getFlickrconnection();
     }
-    
+
     /*
      * Sets the authentication keys for accessing Flickr web service
-     * 
+     *
      */
     public function setFlickrAuth($params = array())
     {
-        
+
         if (is_null($this->flickrAuthKeys)) {
-            
+
             if (defined('FLICKR_KEY')
                 && defined('FLICKR_SECRET_KEY'))
             {
                 $this->flickrAuthKeys = array(
                     'flickr_key' => FLICKR_KEY,
-                    'flickr_secret_key' => FLICKR_SECRET_KEY,                
+                    'flickr_secret_key' => FLICKR_SECRET_KEY,
                 );
             }
-            
+
             if (isset($params['flickr_key'])
                 && isset($params['flickr_secret_key']))
             {
@@ -75,17 +75,17 @@ class Flickr implements VideoInterface {
                     'flickr_secret_key' => $params['flickr_secret_key'],
                 );
             }
-            
+
             if (is_null($this->flickrAuthKeys)) {
                 throw new \Exception('You must provide the flickr_key and flickr_secret_key.');
             }
-            
+
         }
+
         return $this;
-        
+
     }
-    
-    
+
     /*
      * Initializes the Flickr connection
      *
@@ -94,26 +94,27 @@ class Flickr implements VideoInterface {
     public function getFlickrObject()
     {
         if (!isset($this->object)) {
-            
+
             $encoded_params = array();
-            foreach ($this->params as $k => $v){
+            foreach ($this->params as $k => $v) {
                 $encoded_params[] = urlencode($k).'='.urlencode($v);
             }
-            
+
             $url = "http://api.flickr.com/services/rest/?".implode('&', $encoded_params);
-            
+
             $rsp = file_get_contents($url);
             $rsp_obj = unserialize($rsp);
-            
-            if ($rsp_obj['stat'] == 'ok'){
+
+            if ($rsp_obj['stat'] == 'ok') {
                 $this->object = $rsp_obj['photo'];
                 if ($this->object['media'] != 'video') {
                     throw new \Exception("This element is not a video");
                 }
-            }else{
+            } else {
                 throw new \Exception("Something wrong happened while accesing the flickr API.");
-            }   
+            }
         }
+
         return $this->object;
     }
 
@@ -122,9 +123,9 @@ class Flickr implements VideoInterface {
     */
     public function getDownloadUrl()
     {
-        
+
     }
-    
+
     /**
      * Returns the video duration in secs
     */
@@ -132,7 +133,7 @@ class Flickr implements VideoInterface {
     {
         return null;
     }
-    
+
     /**
      * Returns the video embedHTML for put in a webpage
     */
@@ -140,20 +141,19 @@ class Flickr implements VideoInterface {
     {
         $defaultOptions = array(
               'width' => 560,
-              'height' => 349 
+              'height' => 349
               );
-        
+
         $options = array_merge($defaultOptions, $options);
-        
-        
-        // convert options into 
+
+        // convert options into
         $htmlOptions = "";
         if (count($options) > 0) {
             foreach ($options as $key => $value ) {
                 $htmlOptions .= "&" . $key . "=" . $value;
             }
         }
-        
+
         return "<object type='application/x-shockwave-flash'
                     width='{$options['width']}' height='{$options['height']}'
                     data='http://www.flickr.com/apps/video/stewart.swf?v=63881'
@@ -167,24 +167,25 @@ class Flickr implements VideoInterface {
                         width='{$options['width']}' height='{$options['height']}'>
                     </embed>
                 </object>";
-        
+
     }
-    
+
     /**
-     * Returns the url of the video for embed in custom flash player 
+     * Returns the url of the video for embed in custom flash player
     */
     public function getEmbedUrl()
     {
         if (!isset($this->embedUrl)) {
             $videoId = $this->getVideoId();
             $object = $this->getFlickrObject();
-            
+
             $this->embedUrl =   "http://www.flickr.com/apps/video/stewart.swf?v=63881&intl_lang=en-us"
                                 ."&photo_secret={$object['secret']}&photo_id={$videoId}";
         }
+
         return $this->embedUrl;
     }
-    
+
     /**
      * Returns the url of the video in FLV format
     */
@@ -212,7 +213,7 @@ class Flickr implements VideoInterface {
         //stream = REXML::XPath.first(video_feed_xml, "//DATA/SEQUENCE-ITEM/STREAM")
         //"#{stream.attributes['APP']}#{stream.attributes['FULLPATH']}"
     }
-    
+
     /**
      * Returns the service name of the video
     */
@@ -220,7 +221,7 @@ class Flickr implements VideoInterface {
     {
         return "Flickr";
     }
-    
+
     /**
      * Returns the default thumbnail of this video
      *
@@ -233,9 +234,10 @@ class Flickr implements VideoInterface {
             $object = $this->getFlickrObject();
             $this->thumbnail = "http://farm{$object['farm']}.static.flickr.com/{$object['server']}/{$object['id']}_{$object['secret']}_s.jpg";
         }
+
         return $this->thumbnail;
     }
-    
+
     /**
      * Returns the title of this video
      *
@@ -246,12 +248,13 @@ class Flickr implements VideoInterface {
         if (!isset($this->title)) {
             $videoId = $this->getVideoId();
             $object = $this->getFlickrObject();
-            
+
             $this->title = $object['title']['_content'];
         }
+
         return $this->title;
     }
-    
+
     /**
      * Returns the internal video id in the particular service
      *
@@ -264,6 +267,7 @@ class Flickr implements VideoInterface {
             $path = preg_split("@/@", $url["path"]);
             $this->videoId = $path[count($path)-1];
         }
+
         return $this->videoId;
     }
 

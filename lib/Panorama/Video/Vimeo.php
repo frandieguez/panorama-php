@@ -30,8 +30,8 @@
  **/
 namespace Panorama\Video;
 
-class Vimeo implements VideoInterface {
-
+class Vimeo implements VideoInterface
+{
     private $feed = null;
 
     /*
@@ -61,6 +61,7 @@ class Vimeo implements VideoInterface {
             $information = unserialize($document);
             $this->feed = $information[0];
         }
+
         return $this->feed;
     }
 
@@ -84,6 +85,7 @@ class Vimeo implements VideoInterface {
         if (!isset($this->title)) {
             $this->title = (string) $this->feed['title'];
         }
+
         return $this->title;
     }
 
@@ -97,6 +99,7 @@ class Vimeo implements VideoInterface {
         if (!isset($this->thumbnail)) {
             $this->thumbnail = (string) $this->feed['thumbnail_large'];
         }
+
         return $this->thumbnail;
     }
 
@@ -109,6 +112,7 @@ class Vimeo implements VideoInterface {
         if (!isset($this->duration)) {
             $this->duration = (string) $this->feed['duration'];
         }
+
         return $this->duration;
     }
 
@@ -123,6 +127,7 @@ class Vimeo implements VideoInterface {
             $videoId = $this->getVideoId();
             $this->embedUrl = "http://player.vimeo.com/video/".$this->getVideoID();;
         }
+
         return $this->embedUrl;
     }
 
@@ -158,6 +163,7 @@ class Vimeo implements VideoInterface {
             .'" width="'.$defaultOptions['width'].'" height="'.$defaultOptions['height'].'" '
             .'frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
         }
+
         return $this->embedHTML;
 
     }
@@ -173,6 +179,7 @@ class Vimeo implements VideoInterface {
         if (!isset($this->FLV)) {
             $this->FLV =  "http://player.vimeo.com/video/".$this->getVideoID();
         }
+
         return $this->FLV;
 
     }
@@ -202,7 +209,7 @@ class Vimeo implements VideoInterface {
      * Calculate the Video ID from an Vimeo URL
      *
      * @param $url
-     * @return string, the Video ID from an Vimeo URL
+     * @return string,    the Video ID from an Vimeo URL
      * @throws Exception, if path is not valid
      */
     public function getVideoID($url="")
@@ -232,6 +239,7 @@ class Vimeo implements VideoInterface {
                 throw \Exception("The path {$url} sems to be invalid");
             }
         }
+
         return $this->videoId;
 
     }

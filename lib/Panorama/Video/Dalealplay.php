@@ -30,8 +30,8 @@
  **/
 namespace Panorama\Video;
 
-class Dalealplay  implements VideoInterface{
-
+class Dalealplay  implements VideoInterface
+{
     /*
      * __construct()
      * @param $url
@@ -53,6 +53,7 @@ class Dalealplay  implements VideoInterface{
         if (!isset($this->page)) {
             $this->page = file_get_contents($this->url);
         }
+
         return $this->page;
     }
 
@@ -68,6 +69,7 @@ class Dalealplay  implements VideoInterface{
         {
             $this->page = $page;
         }
+
         return $this->page;
     }
 
@@ -83,6 +85,7 @@ class Dalealplay  implements VideoInterface{
             $title = $title[0];
             $this->title = iconv('ISO-8859-1', 'UTF-8', (string) $title);
         }
+
         return $this->title;
     }
 
@@ -96,6 +99,7 @@ class Dalealplay  implements VideoInterface{
             $videoId = $this->getVideoId();
             $this->thumbnail = "http://thumbs.dalealplay.com/img/dap/{$videoId}/thumb";
         }
+
         return $this->thumbnail;
     }
 
@@ -120,6 +124,7 @@ class Dalealplay  implements VideoInterface{
             $title = preg_replace('@autoStart=true@', 'autoStart=false', $matches[1]);
             $this->embedUrl = (string) $title;
         }
+
         return $this->embedUrl;
     }
 
@@ -165,6 +170,7 @@ class Dalealplay  implements VideoInterface{
         if (!isset($this->FLV)) {
             $this->FLV = '';
         }
+
         return $this->FLV;
     }
 
@@ -199,6 +205,7 @@ class Dalealplay  implements VideoInterface{
             preg_match("@con=(\w*)@", $path, $matches);
             $this->videoId = $matches[1];
         }
+
         return $this->videoId;
 
     }

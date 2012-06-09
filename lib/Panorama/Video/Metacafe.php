@@ -30,8 +30,8 @@
  **/
 namespace Panorama\Video;
 
-class Metacafe implements VideoInterface {
-
+class Metacafe implements VideoInterface
+{
     /*
      * __construct()
      * @param $url
@@ -66,6 +66,7 @@ class Metacafe implements VideoInterface {
             $args = $this->getArgs();
             $this->videoId = $args[0];
         }
+
         return $this->videoId;
     }
 
@@ -89,6 +90,7 @@ class Metacafe implements VideoInterface {
                 $this->args = array($args[2], $args[3]);
             }
         }
+
         return $this->args;
 
     }
@@ -122,6 +124,7 @@ class Metacafe implements VideoInterface {
             $args = $this->getArgs();
             $this->thumbnail = "http://www.metacafe.com/thumb/{$args[0]}.jpg";
         }
+
         return $this->thumbnail;
     }
 
@@ -144,6 +147,7 @@ class Metacafe implements VideoInterface {
             $params = implode("/", $this->getArgs());
             $this->embedUrl = "http://www.metacafe.com/fplayer/{$params}.swf";
         }
+
         return $this->embedUrl;
     }
 
@@ -171,7 +175,7 @@ class Metacafe implements VideoInterface {
                 }
             }
 
-            $this->embedHTML = 
+            $this->embedHTML =
                 "<embed\n"
                 ." src='{$this->getEmbedUrl()}'\n"
                 ." width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'\n"
@@ -180,6 +184,7 @@ class Metacafe implements VideoInterface {
                 ." type='application/x-shockwave-flash'>\n"
                 ."</embed>";
         }
+
         return $this->embedHTML;
     }
 
@@ -206,6 +211,7 @@ class Metacafe implements VideoInterface {
             $this->FLV = "{$mediaUrl}?__gdk__={$key}";
 
         }
+
         return $this->FLV;
     }
 
@@ -233,10 +239,11 @@ class Metacafe implements VideoInterface {
      * Gets the address that the provided URL redirects to,
      * or FALSE if there's no redirect.
      *
-     * @param string $url
+     * @param  string $url
      * @return string
      */
-    static public function getRedirectUrl($url){
+    public static function getRedirectUrl($url)
+    {
         $redirect_url = null;
 
         $url_parts = @parse_url($url);
@@ -244,7 +251,7 @@ class Metacafe implements VideoInterface {
         if (!isset($url_parts['host'])) return false; //can't process relative URLs
         if (!isset($url_parts['path'])) $url_parts['path'] = '/';
 
-        $sock = fsockopen($url_parts['host'], (isset($url_parts['port']) ? (int)$url_parts['port'] : 80), $errno, $errstr, 30);
+        $sock = fsockopen($url_parts['host'], (isset($url_parts['port']) ? (int) $url_parts['port'] : 80), $errno, $errstr, 30);
         if (!$sock) return false;
 
         $request = "HEAD " . $url_parts['path'] . (isset($url_parts['query']) ? '?'.$url_parts['query'] : '') . " HTTP/1.1\r\n";
@@ -255,10 +262,12 @@ class Metacafe implements VideoInterface {
         while(!feof($sock)) $response .= fread($sock, 8192);
         fclose($sock);
 
-        if (preg_match('/^Location: (.+?)$/m', $response, $matches)){
+        if (preg_match('/^Location: (.+?)$/m', $response, $matches)) {
             if ( substr($matches[1], 0, 1) == "/" )
+
                 return $url_parts['scheme'] . "://" . $url_parts['host'] . trim($matches[1]);
             else
+
                 return trim($matches[1]);
 
         } else {
@@ -271,18 +280,20 @@ class Metacafe implements VideoInterface {
      * getAllRedirects()
      * Follows and collects all redirects, in order, for the given URL.
      *
-     * @param string $url
+     * @param  string $url
      * @return array
      */
-    static private function getAllRedirects($url){
+    private static function getAllRedirects($url)
+    {
         $redirects = array();
-        while ($newurl = self::getRedirectUrl($url)){
-            if (in_array($newurl, $redirects)){
+        while ($newurl = self::getRedirectUrl($url)) {
+            if (in_array($newurl, $redirects)) {
                 break;
             }
             $redirects[] = $newurl;
             $url = $newurl;
         }
+
         return $redirects;
     }
 
@@ -291,12 +302,13 @@ class Metacafe implements VideoInterface {
      * Gets the address that the URL ultimately leads to.
      * Returns $url itself if it isn't a redirect.
      *
-     * @param string $url
+     * @param  string $url
      * @return string
      */
-    static private function getFinalRedirect($url){
+    private static function getFinalRedirect($url)
+    {
         $redirects = self::getAllRedirects($url);
-        if (count($redirects)>0){
+        if (count($redirects)>0) {
             return array_pop($redirects);
         } else {
             return $url;

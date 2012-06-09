@@ -31,10 +31,9 @@
 
 namespace Panorama;
 
-use \Panorama\Cache\ServiceCache as sCache;
 
-class Video {
-
+class Video
+{
     /**
      * The instance of the object we will work into
      */
@@ -49,7 +48,7 @@ class Video {
     {
 
         // check arguments validation
-        if(!isset($url) || is_null($url)) {
+        if (!isset($url) || is_null($url)) {
             throw new \InvalidArgumentException("We need a video url");
         }
 
@@ -58,7 +57,7 @@ class Video {
         $serviceName = self::camelize(self::getDomain($url));
 
         // If the service starts with a number prepend a "c" for avoid PHP language error
-        if(preg_match("@^\d@",$serviceName)) { $serviceName = "c".$serviceName; }
+        if (preg_match("@^\d@",$serviceName)) { $serviceName = "c".$serviceName; }
         $this->className = "\Panorama\Video\\" . $serviceName;
 
         // If the Video service is supported instantiate it, otherwise raise Exception
@@ -103,7 +102,6 @@ class Video {
     {
         return $this->object->getThumbnail();
     }
-
 
     /*
      * Returns the video duration for the instantiated object.
@@ -205,16 +203,17 @@ class Video {
     * @static
     * @link http://book.cakephp.org/view/572/Class-methods
     */
-	public function camelize($lowerCaseAndUnderscoredWord) {
-		return str_replace(" ", "", ucwords(str_replace("_", " ", $lowerCaseAndUnderscoredWord)));
-	}
+    public function camelize($lowerCaseAndUnderscoredWord)
+    {
+        return str_replace(" ", "", ucwords(str_replace("_", " ", $lowerCaseAndUnderscoredWord)));
+    }
 
     /*
      * Returns the domain string from url
      *
      * @param $url
      */
-    static public function getDomain($url="")
+    public static function getDomain($url="")
     {
         $host = parse_url($url);
         $domainParts = preg_split("@\.@",$host["host"]);
@@ -224,9 +223,9 @@ class Video {
          * if not return the first part
         */
         $domainPartsCount = count($domainParts);
+
         return $domainParts[$domainPartsCount - 2];
 
     }
-
 
 }

@@ -30,9 +30,8 @@
  **/
 namespace Panorama\Video;
 
-class Myspace implements VideoInterface  {
-
-
+class Myspace implements VideoInterface
+{
     /*
      * __construct()
      * @param $url
@@ -56,6 +55,7 @@ class Myspace implements VideoInterface  {
             $content = file_get_contents("http://mediaservices.myspace.com/services/rss.ashx?type=video&videoID={$videoId}");
             $this->page = simplexml_load_string($content);
         }
+
         return $this->page;
     }
 
@@ -69,6 +69,7 @@ class Myspace implements VideoInterface  {
             $titles = $this->getPage()->xpath('//item/title');
             $this->title = (string) $titles[0];
         }
+
         return $this->title;
     }
 
@@ -83,6 +84,7 @@ class Myspace implements VideoInterface  {
             $thumbnails = $this->getPage()->xpath('//item/media:thumbnail');
             $this->thumbnail = (string) $thumbnails[0]["url"];
         }
+
         return $this->thumbnail;
 
     }
@@ -107,6 +109,7 @@ class Myspace implements VideoInterface  {
             $itemID = (string) $item[0];
             $this->embedUrl = "http://lads.myspace.com/videos/vplayer.swf?m={$itemID}&v=2&type=video";
         }
+
         return $this->embedUrl;
     }
 
@@ -134,12 +137,13 @@ class Myspace implements VideoInterface  {
                 }
             }
 
-            $this->embedHTML = 
+            $this->embedHTML =
                 "<embed src='{$this->getEmbedUrl()}'\n"
                 ."width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'\n"
                 ."type='application/x-shockwave-flash'>\n"
                 ."</embed>";
         }
+
         return $this->embedHTML;
 
     }
@@ -154,6 +158,7 @@ class Myspace implements VideoInterface  {
             $item = $this->getPage()->xpath('//media:content');
             $this->FLV = (string) $item[0]["url"];
         }
+
         return $this->FLV;
     }
 
@@ -192,6 +197,7 @@ class Myspace implements VideoInterface  {
                 $this->videoId = $matches[1];
             }
         }
+
         return $this->videoId;
 
     }
