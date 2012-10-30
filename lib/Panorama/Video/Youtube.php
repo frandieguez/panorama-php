@@ -76,7 +76,7 @@ class Youtube  implements VideoInterface
     {
 
         if (!isset($this->title)) {
-            $this->title = $this->getFeed()->title;
+            $this->title = (string) $this->getFeed()->title;
         }
 
         return $this->title;

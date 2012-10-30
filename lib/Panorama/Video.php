@@ -169,14 +169,14 @@ class Video
     {
 
         return array(
-                    "title" => $this->object->getTitle(),
-                    "thumbnail" => $this->object->getThumbnail(),
-                    "embedUrl" => $this->object->getEmbedUrl(),
-                    "embedHTML" => $this->object->getEmbedHTML(),
-                    "FLV" => $this->object->getFLV(),
-                    "downloadUrl" => $this->object->getDownloadUrl(),
-                    "service" => $this->object->getService(),
-                    "duration" => $this->object->getDuration(),
+                    "title"       => (string) $this->object->getTitle(),
+                    "thumbnail"   => (string) $this->object->getThumbnail(),
+                    "embedUrl"    => (string) $this->object->getEmbedUrl(),
+                    "embedHTML"   => (string) $this->object->getEmbedHTML(),
+                    "FLV"         => (string) $this->object->getFLV(),
+                    "downloadUrl" => (string) $this->object->getDownloadUrl(),
+                    "service"     => (string) $this->object->getService(),
+                    "duration"    => (string) $this->object->getDuration(),
                  );
 
     }

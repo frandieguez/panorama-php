@@ -16,11 +16,11 @@ function autoloader($className)
 }
 
 // Setup autoloader
-spl_autoload_register("autoloader"); 
+spl_autoload_register("autoloader");
 
 // Add current directory to include path
 set_include_path(
-                 realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . ".." )
+                 realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . "..". DIRECTORY_SEPARATOR. 'lib' )
                  .PATH_SEPARATOR
                  .get_include_path()
                  );
