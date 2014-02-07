@@ -165,6 +165,7 @@ class Youtube  implements VideoInterface
      */
     public function getEmbedUrl()
     {
+        $this->embedUrl = '';
         if (!isset($this->embedUrl)
             && is_array($this->getFeed()->xpath('//media:content'))
             && count($this->getFeed()->xpath('//media:content')) > 0
@@ -208,6 +209,8 @@ class Youtube  implements VideoInterface
     public function getDuration()
     {
         if (!isset($this->duration)
+            && is_array($this->getFeed()->xpath('//media:content'))
+            && count($this->getFeed()->xpath('//media:content')) > 0
         ) {
             $mediaGroup =  $this->getFeed()->xpath('//media:content');
             $this->duration = (string) $mediaGroup[0]->attributes()->duration;
