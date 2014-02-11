@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of the Panorama package.
+ *
+ * (c)  Fran Dieguez <fran.dieguez@mabishu.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ **/
 require_once('bootstrap.php');
 
 //$video = stdClass();
@@ -20,17 +28,17 @@ $video = new \Panorama\Video("http://www.youtube.com/watch?v=5YXEcvaz3hI");
 
 
 var_dump(
-         $video->getTitle(),
-         $video->getThumbnail(),
-         $video->getVideoId(),
-         $video->getDuration(),
-         $video->getEmbedUrl(),
-         $video->getVideoID(),
-         $video->getEmbedHTML(array('version' => '3')),
-         $video->getVideoId(),
-         $video->getFLV(),
-         $video->getVideoDetails(),
-         $video->getDownloadUrl()
+    $video->getTitle(),
+    $video->getThumbnail(),
+    $video->getVideoId(),
+    $video->getDuration(),
+    $video->getEmbedUrl(),
+    $video->getVideoID(),
+    $video->getEmbedHTML(array('version' => '3')),
+    $video->getVideoId(),
+    $video->getFLV(),
+    $video->getVideoDetails(),
+    $video->getDownloadUrl()
 
-         );
+);
 die();

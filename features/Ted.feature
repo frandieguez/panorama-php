@@ -5,7 +5,7 @@ Feature: Ted service provider
     Scenario: Get the title of the Ted video
         Given The url http://www.ted.com/talks/benjamin_wallace_on_the_price_of_happiness.html
         When I get the title
-        Then The result should be "Benjamin Wallace on the price of happiness"
+        Then The result should be "Benjamin Wallace: The price of happiness"
 
     Scenario: Get the duration of the Ted video
         Given The url http://www.ted.com/talks/benjamin_wallace_on_the_price_of_happiness.html

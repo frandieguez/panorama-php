@@ -1,26 +1,10 @@
 <?php
-
-function autoloader($className)
-{
-    $className = ltrim($className, '\\');
-    $fileName  = '';
-    $namespace = '';
-    if ($lastNsPos = strripos($className, '\\')) {
-        $namespace = substr($className, 0, $lastNsPos);
-        $className = substr($className, $lastNsPos + 1);
-        $fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
-    }
-    $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-
-    require $fileName;
-}
-
-// Setup autoloader
-spl_autoload_register("autoloader");
-
-// Add current directory to include path
-set_include_path(
-                 realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . "..". DIRECTORY_SEPARATOR. 'lib' )
-                 .PATH_SEPARATOR
-                 .get_include_path()
-                 );
+/**
+ * This file is part of the Panorama package.
+ *
+ * (c)  Fran Dieguez <fran.dieguez@mabishu.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ **/
+require __DIR__.'/../../vendor/autoload.php';

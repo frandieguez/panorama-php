@@ -61,7 +61,7 @@ class Ted implements VideoInterface
     public function getTitle()
     {
         preg_match(
-            '@<span class="notranslate" id="altHeadline" >(.*)</span>@',
+            '@<span id="altHeadline"  class="notranslate">(.*)</span>@',
             $this->getPage(),
             $matches
         );
@@ -235,7 +235,8 @@ class Ted implements VideoInterface
     public function getVideoID()
     {
         if (!isset($this->videoId)) {
-            preg_match("@/talks/subtitles/id/(\d*)/lang/@",
+            preg_match(
+                "@/talks/subtitles/id/(\d*)/lang/@",
                 $this->getPage(),
                 $matches
             );
@@ -244,5 +245,4 @@ class Ted implements VideoInterface
 
         return $this->videoId;
     }
-
 }

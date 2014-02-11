@@ -166,7 +166,7 @@ class Youtube  implements VideoInterface
     public function getEmbedUrl()
     {
         $this->embedUrl = '';
-        if (!isset($this->embedUrl)
+        if (empty($this->embedUrl)
             && is_array($this->getFeed()->xpath('//media:content'))
             && count($this->getFeed()->xpath('//media:content')) > 0
         ) {

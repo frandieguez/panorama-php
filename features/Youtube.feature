@@ -15,7 +15,7 @@ Feature: Youtube service provider
     Scenario: Get the thumbnail of the Youtube video
         Given The url http://www.youtube.com/watch?v=uO3GYt47YQs&feature=topvideos_entertainment
         When I get the thumbnail
-        Then The result should be "http://i.ytimg.com/vi/uO3GYt47YQs/0.jpg"
+        Then The result should be like "@http://(.*).ytimg.com/vi/uO3GYt47YQs/0.jpg@"
 
     Scenario: Get the embed HTML of the Youtube video
         Given The url http://www.youtube.com/watch?v=uO3GYt47YQs&feature=topvideos_entertainment

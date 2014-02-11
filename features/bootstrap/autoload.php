@@ -7,15 +7,4 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  **/
-require_once 'Symfony/Component/ClassLoader/UniversalClassLoader.php';
-
-use Symfony\Component\ClassLoader\UniversalClassLoader;
-
-$loader = new UniversalClassLoader();
-$loader->registerNamespaces(array(
-    'Panorama'              => __DIR__.'/../../lib/',
-));
-$loader->registerNamespaceFallbacks(array(
-    __DIR__.'/bundles',
-));
-$loader->register();
+require __DIR__.'/../../vendor/autoload.php';

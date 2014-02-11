@@ -1,8 +1,8 @@
 <?php
 /**
- * This file is part of the Onm package.
+ * This file is part of the Panorama package.
  *
- * (c)  OpenHost S.L. <developers@openhost.es>
+ * (c)  Fran Dieguez <fran@openhost.es>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -77,7 +77,6 @@ class c11870 implements VideoInterface
             preg_match('@<title>(.*)</title>@', $this->getPage(), $matches);
             $title = preg_split('@ - www.11870.com@', $matches[1]);
             $this->title = iconv('ISO-8859-1', 'UTF-8', (string) $title[0]);
-
         }
 
         return $this->title;

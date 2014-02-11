@@ -5,7 +5,7 @@ Feature: Dalealplay service provider
     Scenario: Get the title of the Dalealplay video
         Given The url http://www.dalealplay.com/informaciondecontenido.php?con=403408
         When I get the title
-        Then The result should be "Los mejores goles del 2011"
+        Then The result should be "Los mejores goles del 2011 - Vídeo Online"
 
     Scenario: Get the duration of the Dalealplay video
         Given The url http://www.dalealplay.com/informaciondecontenido.php?con=403408
