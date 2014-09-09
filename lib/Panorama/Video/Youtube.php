@@ -113,27 +113,24 @@ class Youtube  implements VideoInterface
      */
     public function getEmbedHTML($options = array())
     {
-        $defaultOptions = array(
-            'width' => 560,
-            'height' => 349
-        );
-
+        $defaultOptions = array('width' => 560, 'height' => 349);
         $options = array_merge($defaultOptions, $options);
-        unset($options['width']);
-        unset($options['height']);
 
         // convert options into
         $htmlOptions = "";
         if (count($options) > 0) {
             foreach ($options as $key => $value) {
+                if(in_array($key, array('width', 'height'))) {
+                    continue;
+                }
                 $htmlOptions .= "&" . $key . "=" . $value;
             }
         }
         $embedUrl = $this->getEmbedUrl();
 
         // if this video is not embed
-        return   "<object width='{$defaultOptions['width']}' "
-                ."height='{$defaultOptions['height']}'>\n"
+        return   "<object width='{$options['width']}' "
+                ."height='{$options['height']}'>\n"
                 ."<param name='movie' value='{$embedUrl}{$htmlOptions}'>\n"
                 ."<param name='allowFullScreen' value='true'>\n"
                 ."<param name='allowscriptaccess' value='always'>\n"
@@ -141,8 +138,8 @@ class Youtube  implements VideoInterface
                 ."<embed src='{$embedUrl}{$htmlOptions}' "
                     ."type='application/x-shockwave-flash'\n"
                     ."allowscriptaccess='always' allowfullscreen='true'\n"
-                    ."width='{$defaultOptions['width']}' "
-                    ."height='{$defaultOptions['height']}'>\n"
+                    ."width='{$options['width']}' "
+                    ."height='{$options['height']}'>\n"
                 ."</object>";
     }
 
