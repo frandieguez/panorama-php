@@ -22,8 +22,6 @@ class Ted implements VideoInterface
     public $url;
     public $options = array();
 
-    private $feed = null;
-
     /**
      * @param $url
      * @param array $options
