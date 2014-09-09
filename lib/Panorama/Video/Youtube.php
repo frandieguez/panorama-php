@@ -23,6 +23,7 @@ class Youtube  implements VideoInterface
     /**
      * @param $url
      * @param array $options
+     * @throws \Exception
      */
     public function __construct($url, array $options = array())
     {
