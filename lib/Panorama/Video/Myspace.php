@@ -58,7 +58,7 @@ class Myspace implements VideoInterface
     {
         if (!isset($this->title)) {
             $titles = $this->getPage()->xpath('//item/title');
-            $this->title = (string) $titles[0];
+            $this->title = (string)$titles[0];
         }
 
         return $this->title;
@@ -73,7 +73,7 @@ class Myspace implements VideoInterface
 
         if (!isset($this->thumbnail)) {
             $thumbnails = $this->getPage()->xpath('//item/media:thumbnail');
-            $this->thumbnail = (string) $thumbnails[0]["url"];
+            $this->thumbnail = (string)$thumbnails[0]["url"];
         }
 
         return $this->thumbnail;
@@ -97,7 +97,7 @@ class Myspace implements VideoInterface
     {
         if (!isset($this->embedUrl)) {
             $item = $this->getPage()->xpath('//myspace:itemID');
-            $itemID = (string) $item[0];
+            $itemID = (string)$item[0];
             $this->embedUrl = "http://lads.myspace.com/videos/vplayer.swf?m={$itemID}&v=2&type=video";
         }
 
@@ -111,29 +111,26 @@ class Myspace implements VideoInterface
     public function getEmbedHTML($options = array())
     {
         if (!isset($this->embedHTML)) {
-            $defaultOptions = array(
-                'width' => 560,
-                'height' => 349
-            );
-
+            $defaultOptions = array('width' => 560, 'height' => 349);
             $options = array_merge($defaultOptions, $options);
-            unset($options['width']);
-            unset($options['height']);
 
-            // convert options into and url encoded vars
+            // convert options into
             $htmlOptions = "";
             if (count($options) > 0) {
                 foreach ($options as $key => $value) {
+                    if(in_array($key, array('width', 'height'))) {
+                        continue;
+                    }
                     $htmlOptions .= "&" . $key . "=" . $value;
                 }
             }
 
             $this->embedHTML =
                 "<embed src='{$this->getEmbedUrl()}'\n"
-                ."width='{$defaultOptions['width']}' "
-                ."height='{$defaultOptions['height']}'\n"
-                ."type='application/x-shockwave-flash'>\n"
-                ."</embed>";
+                . "width='{$options['width']}' "
+                . "height='{$options['height']}'\n"
+                . "type='application/x-shockwave-flash'>\n"
+                . "</embed>";
         }
 
         return $this->embedHTML;
@@ -148,7 +145,7 @@ class Myspace implements VideoInterface
     {
         if (!isset($this->FLV)) {
             $item = $this->getPage()->xpath('//media:content');
-            $this->FLV = (string) $item[0]["url"];
+            $this->FLV = (string)$item[0]["url"];
         }
 
         return $this->FLV;
