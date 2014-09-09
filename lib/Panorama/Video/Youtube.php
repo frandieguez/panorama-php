@@ -30,8 +30,6 @@ class Youtube  implements VideoInterface
         $this->options = $options;
         if (!($this->videoId = $this->getvideoId())) {
             throw new \Exception("Video ID not valid.", 1);
-
-            return null;
         }
         $this->getFeed();
 
