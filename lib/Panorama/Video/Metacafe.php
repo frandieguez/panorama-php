@@ -35,6 +35,7 @@ class Metacafe implements VideoInterface
 
         $this->youtubed = ($pos == false) ? false : true;
 
+        // TODO move to another (dev) branch
         // I can't find a video that comes from Youtube so this snippet is
         // untestable for now
         if ($this->youtubed) {
@@ -142,32 +143,29 @@ class Metacafe implements VideoInterface
     public function getEmbedHTML($options = array())
     {
         if (!isset($this->embedHTML)) {
-            $defaultOptions = array(
-                'width' => 560,
-                'height' => 349
-            );
-
+            $defaultOptions = array('width' => 560, 'height' => 349);
             $options = array_merge($defaultOptions, $options);
-            unset($options['width']);
-            unset($options['height']);
 
-            // convert options into and url encoded vars
-            $htmlOptions = '';
+            // convert options into
+            $htmlOptions = "";
             if (count($options) > 0) {
                 foreach ($options as $key => $value) {
-                    $htmlOptions .= '&' . $key . '=' . $value;
+                    if(in_array($key, array('width', 'height'))) {
+                        continue;
+                    }
+                    $htmlOptions .= "&" . $key . "=" . $value;
                 }
             }
 
             $this->embedHTML =
                 "<embed\n"
-                ." src='{$this->getEmbedUrl()}'\n"
-                ." width='{$defaultOptions['width']}'"
-                ." height='{$defaultOptions['height']}'\n"
-                ." wmode='transparent'\n"
-                ." pluginspage='http://www.macromedia.com/go/getflashplayer'\n"
-                ." type='application/x-shockwave-flash'>\n"
-                ."</embed>";
+                . " src='{$this->getEmbedUrl()}'\n"
+                . " width='{$options['width']}'"
+                . " height='{$options['height']}'\n"
+                . " wmode='transparent'\n"
+                . " pluginspage='http://www.macromedia.com/go/getflashplayer'\n"
+                . " type='application/x-shockwave-flash'>\n"
+                . "</embed>";
         }
 
         return $this->embedHTML;
@@ -233,19 +231,19 @@ class Metacafe implements VideoInterface
         if (!isset($url_parts['host'])) return false; //can't process relative URLs
         if (!isset($url_parts['path'])) $url_parts['path'] = '/';
 
-        $sock = fsockopen($url_parts['host'], (isset($url_parts['port']) ? (int) $url_parts['port'] : 80), $errno, $errstr, 30);
+        $sock = fsockopen($url_parts['host'], (isset($url_parts['port']) ? (int)$url_parts['port'] : 80), $errno, $errstr, 30);
         if (!$sock) return false;
 
-        $request = "HEAD " . $url_parts['path'] . (isset($url_parts['query']) ? '?'.$url_parts['query'] : '') . " HTTP/1.1\r\n";
+        $request = "HEAD " . $url_parts['path'] . (isset($url_parts['query']) ? '?' . $url_parts['query'] : '') . " HTTP/1.1\r\n";
         $request .= 'Host: ' . $url_parts['host'] . "\r\n";
         $request .= "Connection: Close\r\n\r\n";
         fwrite($sock, $request);
         $response = '';
-        while(!feof($sock)) $response .= fread($sock, 8192);
+        while (!feof($sock)) $response .= fread($sock, 8192);
         fclose($sock);
 
         if (preg_match('/^Location: (.+?)$/m', $response, $matches)) {
-            if ( substr($matches[1], 0, 1) == "/" )
+            if (substr($matches[1], 0, 1) == "/")
 
                 return $url_parts['scheme'] . "://" . $url_parts['host'] . trim($matches[1]);
             else
@@ -290,7 +288,7 @@ class Metacafe implements VideoInterface
     private static function getFinalRedirect($url)
     {
         $redirects = self::getAllRedirects($url);
-        if (count($redirects)>0) {
+        if (count($redirects) > 0) {
             return array_pop($redirects);
         } else {
             return $url;
