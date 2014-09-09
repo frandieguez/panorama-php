@@ -130,11 +130,7 @@ class Flickr implements VideoInterface
      */
     public function getEmbedHTML($options = array())
     {
-        $defaultOptions = array(
-            'width' => 560,
-            'height' => 349
-        );
-
+        $defaultOptions = array('width' => 560, 'height' => 349);
         $options = array_merge($defaultOptions, $options);
 
         // convert options into
