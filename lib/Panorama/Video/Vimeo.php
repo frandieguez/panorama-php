@@ -46,7 +46,7 @@ class Vimeo implements VideoInterface
             $videoId = $this->getVideoID();
 
             $document = file_get_contents(
-                "http://vimeo.com/api/v2/video/".$videoId.".php"
+                "http://vimeo.com/api/v2/video/" . $videoId . ".php"
             );
             if (!$document) {
                 throw new \Exception('Video Id not valid.');
@@ -77,7 +77,7 @@ class Vimeo implements VideoInterface
     public function getTitle()
     {
         if (!isset($this->title)) {
-            $this->title = (string) $this->feed['title'];
+            $this->title = (string)$this->feed['title'];
         }
 
         return $this->title;
@@ -91,7 +91,7 @@ class Vimeo implements VideoInterface
     public function getThumbnail()
     {
         if (!isset($this->thumbnail)) {
-            $this->thumbnail = (string) $this->feed['thumbnail_large'];
+            $this->thumbnail = (string)$this->feed['thumbnail_large'];
         }
 
         return $this->thumbnail;
@@ -104,7 +104,7 @@ class Vimeo implements VideoInterface
     public function getDuration()
     {
         if (!isset($this->duration)) {
-            $this->duration = (string) $this->feed['duration'];
+            $this->duration = (string)$this->feed['duration'];
         }
 
         return $this->duration;
@@ -120,7 +120,7 @@ class Vimeo implements VideoInterface
         if (!isset($this->embedUrl)) {
             $videoId = $this->getVideoId();
             $this->embedUrl =
-                "http://player.vimeo.com/video/".$this->getVideoID();;
+                "http://player.vimeo.com/video/" . $this->getVideoID();;
         }
 
         return $this->embedUrl;
@@ -135,31 +135,26 @@ class Vimeo implements VideoInterface
     public function getEmbedHTML($options = array())
     {
         if (!isset($this->embedHTML)) {
-            $defaultOptions = array(
-                'width' => 560,
-                'height' => 349
-                );
-
+            $defaultOptions = array('width' => 560, 'height' => 349);
             $options = array_merge($defaultOptions, $options);
-            unset($options['width']);
-            unset($options['height']);
 
             // convert options into
             $htmlOptions = "";
             if (count($options) > 0) {
                 foreach ($options as $key => $value) {
+                    if (in_array($key, array('width', 'height'))) {
+                        continue;
+                    }
                     $htmlOptions .= "&" . $key . "=" . $value;
                 }
             }
-            $embedUrl = $this->getEmbedUrl();
 
-            $this->embedHTML =
-            '<iframe src="'.$this->getEmbedUrl()
-            .'" width="'.$defaultOptions['width']
-            .'" height="'.$defaultOptions['height'].'" '
-            .'frameborder="0" webkitAllowFullScreen '
-            .'mozallowfullscreen allowFullScreen>'
-            .'</iframe>';
+            $this->embedHTML = '<iframe src="' . $this->getEmbedUrl()
+                . '" width="' . $options['width']
+                . '" height="' . $options['height'] . '" '
+                . 'frameborder="0" webkitAllowFullScreen '
+                . 'mozallowfullscreen allowFullScreen>'
+                . '</iframe>';
         }
 
         return $this->embedHTML;
@@ -175,7 +170,7 @@ class Vimeo implements VideoInterface
     {
 
         if (!isset($this->FLV)) {
-            $this->FLV =  "http://player.vimeo.com/video/".$this->getVideoID();
+            $this->FLV = "http://player.vimeo.com/video/" . $this->getVideoID();
         }
 
         return $this->FLV;
@@ -210,7 +205,7 @@ class Vimeo implements VideoInterface
      * @return string,    the Video ID from an Vimeo URL
      * @throws Exception, if path is not valid
      */
-    public function getVideoID($url="")
+    public function getVideoID($url = "")
     {
 
         if (!isset($this->videoId)) {
