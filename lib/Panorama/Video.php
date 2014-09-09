@@ -31,7 +31,7 @@ class Video
      * __construct()
      * @param $arg
      */
-    public function __construct($url = null, $options = null)
+    public function __construct($url = null)
     {
 
         // check arguments validation
@@ -49,7 +49,7 @@ class Video
 
         // If the Video service is supported instantiate it, otherwise raise Exception
         if (file_exists(dirname(__FILE__).DIRECTORY_SEPARATOR."Video".DIRECTORY_SEPARATOR.$serviceName.".php")) {
-            $this->object = new $this->className($url, $options);
+            $this->object = new $this->className($url);
             if (!($this->object instanceof \Panorama\Video\VideoInterface)) {
                 throw new \Exception("Video ID not valid.");
             }

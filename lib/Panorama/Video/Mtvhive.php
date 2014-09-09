@@ -23,7 +23,7 @@ class Mtvhive
      * __construct()
      * @param $url
      */
-    public function __construct($url, $options = null)
+    public function __construct($url)
     {
 
         throw new \Exception("Not implemented");

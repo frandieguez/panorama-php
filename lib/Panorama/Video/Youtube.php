@@ -21,7 +21,7 @@ class Youtube  implements VideoInterface
      * __construct()
      * @param $url
      */
-    public function __construct($url, $options)
+    public function __construct($url)
     {
         $this->url = $url;
         if (!($this->videoId = $this->getvideoId())) {

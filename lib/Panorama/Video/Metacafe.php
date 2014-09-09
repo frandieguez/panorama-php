@@ -21,7 +21,7 @@ class Metacafe implements VideoInterface
      * __construct()
      * @param $url
      */
-    public function __construct($url, $options = null)
+    public function __construct($url)
     {
 
         $this->url = $url;
