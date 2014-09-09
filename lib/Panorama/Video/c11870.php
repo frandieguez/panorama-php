@@ -134,27 +134,24 @@ class c11870 implements VideoInterface
      */
     public function getEmbedHTML($options = array())
     {
-        $defaultOptions = array(
-            'width' => 560,
-            'height' => 349
-        );
-
+        $defaultOptions = array('width' => 560, 'height' => 349);
         $options = array_merge($defaultOptions, $options);
-        unset($options['width']);
-        unset($options['height']);
 
-        // convert options into url encoded string
+        // convert options into
         $htmlOptions = "";
         if (count($options) > 0) {
             foreach ($options as $key => $value) {
+                if (in_array($key, array('width', 'height'))) {
+                    continue;
+                }
                 $htmlOptions .= "&" . $key . "=" . $value;
             }
         }
 
         return "<object type='application/x-shockwave-flash'\n"
         . "data='http://11870.com/multimedia/11870/player.swf'\n"
-        . "width='{$defaultOptions['width']}' "
-        . "height='{$defaultOptions['height']}'\n"
+        . "width='{$options['width']}' "
+        . "height='{$options['height']}'\n"
         . "bgcolor='#000000'>\n"
         . "<param name='movie' value='{$this->getEmbedUrl()}' />\n"
         . "<param name='allowfullscreen' value='true'>\n"
