@@ -113,31 +113,28 @@ class Dailymotion implements VideoInterface
     public function getEmbedHTML($options = array())
     {
         if (!isset($this->embedHTML)) {
-            $defaultOptions = array(
-                'width' => 560,
-                'height' => 349
-            );
-
+            $defaultOptions = array('width' => 560, 'height' => 349);
             $options = array_merge($defaultOptions, $options);
-            unset($options['width']);
-            unset($options['height']);
 
-            // convert options into and url encoded vars
+            // convert options into
             $htmlOptions = "";
             if (count($options) > 0) {
                 foreach ($options as $key => $value) {
+                    if(in_array($key, array('width', 'height'))) {
+                        continue;
+                    }
                     $htmlOptions .= "&" . $key . "=" . $value;
                 }
             }
 
             $this->embedHTML =
-                "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>\n"
+                "<object width='{$options['width']}' height='{$options['height']}'>\n"
                 . "<param name='movie' value='{$this->getEmbedUrl()}&related=1'></param>\n"
                 . "<param name='allowFullScreen' value='true'></param>\n"
                 . "<param name='allowScriptAccess' value='always'></param>\n"
                 . "<embed type='application/x-shockwave-flash'\n"
                 . "src='{$this->getEmbedUrl()}&related=1'\n"
-                . "width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'\n"
+                . "width='{$options['width']}' height='{$options['height']}'\n"
                 . "allowFullScreen='true' allowScriptAccess='always'>\n"
                 . "</embed>\n"
                 . "</object>";
