@@ -19,13 +19,17 @@ namespace Panorama\Video;
 
 class Myspace implements VideoInterface
 {
-    /*
-     * __construct()
+    public $url;
+    public $options = array();
+
+    /**
      * @param $url
+     * @param array $options
      */
-    public function __construct($url, $options = null)
+    public function __construct($url, array $options = array())
     {
         $this->url = $url;
+        $this->options = $options;
     }
 
     /*

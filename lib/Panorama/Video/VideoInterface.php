@@ -25,6 +25,8 @@ namespace Panorama\Video;
  **/
 interface VideoInterface {
 
+    public function __construct($url, array $options = array());
+
     /**
      * Returns the download url for the video
     */

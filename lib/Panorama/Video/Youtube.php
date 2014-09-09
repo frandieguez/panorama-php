@@ -17,13 +17,17 @@ namespace Panorama\Video;
 
 class Youtube  implements VideoInterface
 {
-    /*
-     * __construct()
+    public $url;
+    public $options = array();
+
+    /**
      * @param $url
+     * @param array $options
      */
-    public function __construct($url, $options)
+    public function __construct($url, array $options = array())
     {
         $this->url = $url;
+        $this->options = $options;
         if (!($this->videoId = $this->getvideoId())) {
             throw new \Exception("Video ID not valid.", 1);
 

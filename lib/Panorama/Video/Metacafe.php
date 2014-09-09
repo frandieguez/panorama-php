@@ -17,14 +17,17 @@ namespace Panorama\Video;
 
 class Metacafe implements VideoInterface
 {
-    /*
-     * __construct()
-     * @param $url
-     */
-    public function __construct($url, $options = null)
-    {
+    public $url;
+    public $options = array();
 
+    /**
+     * @param $url
+     * @param array $options
+     */
+    public function __construct($url, array $options = array())
+    {
         $this->url = $url;
+        $this->options = $options;
         $this->args = $this->getArgs();
         $this->videoId = $this->getVideoId();
 

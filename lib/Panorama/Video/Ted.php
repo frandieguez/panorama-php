@@ -19,16 +19,20 @@ namespace Panorama\Video;
 
 class Ted implements VideoInterface
 {
+    public $url;
+    public $options = array();
+
     private $feed = null;
 
-    /*
-     * __construct()
+    /**
      * @param $url
+     * @param array $options
+     * @throws \Exception
      */
-    public function __construct($url)
+    public function __construct($url, array $options = array())
     {
-
         $this->url = $url;
+        $this->options = $options;
 
         $path = parse_url($url, PHP_URL_PATH);
         if (!preg_match("@talks@", $path)) {

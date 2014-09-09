@@ -14,23 +14,27 @@ namespace Panorama\Video;
  */
 class Flickr implements VideoInterface
 {
-    public $flickrConnection = null;
-    public $flickrAuthKeys   = null;
+    public $url;
+    public $options = array();
 
-    /*
-     * __construct()
-     * @param $params
+    public $flickrConnection = null;
+    public $flickrAuthKeys = null;
+
+    /**
+     * @param $url
+     * @param array $options
      */
-    public function __construct($url)
+    public function __construct($url, array $options = array())
     {
         $this->url = $url;
+        $this->options = $options;
 
         $this->setFlickrAuth();
         $this->params = array(
-            'api_key'	=> $this->flickrAuthKeys['flickr_key'],
-            'method'	=> 'flickr.photos.getInfo',
-            'photo_id'	=> $this->getVideoId(),
-            'format'	=> 'php_serial',
+            'api_key' => $this->flickrAuthKeys['flickr_key'],
+            'method' => 'flickr.photos.getInfo',
+            'photo_id' => $this->getVideoId(),
+            'format' => 'php_serial',
         );
 
         //$this->getFlickrconnection();
@@ -46,8 +50,8 @@ class Flickr implements VideoInterface
         if (is_null($this->flickrAuthKeys)) {
 
             if (defined('FLICKR_KEY')
-                && defined('FLICKR_SECRET_KEY'))
-            {
+                && defined('FLICKR_SECRET_KEY')
+            ) {
                 $this->flickrAuthKeys = array(
                     'flickr_key' => FLICKR_KEY,
                     'flickr_secret_key' => FLICKR_SECRET_KEY,
@@ -55,8 +59,8 @@ class Flickr implements VideoInterface
             }
 
             if (isset($params['flickr_key'])
-                && isset($params['flickr_secret_key']))
-            {
+                && isset($params['flickr_secret_key'])
+            ) {
                 $this->flickrAuthKeys = array(
                     'flickr_key' => $params['flickr_key'],
                     'flickr_secret_key' => $params['flickr_secret_key'],
@@ -84,10 +88,10 @@ class Flickr implements VideoInterface
 
             $encoded_params = array();
             foreach ($this->params as $k => $v) {
-                $encoded_params[] = urlencode($k).'='.urlencode($v);
+                $encoded_params[] = urlencode($k) . '=' . urlencode($v);
             }
 
-            $url = "http://api.flickr.com/services/rest/?".implode('&', $encoded_params);
+            $url = "http://api.flickr.com/services/rest/?" . implode('&', $encoded_params);
 
             $rsp = file_get_contents($url);
             $rsp_obj = unserialize($rsp);
@@ -107,7 +111,7 @@ class Flickr implements VideoInterface
 
     /**
      * Returns the download url for the video
-    */
+     */
     public function getDownloadUrl()
     {
 
@@ -115,7 +119,7 @@ class Flickr implements VideoInterface
 
     /**
      * Returns the video duration in secs
-    */
+     */
     public function getDuration()
     {
         return null;
@@ -123,13 +127,13 @@ class Flickr implements VideoInterface
 
     /**
      * Returns the video embedHTML for put in a webpage
-    */
+     */
     public function getEmbedHTML($options = array())
     {
         $defaultOptions = array(
-              'width' => 560,
-              'height' => 349
-              );
+            'width' => 560,
+            'height' => 349
+        );
 
         $options = array_merge($defaultOptions, $options);
 
@@ -159,15 +163,15 @@ class Flickr implements VideoInterface
 
     /**
      * Returns the url of the video for embed in custom flash player
-    */
+     */
     public function getEmbedUrl()
     {
         if (!isset($this->embedUrl)) {
             $videoId = $this->getVideoId();
             $object = $this->getFlickrObject();
 
-            $this->embedUrl =   "http://www.flickr.com/apps/video/stewart.swf?v=63881&intl_lang=en-us"
-                                ."&photo_secret={$object['secret']}&photo_id={$videoId}";
+            $this->embedUrl = "http://www.flickr.com/apps/video/stewart.swf?v=63881&intl_lang=en-us"
+                . "&photo_secret={$object['secret']}&photo_id={$videoId}";
         }
 
         return $this->embedUrl;
@@ -175,16 +179,16 @@ class Flickr implements VideoInterface
 
     /**
      * Returns the url of the video in FLV format
-    */
+     */
     public function getFLV()
     {
         return "Not yet implemented";
 
         if (!isset($this->FLV)) {
             $videoObject = $this->getFlickrObject();
-            $playerUrl =   "http://www.flickr.com/apps/video/video_mtl_xml.gne?v=x"
-                            ."&photo_id={$this->getVideoId()}&secret={$videoObject['secret']}"
-                            ."&olang=en-us&noBuffer=null&bitrate=700&target=_blank";
+            $playerUrl = "http://www.flickr.com/apps/video/video_mtl_xml.gne?v=x"
+                . "&photo_id={$this->getVideoId()}&secret={$videoObject['secret']}"
+                . "&olang=en-us&noBuffer=null&bitrate=700&target=_blank";
             $playerXML = simplexml_load_string(file_get_contents($playerUrl));
             $dataIdXpath = $playerXML->xpath("//Data/Item[@id='id']");
             $dataId = $dataIdXpath;
@@ -203,7 +207,7 @@ class Flickr implements VideoInterface
 
     /**
      * Returns the service name of the video
-    */
+     */
     public function getService()
     {
         return "Flickr";
@@ -213,7 +217,7 @@ class Flickr implements VideoInterface
      * Returns the default thumbnail of this video
      *
      * @return the default thumbnail of this video
-    */
+     */
     public function getThumbnail()
     {
         if (!isset($this->thumbnail)) {
@@ -229,7 +233,7 @@ class Flickr implements VideoInterface
      * Returns the title of this video
      *
      * @return string, the title of this video
-    */
+     */
     public function getTitle()
     {
         if (!isset($this->title)) {
@@ -246,13 +250,13 @@ class Flickr implements VideoInterface
      * Returns the internal video id in the particular service
      *
      * @return string, the video ID for the given url.
-    */
+     */
     public function getVideoId()
     {
         if (!isset($this->videoId)) {
             $url = parse_url($this->url);
             $path = preg_split("@/@", $url["path"]);
-            $this->videoId = $path[count($path)-1];
+            $this->videoId = $path[count($path) - 1];
         }
 
         return $this->videoId;

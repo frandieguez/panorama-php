@@ -17,13 +17,17 @@ namespace Panorama\Video;
 
 class c11870 implements VideoInterface
 {
-    /*
-     * __construct()
-     * @param string $url the url for this video
+    public $url;
+    public $options = array();
+
+    /**
+     * @param $url
+     * @param array $options
      */
-    public function __construct($url)
+    public function __construct($url, array $options = array())
     {
         $this->url = $url;
+        $this->options = $options;
         $this->getHash();
     }
 
@@ -76,7 +80,7 @@ class c11870 implements VideoInterface
         if (!isset($this->title)) {
             preg_match('@<title>(.*)</title>@', $this->getPage(), $matches);
             $title = preg_split('@ - www.11870.com@', $matches[1]);
-            $this->title = iconv('ISO-8859-1', 'UTF-8', (string) $title[0]);
+            $this->title = iconv('ISO-8859-1', 'UTF-8', (string)$title[0]);
         }
 
         return $this->title;
@@ -117,7 +121,7 @@ class c11870 implements VideoInterface
         if (!isset($this->embedUrl)) {
             $hash = $this->getHash();
             $this->embedUrl = "http://m2.11870.com/multimedia/11870/player.swf?"
-                            . $this->getFlashVars() . "&logo=" . $hash['logo'];
+                . $this->getFlashVars() . "&logo=" . $hash['logo'];
         }
 
         return $this->embedUrl;
@@ -131,9 +135,9 @@ class c11870 implements VideoInterface
     public function getEmbedHTML($options = array())
     {
         $defaultOptions = array(
-              'width' => 560,
-              'height' => 349
-            );
+            'width' => 560,
+            'height' => 349
+        );
 
         $options = array_merge($defaultOptions, $options);
         unset($options['width']);
@@ -148,17 +152,17 @@ class c11870 implements VideoInterface
         }
 
         return "<object type='application/x-shockwave-flash'\n"
-                ."data='http://11870.com/multimedia/11870/player.swf'\n"
-                ."width='{$defaultOptions['width']}' "
-                ."height='{$defaultOptions['height']}'\n"
-                ."bgcolor='#000000'>\n"
-                ."<param name='movie' value='{$this->getEmbedUrl()}' />\n"
-                ."<param name='allowfullscreen' value='true'>\n"
-                ."<param name='allowscriptaccess' value='always'>\n"
-                ."<param name='seamlesstabbing' value='true'>\n"
-                ."<param name='wmode' value='window'>\n"
-                ."<param name='flashvars' value='{$this->getFlashVars()}'>\n"
-                ."</object>";
+        . "data='http://11870.com/multimedia/11870/player.swf'\n"
+        . "width='{$defaultOptions['width']}' "
+        . "height='{$defaultOptions['height']}'\n"
+        . "bgcolor='#000000'>\n"
+        . "<param name='movie' value='{$this->getEmbedUrl()}' />\n"
+        . "<param name='allowfullscreen' value='true'>\n"
+        . "<param name='allowscriptaccess' value='always'>\n"
+        . "<param name='seamlesstabbing' value='true'>\n"
+        . "<param name='wmode' value='window'>\n"
+        . "<param name='flashvars' value='{$this->getFlashVars()}'>\n"
+        . "</object>";
     }
 
     /*

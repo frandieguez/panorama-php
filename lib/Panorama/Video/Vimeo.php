@@ -19,15 +19,19 @@ namespace Panorama\Video;
 
 class Vimeo implements VideoInterface
 {
+    public $url;
+    public $options = array();
+
     private $feed = null;
 
-    /*
-     * __construct()
+    /**
      * @param $url
+     * @param array $options
      */
-    public function __construct($url)
+    public function __construct($url, array $options = array())
     {
         $this->url = $url;
+        $this->options = $options;
         $this->videoId = $this->getVideoID($this->url);
         $this->getFeed();
     }

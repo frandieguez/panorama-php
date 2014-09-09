@@ -19,14 +19,17 @@ namespace Panorama\Video;
 
 class Dailymotion implements VideoInterface
 {
-    /*
-     * Initializes the Dailymotion video wrapper from one url
-     *
-     * @return null
+    public $url;
+    public $options = array();
+
+    /**
+     * @param $url
+     * @param array $options
      */
-    public function __construct($url, $options = null)
+    public function __construct($url, array $options = array())
     {
         $this->url = $url;
+        $this->options = $options;
     }
 
     /*
@@ -54,7 +57,7 @@ class Dailymotion implements VideoInterface
     {
         if (!isset($this->title)) {
             $titles = $this->getPage()->xpath('//item/title');
-            $this->title = (string) $titles[0];
+            $this->title = (string)$titles[0];
         }
 
         return $this->title;
@@ -96,7 +99,7 @@ class Dailymotion implements VideoInterface
     {
         if (!isset($this->embedUrl)) {
             $embed = $this->getPage()->xpath("//media:content[@type='application/x-shockwave-flash']");
-            $this->embedUrl = (string) $embed[0]["url"];
+            $this->embedUrl = (string)$embed[0]["url"];
         }
 
         return $this->embedUrl;
@@ -111,9 +114,9 @@ class Dailymotion implements VideoInterface
     {
         if (!isset($this->embedHTML)) {
             $defaultOptions = array(
-                  'width' => 560,
-                  'height' => 349
-                  );
+                'width' => 560,
+                'height' => 349
+            );
 
             $options = array_merge($defaultOptions, $options);
             unset($options['width']);
@@ -129,15 +132,15 @@ class Dailymotion implements VideoInterface
 
             $this->embedHTML =
                 "<object width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'>\n"
-                ."<param name='movie' value='{$this->getEmbedUrl()}&related=1'></param>\n"
-                ."<param name='allowFullScreen' value='true'></param>\n"
-                ."<param name='allowScriptAccess' value='always'></param>\n"
-                ."<embed type='application/x-shockwave-flash'\n"
-                ."src='{$this->getEmbedUrl()}&related=1'\n"
-                ."width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'\n"
-                ."allowFullScreen='true' allowScriptAccess='always'>\n"
-                ."</embed>\n"
-                ."</object>";
+                . "<param name='movie' value='{$this->getEmbedUrl()}&related=1'></param>\n"
+                . "<param name='allowFullScreen' value='true'></param>\n"
+                . "<param name='allowScriptAccess' value='always'></param>\n"
+                . "<embed type='application/x-shockwave-flash'\n"
+                . "src='{$this->getEmbedUrl()}&related=1'\n"
+                . "width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'\n"
+                . "allowFullScreen='true' allowScriptAccess='always'>\n"
+                . "</embed>\n"
+                . "</object>";
         }
 
         return $this->embedHTML;
@@ -153,7 +156,7 @@ class Dailymotion implements VideoInterface
     {
         if (!isset($this->FLV)) {
             $item = $this->getPage()->xpath('//media:content');
-            $this->FLV = (string) $item[0]["url"];
+            $this->FLV = (string)$item[0]["url"];
         }
 
         return $this->FLV;
