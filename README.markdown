@@ -135,7 +135,7 @@ For running tests:
 
 Build Status
 ------------
-[<img src="https://secure.travis-ci.org/frandieguez/Panorama-PHP.png"/>](http://travis-ci.org/frandieguez/Panorama-PHP)
+[<img src="https://secure.travis-ci.org/frandieguez/panorama-php.png"/>](http://travis-ci.org/frandieguez/panorama-php)
 
 And... what else?
 -----------------
