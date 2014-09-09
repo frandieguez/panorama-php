@@ -17,17 +17,20 @@ namespace Panorama\Video;
 
 class Youtube  implements VideoInterface
 {
-    /*
-     * __construct()
+    public $url;
+    public $options = array();
+
+    /**
      * @param $url
+     * @param array $options
+     * @throws \Exception
      */
-    public function __construct($url)
+    public function __construct($url, array $options = array())
     {
         $this->url = $url;
+        $this->options = $options;
         if (!($this->videoId = $this->getvideoId())) {
             throw new \Exception("Video ID not valid.", 1);
-
-            return null;
         }
         $this->getFeed();
 
@@ -110,20 +113,16 @@ class Youtube  implements VideoInterface
      */
     public function getEmbedHTML($options = array())
     {
-        $defaultOptions = array(
-            'width' => 560,
-            'height' => 349
-        );
-
+        $defaultOptions = array('width' => 560, 'height' => 349);
         $options = array_merge($defaultOptions, $options);
 
         // convert options into
         $htmlOptions = "";
         if (count($options) > 0) {
-            $urlOptions = $options;
-            unset($urlOptions['height']);
-            unset($urlOptions['width']);
-            foreach ($urlOptions as $key => $value) {
+            foreach ($options as $key => $value) {
+                if (in_array($key, array('width', 'height'))) {
+                    continue;
+                }
                 $htmlOptions .= "&" . $key . "=" . $value;
             }
         }

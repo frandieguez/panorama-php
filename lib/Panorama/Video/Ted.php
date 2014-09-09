@@ -19,16 +19,18 @@ namespace Panorama\Video;
 
 class Ted implements VideoInterface
 {
-    private $feed = null;
+    public $url;
+    public $options = array();
 
-    /*
-     * __construct()
+    /**
      * @param $url
+     * @param array $options
+     * @throws \Exception
      */
-    public function __construct($url)
+    public function __construct($url, array $options = array())
     {
-
         $this->url = $url;
+        $this->options = $options;
 
         $path = parse_url($url, PHP_URL_PATH);
         if (!preg_match("@talks@", $path)) {
@@ -109,26 +111,23 @@ class Ted implements VideoInterface
      */
     public function getEmbedHTML($options = array())
     {
-        $defaultOptions = array(
-              'width' => 560,
-              'height' => 349
-              );
-
+        $defaultOptions = array('width' => 560, 'height' => 349);
         $options = array_merge($defaultOptions, $options);
-        unset($options['width']);
-        unset($options['height']);
 
         // convert options into
         $htmlOptions = "";
         if (count($options) > 0) {
             foreach ($options as $key => $value) {
+                if(in_array($key, array('width', 'height'))) {
+                    continue;
+                }
                 $htmlOptions .= "&" . $key . "=" . $value;
             }
         }
         $embedUrl = $this->getEmbedUrl();
 
-        return "<object width='{$defaultOptions['width']}' "
-            ."height='{$defaultOptions['height']}'>\n"
+        return "<object width='{$options['width']}' "
+            ."height='{$options['height']}'>\n"
             ."<param name='movie' value='{$embedUrl}'></param>\n"
             ."<param name='allowFullScreen' value='true'></param>\n"
             ."<param name='wmode' value='transparent'></param>\n"
@@ -137,8 +136,8 @@ class Ted implements VideoInterface
             ."type='application/x-shockwave-flash'\n"
             ."wmode='transparent' allowFullScreen='true' bgColor='#ffffff'\n"
             ."src='{$embedUrl}'\n"
-            ."width='{$defaultOptions['width']}' "
-            ."height='{$defaultOptions['height']}'></embed>\n"
+            ."width='{$options['width']}' "
+            ."height='{$options['height']}'></embed>\n"
             ."</object>";
 
     }
