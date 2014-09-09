@@ -17,18 +17,20 @@
  **/
 namespace Panorama\Video;
 
-class Dalealplay  implements VideoInterface
+class Dalealplay implements VideoInterface
 {
-    /*
-     * __construct()
+    public $url;
+    public $options = array();
+
+    /**
      * @param $url
+     * @param array $options
      */
-    public function __construct($url)
+    public function __construct($url, array $options = array())
     {
-
         $this->url = $url;
+        $this->options = $options;
         $this->getVideoID();
-
     }
 
     /*
@@ -52,8 +54,8 @@ class Dalealplay  implements VideoInterface
     public function setPage($page = '')
     {
         if (!empty($page)
-            && !isset($this->page))
-        {
+            && !isset($this->page)
+        ) {
             $this->page = $page;
         }
 
@@ -70,7 +72,7 @@ class Dalealplay  implements VideoInterface
             preg_match('@<title>(.*)</title>@', $this->getPage(), $matches);
             $title = preg_split('@ - www.dalealplay.com@', $matches[1]);
             $title = $title[0];
-            $this->title = iconv('ISO-8859-1', 'UTF-8', (string) $title);
+            $this->title = iconv('ISO-8859-1', 'UTF-8', (string)$title);
         }
 
         return $this->title;
@@ -109,7 +111,7 @@ class Dalealplay  implements VideoInterface
         if (!isset($this->embedUrl)) {
             preg_match('@rel="video_src"\shref="(.*)"@', $this->getPage(), $matches);
             $title = preg_replace('@autoStart=true@', 'autoStart=false', $matches[1]);
-            $this->embedUrl = (string) $title;
+            $this->embedUrl = (string)$title;
         }
 
         return $this->embedUrl;
@@ -121,30 +123,27 @@ class Dalealplay  implements VideoInterface
      */
     public function getEmbedHTML($options = array())
     {
-        $defaultOptions = array(
-              'width' => 560,
-              'height' => 349
-              );
-
+        $defaultOptions = array('width' => 560, 'height' => 349);
         $options = array_merge($defaultOptions, $options);
-        unset($options['width']);
-        unset($options['height']);
 
         // convert options into
         $htmlOptions = "";
         if (count($options) > 0) {
             foreach ($options as $key => $value) {
+                if(in_array($key, array('width', 'height'))) {
+                    continue;
+                }
                 $htmlOptions .= "&" . $key . "=" . $value;
             }
         }
 
-        return  "<object type='application/x-shockwave-flash'\n"
-                ."width='{$defaultOptions['width']}' height='{$defaultOptions['height']}'\n"
-                ."data='{$this->getEmbedUrl()}'>\n"
-                ."<param name='quality' value='best' />\n"
-                ."<param name='allowfullscreen' value='true' />\n"
-                ."<param name='movie' value='{$this->getEmbedUrl()}' />\n"
-                ."</object>";
+        return "<object type='application/x-shockwave-flash'\n"
+        . "width='{$options['width']}' height='{$options['height']}'\n"
+        . "data='{$this->getEmbedUrl()}'>\n"
+        . "<param name='quality' value='best' />\n"
+        . "<param name='allowfullscreen' value='true' />\n"
+        . "<param name='movie' value='{$this->getEmbedUrl()}' />\n"
+        . "</object>";
     }
 
     /*

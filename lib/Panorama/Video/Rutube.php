@@ -19,15 +19,19 @@ namespace Panorama\Video;
 
 class Rutube implements VideoInterface
 {
+    public $url;
+    public $options = array();
+
     private $rtXmlAPIUrl = "http://rutube.ru/cgi-bin/xmlapi.cgi";
 
-    /*
-     * __construct()
+    /**
      * @param $url
+     * @param array $options
      */
-    public function __construct($url)
+    public function __construct($url, array $options = array())
     {
         $this->url = $url;
+        $this->options = $options;
     }
 
     /*
@@ -105,32 +109,29 @@ class Rutube implements VideoInterface
      */
     public function getEmbedHTML($options = array())
     {
-        $defaultOptions = array(
-            'width' => 560,
-            'height' => 349
-        );
-
+        $defaultOptions = array('width' => 560, 'height' => 349);
         $options = array_merge($defaultOptions, $options);
-        unset($options['width']);
-        unset($options['height']);
 
         // convert options into
         $htmlOptions = "";
         if (count($options) > 0) {
             foreach ($options as $key => $value) {
+                if(in_array($key, array('width', 'height'))) {
+                    continue;
+                }
                 $htmlOptions .= "&" . $key . "=" . $value;
             }
         }
 
-        return  "<object width='{$defaultOptions['width']}' "
-            ."height='{$defaultOptions['height']}'>\n"
+        return  "<object width='{$options['width']}' "
+            ."height='{$options['height']}'>\n"
             ."<param name='movie' value='{$this->getEmbedUrl()}'></param>\n"
             ."<param name='wmode' value='window'></param>\n"
             ."<param name='allowFullScreen' value='true'></param>\n"
             ."<embed type='application/x-shockwave-flash\n"
             ."src='{$this->getEmbedUrl()}'\n"
-            ."width='{$defaultOptions['width']}' "
-            ."height='{$defaultOptions['height']}'\n"
+            ."width='{$options['width']}' "
+            ."height='{$options['height']}'\n"
             ."wmode='window' allowFullScreen='true'></embed>\n"
             ."</object>";
     }

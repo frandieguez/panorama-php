@@ -27,13 +27,13 @@ class Video
     private $object = null;
 
     private $className = null;
+
     /*
      * __construct()
      * @param $arg
      */
-    public function __construct($url = null)
+    public function __construct($url = null, array $options = array())
     {
-
         // check arguments validation
         if (!isset($url) || is_null($url)) {
             throw new \InvalidArgumentException("We need a video url");
@@ -44,19 +44,20 @@ class Video
         $serviceName = self::camelize(self::getDomain($url));
 
         // If the service starts with a number prepend a "c" for avoid PHP language error
-        if (preg_match("@^\d@",$serviceName)) { $serviceName = "c".$serviceName; }
+        if (preg_match("@^\d@", $serviceName)) {
+            $serviceName = "c" . $serviceName;
+        }
         $this->className = "\Panorama\Video\\" . $serviceName;
 
         // If the Video service is supported instantiate it, otherwise raise Exception
-        if (file_exists(dirname(__FILE__).DIRECTORY_SEPARATOR."Video".DIRECTORY_SEPARATOR.$serviceName.".php")) {
-            $this->object = new $this->className($url);
+        if (file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . "Video" . DIRECTORY_SEPARATOR . $serviceName . ".php")) {
+            $this->object = new $this->className($url, $options);
             if (!($this->object instanceof \Panorama\Video\VideoInterface)) {
                 throw new \Exception("Video ID not valid.");
             }
         } else {
             throw new \Exception("Video service or Url not supported");
         }
-
     }
 
     /*
@@ -182,14 +183,14 @@ class Video
     }
 
     /**
-    * Returns the given lower_case_and_underscored_word as a CamelCased word.
-    *
-    * @param string $lower_case_and_underscored_word Word to camelize
-    * @return string Camelized word. LikeThis.
-    * @access public
-    * @static
-    * @link http://book.cakephp.org/view/572/Class-methods
-    */
+     * Returns the given lower_case_and_underscored_word as a CamelCased word.
+     *
+     * @param string $lower_case_and_underscored_word Word to camelize
+     * @return string Camelized word. LikeThis.
+     * @access public
+     * @static
+     * @link http://book.cakephp.org/view/572/Class-methods
+     */
     public function camelize($lowerCaseAndUnderscoredWord)
     {
         return str_replace(" ", "", ucwords(str_replace("_", " ", $lowerCaseAndUnderscoredWord)));
@@ -200,19 +201,18 @@ class Video
      *
      * @param $url
      */
-    public static function getDomain($url="")
+    public static function getDomain($url = "")
     {
         $host = parse_url($url);
-        $domainParts = preg_split("@\.@",$host["host"]);
+        $domainParts = preg_split("@\.@", $host["host"]);
 
         /**
          * If domain name has a subdomain return the second part
          * if not return the first part
-        */
+         */
         $domainPartsCount = count($domainParts);
 
         return $domainParts[$domainPartsCount - 2];
-
     }
 
 }

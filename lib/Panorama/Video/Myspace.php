@@ -19,13 +19,17 @@ namespace Panorama\Video;
 
 class Myspace implements VideoInterface
 {
-    /*
-     * __construct()
+    public $url;
+    public $options = array();
+
+    /**
      * @param $url
+     * @param array $options
      */
-    public function __construct($url)
+    public function __construct($url, array $options = array())
     {
         $this->url = $url;
+        $this->options = $options;
     }
 
     /*
@@ -107,29 +111,26 @@ class Myspace implements VideoInterface
     public function getEmbedHTML($options = array())
     {
         if (!isset($this->embedHTML)) {
-            $defaultOptions = array(
-                'width' => 560,
-                'height' => 349
-            );
-
+            $defaultOptions = array('width' => 560, 'height' => 349);
             $options = array_merge($defaultOptions, $options);
-            unset($options['width']);
-            unset($options['height']);
 
-            // convert options into and url encoded vars
+            // convert options into
             $htmlOptions = "";
             if (count($options) > 0) {
                 foreach ($options as $key => $value) {
+                    if(in_array($key, array('width', 'height'))) {
+                        continue;
+                    }
                     $htmlOptions .= "&" . $key . "=" . $value;
                 }
             }
 
             $this->embedHTML =
                 "<embed src='{$this->getEmbedUrl()}'\n"
-                ."width='{$defaultOptions['width']}' "
-                ."height='{$defaultOptions['height']}'\n"
-                ."type='application/x-shockwave-flash'>\n"
-                ."</embed>";
+                . "width='{$options['width']}' "
+                . "height='{$options['height']}'\n"
+                . "type='application/x-shockwave-flash'>\n"
+                . "</embed>";
         }
 
         return $this->embedHTML;
