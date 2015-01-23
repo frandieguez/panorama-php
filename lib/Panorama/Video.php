@@ -126,7 +126,7 @@ class Video
      *
      * @returns string, the embed of the video
      */
-    public function getEmbedHTML($options)
+    public function getEmbedHTML(array $options = array())
     {
         return $this->object->getEmbedHTML($options);
     }
