@@ -79,13 +79,13 @@
 
     <pre>$video = new \Panorama\Video("http://www.youtube.com/watch?v=GPQnbtldFyo")
 
-$video.getTitle() => "paradon del portero"
-$video.getThumbnail() => "http://i4.ytimg.com/vi/GPQnbtldFyo/default.jpg"
-$video.getEmbedUrl() => "http://www.youtube.com/v/GPQnbtldFyo"
-$video.getEmbedHTML()(width, height) => "&lt;object> [...]&lt;/object>"
-$video.getFLV() => "http://...flv"
-# all together :)
-$video.getVideoDetails(width, height) => {
+$video->getTitle() => "paradon del portero"
+$video->getThumbnail() => "http://i4.ytimg.com/vi/GPQnbtldFyo/default.jpg"
+$video->getEmbedUrl() => "http://www.youtube.com/v/GPQnbtldFyo"
+$video->getEmbedHTML()(width, height) => "&lt;object> [...]&lt;/object>"
+$video->getFLV() => "http://...flv"
+# or all together :)
+$video->getVideoDetails(width, height) => {
                                         'title' => ...,
                                         'thumbnail' => ...,
                                         'embed_url' => ...,
