@@ -20,16 +20,16 @@ namespace Panorama\Video;
 class Marca implements VideoInterface
 {
     public $url;
-    public $options = array();
+    public $params = [];
 
     /**
      * @param $url
-     * @param array $options
+     * @param array $params
      */
-    public function __construct($url, array $options = array())
+    public function __construct($url, $params = [])
     {
         $this->url = $url;
-        $this->options = $options;
+        $this->params = $params;
         $this->videoId = $this->getVideoID();
 
         $sub1 = substr($this->videoId, 0, 1);
@@ -95,21 +95,21 @@ class Marca implements VideoInterface
      * Returns the HTML object to embed for this Marca video
      *
      */
-    public function getEmbedHTML($options = array())
+    public function getEmbedHTML($params = [])
     {
         $defaultOptions = array(
-              'width' => 560,
-              'height' => 349
-              );
+          'width' => 560,
+          'height' => 349
+        );
 
-        $options = array_merge($defaultOptions, $options);
-        unset($options['width']);
-        unset($options['height']);
+        $params = array_merge($defaultOptions, $params);
+        unset($params['width']);
+        unset($params['height']);
 
         // convert options into
         $htmlOptions = "";
-        if (count($options) > 0) {
-            foreach ($options as $key => $value) {
+        if (count($params) > 0) {
+            foreach ($params as $key => $value) {
                 $htmlOptions .= "&" . $key . "=" . $value;
             }
         }

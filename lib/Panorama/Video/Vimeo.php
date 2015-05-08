@@ -20,7 +20,7 @@ namespace Panorama\Video;
 class Vimeo implements VideoInterface
 {
     public $url;
-    public $options = array();
+    public $params = [];
 
     private $feed = null;
 
@@ -28,10 +28,12 @@ class Vimeo implements VideoInterface
      * @param $url
      * @param array $options
      */
-    public function __construct($url, array $options = array())
+    public function __construct($url, $params = [])
     {
-        $this->url = $url;
-        $this->options = $options;
+        $this->url    = $url;
+        $this->params = $params;
+
+        // Retrieve video Id and fetch information
         $this->videoId = $this->getVideoID($this->url);
         $this->getFeed();
     }
@@ -132,17 +134,17 @@ class Vimeo implements VideoInterface
      * @param mixed, options to modify the final HTML
      * @return string, the HTML object to embed for this Vimeo video
      */
-    public function getEmbedHTML($options = array())
+    public function getEmbedHTML($options = [])
     {
         if (!isset($this->embedHTML)) {
-            $defaultOptions = array('width' => 560, 'height' => 349);
+            $defaultOptions = ['width' => 560, 'height' => 349];
             $options = array_merge($defaultOptions, $options);
 
             // convert options into
             $htmlOptions = "";
             if (count($options) > 0) {
                 foreach ($options as $key => $value) {
-                    if (in_array($key, array('width', 'height'))) {
+                    if (in_array($key, ['width', 'height'])) {
                         continue;
                     }
                     $htmlOptions .= "&" . $key . "=" . $value;

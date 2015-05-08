@@ -23,9 +23,12 @@ namespace Panorama\Video;
  * @package Panorama\Video
  * @author Fran Diéguez
  **/
-interface VideoInterface {
-
-    public function __construct($url, array $options = array());
+interface VideoInterface
+{
+    /**
+     * Initializes the class with an url and required params
+     */
+    public function __construct($url, $params = []);
 
     /**
      * Returns the download url for the video
@@ -71,5 +74,4 @@ interface VideoInterface {
      * Returns the internal video id in the particular service
     */
     public function getVideoId();
-
 }

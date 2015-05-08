@@ -20,17 +20,17 @@ namespace Panorama\Video;
 class Ted implements VideoInterface
 {
     public $url;
-    public $options = array();
+    public $params = [];
 
     /**
      * @param $url
      * @param array $options
      * @throws \Exception
      */
-    public function __construct($url, array $options = array())
+    public function __construct($url, $params = [])
     {
-        $this->url = $url;
-        $this->options = $options;
+        $this->url    = $url;
+        $this->params = $params;
 
         $path = parse_url($url, PHP_URL_PATH);
         if (!preg_match("@talks@", $path)) {
@@ -109,16 +109,16 @@ class Ted implements VideoInterface
      * Returns the HTML object to embed for this Ted video
      *
      */
-    public function getEmbedHTML($options = array())
+    public function getEmbedHTML($options = [])
     {
-        $defaultOptions = array('width' => 560, 'height' => 349);
+        $defaultOptions = ['width' => 560, 'height' => 349];
         $options = array_merge($defaultOptions, $options);
 
         // convert options into
         $htmlOptions = "";
         if (count($options) > 0) {
             foreach ($options as $key => $value) {
-                if(in_array($key, array('width', 'height'))) {
+                if(in_array($key, ['width', 'height'])) {
                     continue;
                 }
                 $htmlOptions .= "&" . $key . "=" . $value;
@@ -174,7 +174,7 @@ class Ted implements VideoInterface
         if (!isset($this->args)) {
 
             $parts = explode("&", $this->getFlashVars());
-            $this->args = array();
+            $this->args = [];
             foreach ($parts as $part) {
                 $elemParts = explode("=", $part);
                 $args[$elemParts[0]] = $elemParts[1];

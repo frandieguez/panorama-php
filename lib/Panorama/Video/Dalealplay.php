@@ -20,16 +20,17 @@ namespace Panorama\Video;
 class Dalealplay implements VideoInterface
 {
     public $url;
-    public $options = array();
+    public $params = [];
 
     /**
      * @param $url
      * @param array $options
      */
-    public function __construct($url, array $options = array())
+    public function __construct($url, $params = [])
     {
         $this->url = $url;
-        $this->options = $options;
+        $this->params = $params;
+
         $this->getVideoID();
     }
 
@@ -121,16 +122,16 @@ class Dalealplay implements VideoInterface
      * Returns the HTML object to embed for this Dalealplay video
      *
      */
-    public function getEmbedHTML($options = array())
+    public function getEmbedHTML($options = [])
     {
-        $defaultOptions = array('width' => 560, 'height' => 349);
-        $options = array_merge($defaultOptions, $options);
+        $defaultOptions = ['width' => 560, 'height' => 349];
+        $options        = array_merge($defaultOptions, $options);
 
         // convert options into
         $htmlOptions = "";
         if (count($options) > 0) {
             foreach ($options as $key => $value) {
-                if(in_array($key, array('width', 'height'))) {
+                if (in_array($key, ['width', 'height'])) {
                     continue;
                 }
                 $htmlOptions .= "&" . $key . "=" . $value;
@@ -138,12 +139,12 @@ class Dalealplay implements VideoInterface
         }
 
         return "<object type='application/x-shockwave-flash'\n"
-        . "width='{$options['width']}' height='{$options['height']}'\n"
-        . "data='{$this->getEmbedUrl()}'>\n"
-        . "<param name='quality' value='best' />\n"
-        . "<param name='allowfullscreen' value='true' />\n"
-        . "<param name='movie' value='{$this->getEmbedUrl()}' />\n"
-        . "</object>";
+            . "width='{$options['width']}' height='{$options['height']}'\n"
+            . "data='{$this->getEmbedUrl()}'>\n"
+            . "<param name='quality' value='best' />\n"
+            . "<param name='allowfullscreen' value='true' />\n"
+            . "<param name='movie' value='{$this->getEmbedUrl()}' />\n"
+            . "</object>";
     }
 
     /*
@@ -185,7 +186,6 @@ class Dalealplay implements VideoInterface
      */
     public function getVideoId()
     {
-
         if (!isset($this->videoId)) {
             $path = parse_url($this->url, PHP_URL_QUERY);
             preg_match("@con=(\w*)@", $path, $matches);
@@ -193,6 +193,5 @@ class Dalealplay implements VideoInterface
         }
 
         return $this->videoId;
-
     }
 }

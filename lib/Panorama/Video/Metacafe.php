@@ -18,17 +18,18 @@ namespace Panorama\Video;
 class Metacafe implements VideoInterface
 {
     public $url;
-    public $options = array();
+    public $params = [];
 
     /**
      * @param $url
-     * @param array $options
+     * @param array $params
      */
-    public function __construct($url, array $options = array())
+    public function __construct($url, $params = [])
     {
-        $this->url = $url;
-        $this->options = $options;
-        $this->args = $this->getArgs();
+        $this->url     = $url;
+        $this->params  = $params;
+
+        $this->args    = $this->getArgs();
         $this->videoId = $this->getVideoId();
 
         $pos = stripos("yt-", $this->args[0]);
@@ -42,7 +43,6 @@ class Metacafe implements VideoInterface
             $output = preg_split("yt-", $this->args[1]);
             $this->object = new Youtube("http://www.youtube.com/watch?v={$output[1]}");
         }
-
     }
 
     /*
@@ -77,7 +77,6 @@ class Metacafe implements VideoInterface
         }
 
         return $this->args;
-
     }
 
     /*
@@ -95,7 +94,6 @@ class Metacafe implements VideoInterface
         }
 
         return $this->title;
-
     }
 
     /*
@@ -118,7 +116,6 @@ class Metacafe implements VideoInterface
      */
     public function getDuration()
     {
-
         return null;
     }
 
@@ -140,17 +137,17 @@ class Metacafe implements VideoInterface
      * Returns the HTML object to embed for this Metacafe video
      *
      */
-    public function getEmbedHTML($options = array())
+    public function getEmbedHTML($params = [])
     {
         if (!isset($this->embedHTML)) {
-            $defaultOptions = array('width' => 560, 'height' => 349);
-            $options = array_merge($defaultOptions, $options);
+            $defaultOptions = ['width' => 560, 'height' => 349];
+            $params = array_merge($defaultOptions, $params);
 
             // convert options into
             $htmlOptions = "";
-            if (count($options) > 0) {
-                foreach ($options as $key => $value) {
-                    if (in_array($key, array('width', 'height'))) {
+            if (count($params) > 0) {
+                foreach ($params as $key => $value) {
+                    if (in_array($key, ['width', 'height'])) {
                         continue;
                     }
                     $htmlOptions .= "&" . $key . "=" . $value;
@@ -160,8 +157,8 @@ class Metacafe implements VideoInterface
             $this->embedHTML =
                 "<embed\n"
                 . " src='{$this->getEmbedUrl()}'\n"
-                . " width='{$options['width']}'"
-                . " height='{$options['height']}'\n"
+                . " width='{$params['width']}'"
+                . " height='{$params['height']}'\n"
                 . " wmode='transparent'\n"
                 . " pluginspage='http://www.macromedia.com/go/getflashplayer'\n"
                 . " type='application/x-shockwave-flash'>\n"
@@ -227,29 +224,43 @@ class Metacafe implements VideoInterface
         $redirect_url = null;
 
         $url_parts = @parse_url($url);
-        if (!$url_parts) return false;
-        if (!isset($url_parts['host'])) return false; //can't process relative URLs
-        if (!isset($url_parts['path'])) $url_parts['path'] = '/';
+        if (!$url_parts) {
+            return false;
+        }
+        if (!isset($url_parts['host'])) {
+            return false; //can't process relative URLs
+        }
+        if (!isset($url_parts['path'])) {
+            $url_parts['path'] = '/';
+        }
 
-        $sock = fsockopen($url_parts['host'], (isset($url_parts['port']) ? (int) $url_parts['port'] : 80), $errno, $errstr, 30);
-        if (!$sock) return false;
+        $sock = fsockopen(
+            $url_parts['host'],
+            (isset($url_parts['port']) ? (int) $url_parts['port'] : 80),
+            $errno,
+            $errstr,
+            30
+        );
+        if (!$sock) {
+            return false;
+        }
 
         $request = "HEAD " . $url_parts['path'] . (isset($url_parts['query']) ? '?'.$url_parts['query'] : '') . " HTTP/1.1\r\n";
         $request .= 'Host: ' . $url_parts['host'] . "\r\n";
         $request .= "Connection: Close\r\n\r\n";
         fwrite($sock, $request);
         $response = '';
-        while (!feof($sock)) $response .= fread($sock, 8192);
+        while (!feof($sock)) {
+            $response .= fread($sock, 8192);
+        }
         fclose($sock);
 
         if (preg_match('/^Location: (.+?)$/m', $response, $matches)) {
-            if (substr($matches[1], 0, 1) == "/")
-
+            if (substr($matches[1], 0, 1) == "/") {
                 return $url_parts['scheme'] . "://" . $url_parts['host'] . trim($matches[1]);
-            else
-
+            } else {
                 return trim($matches[1]);
-
+            }
         } else {
             return false;
         }
@@ -265,7 +276,7 @@ class Metacafe implements VideoInterface
      */
     private static function getAllRedirects($url)
     {
-        $redirects = array();
+        $redirects = [];
         while ($newurl = self::getRedirectUrl($url)) {
             if (in_array($newurl, $redirects)) {
                 break;
@@ -294,5 +305,4 @@ class Metacafe implements VideoInterface
             return $url;
         }
     }
-
 }

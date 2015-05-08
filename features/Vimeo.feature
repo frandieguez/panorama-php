@@ -15,7 +15,7 @@ Feature: Vimeo service provider
     Scenario: Get the thumbnail of the Vimeo video
         Given The url http://vimeo.com/5362441
         When  I get the thumbnail
-        Then  The result should be "http://b.vimeocdn.com/ts/172/454/17245493_640.jpg"
+        Then  The result should be "http://i.vimeocdn.com/video/17245493_640.jpg"
 
     Scenario: Get the embed HTML of the Vimeo video
         Given The url http://vimeo.com/5362441

@@ -20,16 +20,16 @@ namespace Panorama\Video;
 class Dailymotion implements VideoInterface
 {
     public $url;
-    public $options = array();
+    public $params = [];
 
     /**
      * @param $url
      * @param array $options
      */
-    public function __construct($url, array $options = array())
+    public function __construct($url, $params = [])
     {
         $this->url = $url;
-        $this->options = $options;
+        $this->params = $params;
     }
 
     /*
@@ -70,14 +70,12 @@ class Dailymotion implements VideoInterface
      */
     public function getThumbnail()
     {
-
         if (!isset($this->thumbnail)) {
             $thumbnail = $this->getPage()->xpath('//media:thumbnail');
             $this->thumbnail = preg_replace('@preview_large@', 'preview_medium', $thumbnail[0]["url"]);
         }
 
         return $this->thumbnail;
-
     }
 
     /*
@@ -110,17 +108,17 @@ class Dailymotion implements VideoInterface
      *
      * @return string the html object to embed for this video
      */
-    public function getEmbedHTML($options = array())
+    public function getEmbedHTML($options = [])
     {
         if (!isset($this->embedHTML)) {
-            $defaultOptions = array('width' => 560, 'height' => 349);
+            $defaultOptions = ['width' => 560, 'height' => 349];
             $options = array_merge($defaultOptions, $options);
 
             // convert options into
             $htmlOptions = "";
             if (count($options) > 0) {
                 foreach ($options as $key => $value) {
-                    if (in_array($key, array('width', 'height'))) {
+                    if (in_array($key, ['width', 'height'])) {
                         continue;
                     }
                     $htmlOptions .= "&" . $key . "=" . $value;
@@ -199,6 +197,5 @@ class Dailymotion implements VideoInterface
         }
 
         return $this->videoId;
-
     }
 }

@@ -15,56 +15,53 @@ namespace Panorama\Video;
 class Flickr implements VideoInterface
 {
     public $url;
-    public $options = array();
+    public $params = [];
 
     public $flickrConnection = null;
     public $flickrAuthKeys = null;
 
     /**
      * @param $url
-     * @param array $options
+     * @param array $params
      */
-    public function __construct($url, array $options = array())
+    public function __construct($url, $params = [])
     {
         $this->url = $url;
-        $this->options = $options;
+        $this->params = $params;
 
         $this->setFlickrAuth();
-        $this->params = array(
-            'api_key' => $this->flickrAuthKeys['flickr_key'],
-            'method' => 'flickr.photos.getInfo',
+        $this->params = [
+            'api_key'  => $this->flickrAuthKeys['flickr_key'],
+            'method'   => 'flickr.photos.getInfo',
             'photo_id' => $this->getVideoId(),
-            'format' => 'php_serial',
-        );
+            'format'   => 'php_serial',
+        ];
 
         //$this->getFlickrconnection();
     }
 
     /*
      * Sets the authentication keys for accessing Flickr web service
-     *
      */
-    public function setFlickrAuth($params = array())
+    public function setFlickrAuth($params = [])
     {
-
         if (is_null($this->flickrAuthKeys)) {
-
             if (defined('FLICKR_KEY')
                 && defined('FLICKR_SECRET_KEY')
             ) {
-                $this->flickrAuthKeys = array(
-                    'flickr_key' => FLICKR_KEY,
+                $this->flickrAuthKeys = [
+                    'flickr_key'        => FLICKR_KEY,
                     'flickr_secret_key' => FLICKR_SECRET_KEY,
-                );
+                ];
             }
 
             if (isset($params['flickr_key'])
                 && isset($params['flickr_secret_key'])
             ) {
-                $this->flickrAuthKeys = array(
-                    'flickr_key' => $params['flickr_key'],
+                $this->flickrAuthKeys = [
+                    'flickr_key'        => $params['flickr_key'],
                     'flickr_secret_key' => $params['flickr_secret_key'],
-                );
+                ];
             }
 
             if (is_null($this->flickrAuthKeys)) {
@@ -74,7 +71,6 @@ class Flickr implements VideoInterface
         }
 
         return $this;
-
     }
 
     /*
@@ -85,15 +81,14 @@ class Flickr implements VideoInterface
     public function getFlickrObject()
     {
         if (!isset($this->object)) {
-
-            $encoded_params = array();
+            $encoded_params = [];
             foreach ($this->params as $k => $v) {
                 $encoded_params[] = urlencode($k) . '=' . urlencode($v);
             }
 
             $url = "http://api.flickr.com/services/rest/?" . implode('&', $encoded_params);
 
-            $rsp = file_get_contents($url);
+            $rsp     = file_get_contents($url);
             $rsp_obj = unserialize($rsp);
 
             if ($rsp_obj['stat'] == 'ok') {
@@ -128,9 +123,9 @@ class Flickr implements VideoInterface
     /**
      * Returns the video embedHTML for put in a webpage
      */
-    public function getEmbedHTML($options = array())
+    public function getEmbedHTML($options = [])
     {
-        $defaultOptions = array('width' => 560, 'height' => 349);
+        $defaultOptions = ['width' => 560, 'height' => 349];
         $options = array_merge($defaultOptions, $options);
 
         // convert options into
@@ -154,7 +149,6 @@ class Flickr implements VideoInterface
                         width='{$options['width']}' height='{$options['height']}'>
                     </embed>
                 </object>";
-
     }
 
     /**
@@ -257,5 +251,4 @@ class Flickr implements VideoInterface
 
         return $this->videoId;
     }
-
 }

@@ -32,7 +32,7 @@ class Video
      * __construct()
      * @param $arg
      */
-    public function __construct($url = null, array $options = array())
+    public function __construct($url = null, $params = [])
     {
         // check arguments validation
         if (!isset($url) || is_null($url)) {
@@ -51,7 +51,7 @@ class Video
 
         // If the Video service is supported instantiate it, otherwise raise Exception
         if (file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . "Video" . DIRECTORY_SEPARATOR . $serviceName . ".php")) {
-            $this->object = new $this->className($url, $options);
+            $this->object = new $this->className($url, $params);
             if (!($this->object instanceof \Panorama\Video\VideoInterface)) {
                 throw new \Exception("Video ID not valid.");
             }
@@ -126,7 +126,7 @@ class Video
      *
      * @returns string, the embed of the video
      */
-    public function getEmbedHTML(array $options = array())
+    public function getEmbedHTML($options)
     {
         return $this->object->getEmbedHTML($options);
     }
@@ -170,15 +170,15 @@ class Video
     {
 
         return array(
-                    "title"       => (string) $this->object->getTitle(),
-                    "thumbnail"   => (string) $this->object->getThumbnail(),
-                    "embedUrl"    => (string) $this->object->getEmbedUrl(),
-                    "embedHTML"   => (string) $this->object->getEmbedHTML(),
-                    "FLV"         => (string) $this->object->getFLV(),
-                    "downloadUrl" => (string) $this->object->getDownloadUrl(),
-                    "service"     => (string) $this->object->getService(),
-                    "duration"    => (string) $this->object->getDuration(),
-                 );
+            "title"       => (string) $this->object->getTitle(),
+            "thumbnail"   => (string) $this->object->getThumbnail(),
+            "embedUrl"    => (string) $this->object->getEmbedUrl(),
+            "embedHTML"   => (string) $this->object->getEmbedHTML(),
+            "FLV"         => (string) $this->object->getFLV(),
+            "downloadUrl" => (string) $this->object->getDownloadUrl(),
+            "service"     => (string) $this->object->getService(),
+            "duration"    => (string) $this->object->getDuration(),
+         );
 
     }
 
@@ -214,5 +214,4 @@ class Video
 
         return $domainParts[$domainPartsCount - 2];
     }
-
 }
