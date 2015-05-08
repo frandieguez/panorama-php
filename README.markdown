@@ -37,9 +37,9 @@ PSR-0-compatible autoloader.
 
 Dependencies
 ------------
-This library only depends on PHP 5.3, you have to use namespaces and some other goodies of 5.3 version.
+This library only depends on PHP 5.4, you have to use namespaces and some other goodies of 5.4 version.
 
-Please __don't ask for PHP < 5.3 support__, you shouldn't use PHP 5.2.
+Please __don't ask for PHP < 5.4 support__, you shouldn't use PHP 5.3.
 
 Use it!
 -------
