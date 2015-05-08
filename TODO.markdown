@@ -11,8 +11,9 @@ High Priority
 Fix functionality
 -----------------
 
-* Fix MTV wrapper class. DONT WORK [Documentation HOME](http://api.mtvnservices.com/docs/)
-* Fix Qik wrapper class. DONT WORK
+* Add MTV wrapper class. [Documentation HOME](http://api.mtvnservices.com/docs/)
+* Add Qik wrapper class.
+* Add 11870 wrapper class.
 
 
 Add functionality
