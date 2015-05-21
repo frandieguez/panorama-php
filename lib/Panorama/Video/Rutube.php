@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Onm package.
  *
@@ -8,12 +9,13 @@
  * file that was distributed with this source code.
  **/
 /**
- * Wrapper class for Rutube videos
+ * Wrapper class for Rutube videos.
  *
  * @author Fran Diéguez <fran@openhost.es>
+ *
  * @version \$Id\$
+ *
  * @copyright OpenHost S.L., Mér Xuñ 01 15:58:58 2011
- * @package Panorama\Video
  **/
 namespace Panorama\Video;
 
@@ -22,7 +24,7 @@ class Rutube implements VideoInterface
     public $url;
     public $params = [];
 
-    private $rtXmlAPIUrl = "http://rutube.ru/cgi-bin/xmlapi.cgi";
+    private $rtXmlAPIUrl = 'http://rutube.ru/api/video/';
 
     /**
      * @param $url
@@ -72,7 +74,7 @@ class Rutube implements VideoInterface
      */
     public function getDuration()
     {
-        return null;
+        return;
     }
 
     /*
@@ -92,15 +94,13 @@ class Rutube implements VideoInterface
      */
     public function getMovieHash()
     {
-
         if (!isset($this->movieHash)) {
             $rtInfo = $this->getRtInfo();
-            preg_match("@[a-f0-9]+$@", $rtInfo->movie->playerLink[0], $matches);
+            preg_match('@[a-f0-9]+$@', $rtInfo->movie->playerLink[0], $matches);
             $this->movieHash = $matches[0];
         }
 
         return $this->movieHash;
-
     }
 
     /*
@@ -113,13 +113,13 @@ class Rutube implements VideoInterface
         $options = array_merge($defaultOptions, $options);
 
         // convert options into
-        $htmlOptions = "";
+        $htmlOptions = '';
         if (count($options) > 0) {
             foreach ($options as $key => $value) {
                 if (in_array($key, ['width', 'height'])) {
                     continue;
                 }
-                $htmlOptions .= "&" . $key . "=" . $value;
+                $htmlOptions .= '&'.$key.'='.$value;
             }
         }
 
@@ -133,7 +133,7 @@ class Rutube implements VideoInterface
             ."width='{$options['width']}' "
             ."height='{$options['height']}'\n"
             ."wmode='window' allowFullScreen='true'></embed>\n"
-            ."</object>";
+            .'</object>';
     }
 
     /*
@@ -153,7 +153,7 @@ class Rutube implements VideoInterface
      */
     public function getDownloadUrl()
     {
-        return null;
+        return;
     }
 
     /*
@@ -162,7 +162,7 @@ class Rutube implements VideoInterface
      */
     public function getService()
     {
-        return "Rutube";
+        return 'Rutube';
     }
 
     /*
@@ -171,9 +171,8 @@ class Rutube implements VideoInterface
      */
     public function getRtInfo()
     {
-
         $videoId = (string) $this->getVideoId();
-        $url = $this->rtXmlAPIUrl . "?rt_movie_id={$videoId}&rt_mode=movie";
+        $url = $this->rtXmlAPIUrl."{$videoId}";
 
         if (!isset($this->rtInfo)) {
             $content = file_get_contents($url);
@@ -181,7 +180,6 @@ class Rutube implements VideoInterface
         }
 
         return $this->rtInfo;
-
     }
 
     /*

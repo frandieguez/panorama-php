@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Onm package.
  *
@@ -8,12 +9,13 @@
  * file that was distributed with this source code.
  **/
 /**
- * Wrapper class for Marca TV videos
+ * Wrapper class for Marca TV videos.
  *
  * @author Fran Diéguez <fran@openhost.es>
+ *
  * @version \$Id\$
+ *
  * @copyright OpenHost S.L., Mér Xuñ 01 15:58:58 2011
- * @package Panorama\Video
  **/
 namespace Panorama\Video;
 
@@ -40,7 +42,6 @@ class Marca implements VideoInterface
             "http://estaticos.marca.com/consolamultimedia/marcaTV/elementos/{$sub1}/{$sub2}/{$sub3}.xml"
         );
         $this->feed = simplexml_load_string($doc);
-
     }
 
     /*
@@ -50,7 +51,7 @@ class Marca implements VideoInterface
     public function getTitle()
     {
         if (!isset($this->title)) {
-            $title       = $this->feed->xpath('//titulo');
+            $title = $this->feed->xpath('//titulo');
             $this->title = (string) $title[0];
         }
 
@@ -78,7 +79,7 @@ class Marca implements VideoInterface
      */
     public function getDuration()
     {
-        return null;
+        return;
     }
 
     /*
@@ -87,7 +88,7 @@ class Marca implements VideoInterface
      */
     public function getEmbedUrl()
     {
-        return "http://www.marca.com/componentes/flash/embed.swf"
+        return 'http://www.marca.com/componentes/flash/embed.swf'
             ."?ba=0&cvol=1&bt=1&lg=1&vID={$this->videoId}&ba=1";
     }
 
@@ -99,7 +100,7 @@ class Marca implements VideoInterface
     {
         $defaultOptions = array(
           'width' => 560,
-          'height' => 349
+          'height' => 349,
         );
 
         $params = array_merge($defaultOptions, $params);
@@ -107,14 +108,14 @@ class Marca implements VideoInterface
         unset($params['height']);
 
         // convert options into
-        $htmlOptions = "";
+        $htmlOptions = '';
         if (count($params) > 0) {
             foreach ($params as $key => $value) {
-                $htmlOptions .= "&" . $key . "=" . $value;
+                $htmlOptions .= '&'.$key.'='.$value;
             }
         }
 
-        $flashvars = "ba=1&amp;cvol=1&amp;bt=1&amp;lg=0&amp;"
+        $flashvars = 'ba=1&amp;cvol=1&amp;bt=1&amp;lg=0&amp;'
                     ."width={$defaultOptions['width']}&amp;height={$defaultOptions['height']}"
                     ."&amp;vID={$this->getVideoId()}";
 
@@ -135,7 +136,7 @@ class Marca implements VideoInterface
                 ."type='application/x-shockwave-flash'\n"
                 ."pluginspage='http://www.macromedia.com/go/getflashplayer'\n"
                 ."wmode='transparent'>\n"
-                ."</object>";
+                .'</object>';
     }
 
     /*
@@ -158,7 +159,7 @@ class Marca implements VideoInterface
      */
     public function getDownloadUrl()
     {
-        return null;
+        return;
     }
 
     /*
@@ -167,7 +168,7 @@ class Marca implements VideoInterface
      */
     public function getService()
     {
-        return "Marca";
+        return 'Marca';
     }
 
     /*
@@ -177,18 +178,16 @@ class Marca implements VideoInterface
      */
     public function getVideoID()
     {
-
         if (!isset($this->videoId)) {
             $path = parse_url($this->url, PHP_URL_QUERY);
             preg_match("@v=(\w*)@", $path, $matches);
             if (count($matches) > 1) {
                 $this->videoId = $matches[1];
             } else {
-                throw new \Exception("This ");
+                throw new \Exception('This ');
             }
         }
 
         return $this->videoId;
-
     }
 }

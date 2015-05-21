@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Onm package.
  *
@@ -8,14 +9,13 @@
  * file that was distributed with this source code.
  **/
 /**
- * Wrapper class for Youtube
+ * Wrapper class for Youtube.
  *
  * @author Fran Diéguez <fran@openhost.es>
- * @package Panorama\Video
  **/
 namespace Panorama\Video;
 
-class Youtube  implements VideoInterface
+class Youtube implements VideoInterface
 {
     public $url;
     public $params = [];
@@ -23,24 +23,25 @@ class Youtube  implements VideoInterface
     /**
      * @param $url
      * @param array $options
+     *
      * @throws \Exception
      */
     public function __construct($url, $params = [])
     {
-        $this->url    = $url;
+        $this->url = $url;
         $this->params = $params;
 
         if (!array_key_exists('youtube', $params)
             && !array_key_exists('api_key', $params['youtube'])
             && empty($params['youtube']['api_key'])
         ) {
-            throw new \Exception("Missing Youtube configuration.");
+            throw new \Exception('Missing Youtube configuration.');
         }
 
         $this->params = $params['youtube'];
 
         if (!($this->videoId = $this->getvideoId())) {
-            throw new \Exception("Video ID not valid.", 1);
+            throw new \Exception('Video ID not valid.', 1);
         }
         $this->getFeed();
 
@@ -55,12 +56,12 @@ class Youtube  implements VideoInterface
     {
         if (!isset($this->feed)) {
             $videoId = $this->getVideoID();
-            $apikey  = $this->params['api_key'];
+            $apikey = $this->params['api_key'];
 
             // Fetch and decode information from the API
             $data = file_get_contents(
-                "https://www.googleapis.com/youtube/v3/videos?key=".$apikey
-                ."&id=".$videoId."&part=snippet,contentDetails,statistics,player"
+                'https://www.googleapis.com/youtube/v3/videos?key='.$apikey
+                .'&id='.$videoId.'&part=snippet,contentDetails,statistics,player'
             );
             $videoObj = @json_decode($data);
 
@@ -80,7 +81,7 @@ class Youtube  implements VideoInterface
     public function getVideoId()
     {
         if (!isset($this->videoId)) {
-            $this->videoId =  $this->getUrlParam('v');
+            $this->videoId = $this->getUrlParam('v');
         }
 
         return $this->videoId;
@@ -92,7 +93,6 @@ class Youtube  implements VideoInterface
      */
     public function getTitle()
     {
-
         if (!isset($this->title)) {
             $this->title = (string) $this->getFeed()->snippet->title;
         }
@@ -128,16 +128,16 @@ class Youtube  implements VideoInterface
     public function getEmbedHTML($options = [])
     {
         $defaultOptions = ['width' => 560, 'height' => 349];
-        $options = array_merge($defaultOptions, $options);
+        $options        = array_merge($defaultOptions, $options);
 
         // convert options into
-        $htmlOptions = "";
+        $htmlOptions = '';
         if (count($options) > 0) {
             foreach ($options as $key => $value) {
                 if (in_array($key, ['width', 'height'])) {
                     continue;
                 }
-                $htmlOptions .= "&" . $key . "=" . $value;
+                $htmlOptions .= '&'.$key.'='.$value;
             }
         }
         $embedUrl = $this->getEmbedUrl();
@@ -156,11 +156,10 @@ class Youtube  implements VideoInterface
     public function getFLV()
     {
         if (!isset($this->FLV)) {
-            $this->FLV =  $this->getEmbedUrl();
+            $this->FLV = $this->getEmbedUrl();
         }
 
         return $this->FLV;
-
     }
 
     /*
@@ -185,7 +184,7 @@ class Youtube  implements VideoInterface
      */
     public function getService()
     {
-        return "Youtube";
+        return 'Youtube';
     }
 
     /*
@@ -268,7 +267,7 @@ class Youtube  implements VideoInterface
     public function getTags()
     {
         if (!isset($this->tags)) {
-            $this->tags =  $this->getFeed()->snippet->title;
+            $this->tags = $this->getFeed()->snippet->title;
         }
 
         return $this->tags;
@@ -289,15 +288,16 @@ class Youtube  implements VideoInterface
     }
 
     /**
-     * Returns the value of the param given
+     * Returns the value of the param given.
      *
      * @param string, the param to look for
+     *
      * @return string, the value of the param
      */
     private function getUrlParam($param)
     {
         $queryParamsRAW = parse_url($this->url, PHP_URL_QUERY);
-        preg_match("@v=([a-zA-Z0-9_-]*)@", $queryParamsRAW, $matches);
+        preg_match('@v=([a-zA-Z0-9_-]*)@', $queryParamsRAW, $matches);
 
         return $matches[1];
     }

@@ -1,4 +1,5 @@
 <?php
+
 //url
 $url = 'http://www.imdb.com/title/tt0367882/';
 
@@ -6,12 +7,12 @@ $url = 'http://www.imdb.com/title/tt0367882/';
 $imdb_content = getData($url);
 
 //parse for product name
-$name         = getMatch('/<title>(.*)<\/title>/isU', $imdb_content);
-$director     = strip_tags(getMatch('/<h5[^>]*>Director:<\/h5>(.*)<\/div>/isU', $imdb_content));
-$plot         = getMatch('/<h5[^>]*>Plot:<\/h5>(.*)<\/div>/isU', $imdb_content);
+$name = getMatch('/<title>(.*)<\/title>/isU', $imdb_content);
+$director = strip_tags(getMatch('/<h5[^>]*>Director:<\/h5>(.*)<\/div>/isU', $imdb_content));
+$plot = getMatch('/<h5[^>]*>Plot:<\/h5>(.*)<\/div>/isU', $imdb_content);
 $release_date = getMatch('/<h5[^>]*>Release Date:<\/h5>(.*)<\/div>/isU', $imdb_content);
-$mpaa         = getMatch('/<a href="\/mpaa">MPAA<\/a>:<\/h5>(.*)<\/div>/isU', $imdb_content);
-$run_time     = getMatch('/Runtime:<\/h5>(.*)<\/div>/isU', $imdb_content);
+$mpaa = getMatch('/<a href="\/mpaa">MPAA<\/a>:<\/h5>(.*)<\/div>/isU', $imdb_content);
+$run_time = getMatch('/Runtime:<\/h5>(.*)<\/div>/isU', $imdb_content);
 
 //build content
 $content .= '<h2>Film</h2><p>'.$name.'</p>';

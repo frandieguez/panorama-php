@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Onm package.
  *
@@ -8,70 +9,70 @@
  * file that was distributed with this source code.
  **/
 /**
- * Definition of the API for all the video resource clases
+ * Definition of the API for all the video resource clases.
  *
  * @author Fran Diéguez <fran@openhost.es>
+ *
  * @version \$Id\$
+ *
  * @copyright OpenHost S.L., Mér Xuñ 01 15:58:58 2011
- * @package Panorama\Video
  **/
 namespace Panorama\Video;
 
 /**
- * Interface to define the API for all the video resource clases
+ * Interface to define the API for all the video resource clases.
  *
- * @package Panorama\Video
  * @author Fran Diéguez
  **/
 interface VideoInterface
 {
     /**
-     * Initializes the class with an url and required params
+     * Initializes the class with an url and required params.
      */
     public function __construct($url, $params = []);
 
     /**
-     * Returns the download url for the video
-    */
+     * Returns the download url for the video.
+     */
     public function getDownloadUrl();
 
     /**
-     * Returns the video duration in secs
-    */
+     * Returns the video duration in secs.
+     */
     public function getDuration();
 
     /**
-     * Returns the video embedHTML for put in a webpage
-    */
+     * Returns the video embedHTML for put in a webpage.
+     */
     public function getEmbedHTML();
 
     /**
-     * Returns the url of the video for embed in custom flash player
-    */
+     * Returns the url of the video for embed in custom flash player.
+     */
     public function getEmbedUrl();
 
     /**
-     * Returns the url of the video in FLV format
-    */
+     * Returns the url of the video in FLV format.
+     */
     public function getFLV();
 
     /**
-     * Returns the service name of the video
-    */
+     * Returns the service name of the video.
+     */
     public function getService();
 
     /**
-     * Returns the default thumbnail of this video
-    */
+     * Returns the default thumbnail of this video.
+     */
     public function getThumbnail();
 
     /**
-     * Returns the title of this video
-    */
+     * Returns the title of this video.
+     */
     public function getTitle();
 
     /**
-     * Returns the internal video id in the particular service
-    */
+     * Returns the internal video id in the particular service.
+     */
     public function getVideoId();
 }

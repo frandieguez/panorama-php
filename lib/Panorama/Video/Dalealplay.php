@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Onm package.
  *
@@ -8,12 +9,13 @@
  * file that was distributed with this source code.
  **/
 /**
- * Wrapper class for Dalealplay videos
+ * Wrapper class for Dalealplay videos.
  *
  * @author Fran Diéguez <fran@openhost.es>
+ *
  * @version \$Id\$
+ *
  * @copyright OpenHost S.L., Mér Xuñ 01 15:58:58 2011
- * @package Panorama\Video
  **/
 namespace Panorama\Video;
 
@@ -73,7 +75,7 @@ class Dalealplay implements VideoInterface
             preg_match('@<title>(.*)</title>@', $this->getPage(), $matches);
             $title = preg_split('@ - www.dalealplay.com@', $matches[1]);
             $title = $title[0];
-            $this->title = iconv('ISO-8859-1', 'UTF-8', (string)$title);
+            $this->title = iconv('ISO-8859-1', 'UTF-8', (string) $title);
         }
 
         return $this->title;
@@ -99,7 +101,7 @@ class Dalealplay implements VideoInterface
      */
     public function getDuration()
     {
-        return null;
+        return;
     }
 
     /*
@@ -112,7 +114,7 @@ class Dalealplay implements VideoInterface
         if (!isset($this->embedUrl)) {
             preg_match('@rel="video_src"\shref="(.*)"@', $this->getPage(), $matches);
             $title = preg_replace('@autoStart=true@', 'autoStart=false', $matches[1]);
-            $this->embedUrl = (string)$title;
+            $this->embedUrl = (string) $title;
         }
 
         return $this->embedUrl;
@@ -125,26 +127,26 @@ class Dalealplay implements VideoInterface
     public function getEmbedHTML($options = [])
     {
         $defaultOptions = ['width' => 560, 'height' => 349];
-        $options        = array_merge($defaultOptions, $options);
+        $options = array_merge($defaultOptions, $options);
 
         // convert options into
-        $htmlOptions = "";
+        $htmlOptions = '';
         if (count($options) > 0) {
             foreach ($options as $key => $value) {
                 if (in_array($key, ['width', 'height'])) {
                     continue;
                 }
-                $htmlOptions .= "&" . $key . "=" . $value;
+                $htmlOptions .= '&'.$key.'='.$value;
             }
         }
 
         return "<object type='application/x-shockwave-flash'\n"
-            . "width='{$options['width']}' height='{$options['height']}'\n"
-            . "data='{$this->getEmbedUrl()}'>\n"
-            . "<param name='quality' value='best' />\n"
-            . "<param name='allowfullscreen' value='true' />\n"
-            . "<param name='movie' value='{$this->getEmbedUrl()}' />\n"
-            . "</object>";
+            ."width='{$options['width']}' height='{$options['height']}'\n"
+            ."data='{$this->getEmbedUrl()}'>\n"
+            ."<param name='quality' value='best' />\n"
+            ."<param name='allowfullscreen' value='true' />\n"
+            ."<param name='movie' value='{$this->getEmbedUrl()}' />\n"
+            .'</object>';
     }
 
     /*
@@ -167,7 +169,7 @@ class Dalealplay implements VideoInterface
      */
     public function getDownloadUrl()
     {
-        return null;
+        return;
     }
 
     /*
@@ -176,7 +178,7 @@ class Dalealplay implements VideoInterface
      */
     public function getService()
     {
-        return "Dalealplay";
+        return 'Dalealplay';
     }
 
     /*

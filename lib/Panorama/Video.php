@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Onm package.
  *
@@ -8,21 +9,20 @@
  * file that was distributed with this source code.
  **/
 /**
- * Wrapper class
+ * Wrapper class.
  *
  * @author Fran Diéguez <fran@openhost.es>
+ *
  * @version \$Id\$
+ *
  * @copyright OpenHost S.L., Mér Xuñ 01 15:58:58 2011
- * @package Panorama
  **/
-
 namespace Panorama;
-
 
 class Video
 {
     /**
-     * The instance of the object we will work into
+     * The instance of the object we will work into.
      */
     private $object = null;
 
@@ -36,7 +36,7 @@ class Video
     {
         // check arguments validation
         if (!isset($url) || is_null($url)) {
-            throw new \InvalidArgumentException("We need a video url");
+            throw new \InvalidArgumentException('We need a video url');
         }
 
         $this->url = $url;
@@ -45,18 +45,18 @@ class Video
 
         // If the service starts with a number prepend a "c" for avoid PHP language error
         if (preg_match("@^\d@", $serviceName)) {
-            $serviceName = "c" . $serviceName;
+            $serviceName = 'c'.$serviceName;
         }
-        $this->className = "\Panorama\Video\\" . $serviceName;
+        $this->className = "\Panorama\Video\\".$serviceName;
 
         // If the Video service is supported instantiate it, otherwise raise Exception
-        if (file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . "Video" . DIRECTORY_SEPARATOR . $serviceName . ".php")) {
+        if (file_exists(dirname(__FILE__).DIRECTORY_SEPARATOR.'Video'.DIRECTORY_SEPARATOR.$serviceName.'.php')) {
             $this->object = new $this->className($url, $params);
             if (!($this->object instanceof \Panorama\Video\VideoInterface)) {
-                throw new \Exception("Video ID not valid.");
+                throw new \Exception('Video ID not valid.');
             }
         } else {
-            throw new \Exception("Video service or Url not supported");
+            throw new \Exception('Video service or Url not supported');
         }
     }
 
@@ -76,9 +76,7 @@ class Video
      */
     public function getTitle()
     {
-
         return $this->object->getTitle();
-
     }
 
     /*
@@ -168,32 +166,31 @@ class Video
      */
     public function getVideoDetails($width = 425, $height = 344)
     {
-
         return array(
-            "title"       => (string) $this->object->getTitle(),
-            "thumbnail"   => (string) $this->object->getThumbnail(),
-            "embedUrl"    => (string) $this->object->getEmbedUrl(),
-            "embedHTML"   => (string) $this->object->getEmbedHTML(),
-            "FLV"         => (string) $this->object->getFLV(),
-            "downloadUrl" => (string) $this->object->getDownloadUrl(),
-            "service"     => (string) $this->object->getService(),
-            "duration"    => (string) $this->object->getDuration(),
+            'title'       => (string) $this->object->getTitle(),
+            'thumbnail'   => (string) $this->object->getThumbnail(),
+            'embedUrl'    => (string) $this->object->getEmbedUrl(),
+            'embedHTML'   => (string) $this->object->getEmbedHTML(),
+            'FLV'         => (string) $this->object->getFLV(),
+            'downloadUrl' => (string) $this->object->getDownloadUrl(),
+            'service'     => (string) $this->object->getService(),
+            'duration'    => (string) $this->object->getDuration(),
          );
-
     }
 
     /**
      * Returns the given lower_case_and_underscored_word as a CamelCased word.
      *
      * @param string $lower_case_and_underscored_word Word to camelize
+     *
      * @return string Camelized word. LikeThis.
-     * @access public
      * @static
+     *
      * @link http://book.cakephp.org/view/572/Class-methods
      */
     public function camelize($lowerCaseAndUnderscoredWord)
     {
-        return str_replace(" ", "", ucwords(str_replace("_", " ", $lowerCaseAndUnderscoredWord)));
+        return str_replace(' ', '', ucwords(str_replace('_', ' ', $lowerCaseAndUnderscoredWord)));
     }
 
     /*
@@ -201,12 +198,12 @@ class Video
      *
      * @param $url
      */
-    public static function getDomain($url = "")
+    public static function getDomain($url = '')
     {
-        $host = parse_url($url);
-        $domainParts = preg_split("@\.@", $host["host"]);
+        $host        = parse_url($url);
+        $domainParts = preg_split("@\.@", $host['host']);
 
-        /**
+        /*
          * If domain name has a subdomain return the second part
          * if not return the first part
          */

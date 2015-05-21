@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Onm package.
  *
@@ -8,12 +9,13 @@
  * file that was distributed with this source code.
  **/
 /**
- * Wrapper class for MySpace videos
+ * Wrapper class for MySpace videos.
  *
  * @author Fran Diéguez <fran@openhost.es>
+ *
  * @version \$Id\$
+ *
  * @copyright OpenHost S.L., Mér Xuñ 01 15:58:58 2011
- * @package Panorama\Video
  **/
 namespace Panorama\Video;
 
@@ -28,7 +30,7 @@ class Myspace implements VideoInterface
      */
     public function __construct($url, $params = [])
     {
-        $this->url    = $url;
+        $this->url = $url;
         $this->params = $params;
     }
 
@@ -70,14 +72,12 @@ class Myspace implements VideoInterface
      */
     public function getThumbnail()
     {
-
         if (!isset($this->thumbnail)) {
             $thumbnails = $this->getPage()->xpath('//item/media:thumbnail');
-            $this->thumbnail = (string) $thumbnails[0]["url"];
+            $this->thumbnail = (string) $thumbnails[0]['url'];
         }
 
         return $this->thumbnail;
-
     }
 
     /*
@@ -86,7 +86,7 @@ class Myspace implements VideoInterface
      */
     public function getDuration()
     {
-        return null;
+        return;
     }
 
     /*
@@ -115,26 +115,25 @@ class Myspace implements VideoInterface
             $options = array_merge($defaultOptions, $options);
 
             // convert options into
-            $htmlOptions = "";
+            $htmlOptions = '';
             if (count($options) > 0) {
                 foreach ($options as $key => $value) {
                     if (in_array($key, array('width', 'height'))) {
                         continue;
                     }
-                    $htmlOptions .= "&" . $key . "=" . $value;
+                    $htmlOptions .= '&'.$key.'='.$value;
                 }
             }
 
             $this->embedHTML =
                 "<embed src='{$this->getEmbedUrl()}'\n"
-                . "width='{$options['width']}' "
-                . "height='{$options['height']}'\n"
-                . "type='application/x-shockwave-flash'>\n"
-                . "</embed>";
+                ."width='{$options['width']}' "
+                ."height='{$options['height']}'\n"
+                ."type='application/x-shockwave-flash'>\n"
+                .'</embed>';
         }
 
         return $this->embedHTML;
-
     }
 
     /*
@@ -145,7 +144,7 @@ class Myspace implements VideoInterface
     {
         if (!isset($this->FLV)) {
             $item = $this->getPage()->xpath('//media:content');
-            $this->FLV = (string) $item[0]["url"];
+            $this->FLV = (string) $item[0]['url'];
         }
 
         return $this->FLV;
@@ -157,8 +156,7 @@ class Myspace implements VideoInterface
      */
     public function getDownloadUrl()
     {
-
-        return null;
+        return;
     }
 
     /*
@@ -167,8 +165,7 @@ class Myspace implements VideoInterface
      */
     public function getService()
     {
-
-        return "Myspace";
+        return 'Myspace';
     }
 
     /*
@@ -189,6 +186,5 @@ class Myspace implements VideoInterface
         }
 
         return $this->videoId;
-
     }
 }

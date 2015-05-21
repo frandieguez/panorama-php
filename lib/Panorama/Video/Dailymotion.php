@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Onm package.
  *
@@ -8,12 +9,13 @@
  * file that was distributed with this source code.
  **/
 /**
- * Wrapper class for Dailymotion videos
+ * Wrapper class for Dailymotion videos.
  *
  * @author Fran Diéguez <fran@openhost.es>
+ *
  * @version \$Id\$
+ *
  * @copyright OpenHost S.L., Mér Xuñ 01 15:58:58 2011
- * @package Panorama\Video
  **/
 namespace Panorama\Video;
 
@@ -72,7 +74,7 @@ class Dailymotion implements VideoInterface
     {
         if (!isset($this->thumbnail)) {
             $thumbnail = $this->getPage()->xpath('//media:thumbnail');
-            $this->thumbnail = preg_replace('@preview_large@', 'preview_medium', $thumbnail[0]["url"]);
+            $this->thumbnail = preg_replace('@preview_large@', 'preview_medium', $thumbnail[0]['url']);
         }
 
         return $this->thumbnail;
@@ -85,7 +87,7 @@ class Dailymotion implements VideoInterface
      */
     public function getDuration()
     {
-        return null;
+        return;
     }
 
     /*
@@ -97,7 +99,7 @@ class Dailymotion implements VideoInterface
     {
         if (!isset($this->embedUrl)) {
             $embed = $this->getPage()->xpath("//media:content[@type='application/x-shockwave-flash']");
-            $this->embedUrl = (string) $embed[0]["url"];
+            $this->embedUrl = (string) $embed[0]['url'];
         }
 
         return $this->embedUrl;
@@ -115,31 +117,30 @@ class Dailymotion implements VideoInterface
             $options = array_merge($defaultOptions, $options);
 
             // convert options into
-            $htmlOptions = "";
+            $htmlOptions = '';
             if (count($options) > 0) {
                 foreach ($options as $key => $value) {
                     if (in_array($key, ['width', 'height'])) {
                         continue;
                     }
-                    $htmlOptions .= "&" . $key . "=" . $value;
+                    $htmlOptions .= '&'.$key.'='.$value;
                 }
             }
 
             $this->embedHTML =
                 "<object width='{$options['width']}' height='{$options['height']}'>\n"
-                . "<param name='movie' value='{$this->getEmbedUrl()}&related=1'></param>\n"
-                . "<param name='allowFullScreen' value='true'></param>\n"
-                . "<param name='allowScriptAccess' value='always'></param>\n"
-                . "<embed type='application/x-shockwave-flash'\n"
-                . "src='{$this->getEmbedUrl()}&related=1'\n"
-                . "width='{$options['width']}' height='{$options['height']}'\n"
-                . "allowFullScreen='true' allowScriptAccess='always'>\n"
-                . "</embed>\n"
-                . "</object>";
+                ."<param name='movie' value='{$this->getEmbedUrl()}&related=1'></param>\n"
+                ."<param name='allowFullScreen' value='true'></param>\n"
+                ."<param name='allowScriptAccess' value='always'></param>\n"
+                ."<embed type='application/x-shockwave-flash'\n"
+                ."src='{$this->getEmbedUrl()}&related=1'\n"
+                ."width='{$options['width']}' height='{$options['height']}'\n"
+                ."allowFullScreen='true' allowScriptAccess='always'>\n"
+                ."</embed>\n"
+                .'</object>';
         }
 
         return $this->embedHTML;
-
     }
 
     /*
@@ -151,7 +152,7 @@ class Dailymotion implements VideoInterface
     {
         if (!isset($this->FLV)) {
             $item = $this->getPage()->xpath('//media:content');
-            $this->FLV = (string) $item[0]["url"];
+            $this->FLV = (string) $item[0]['url'];
         }
 
         return $this->FLV;
@@ -164,7 +165,7 @@ class Dailymotion implements VideoInterface
      */
     public function getDownloadUrl()
     {
-        return null;
+        return;
     }
 
     /*
@@ -174,7 +175,7 @@ class Dailymotion implements VideoInterface
      */
     public function getService()
     {
-        return "Dailymotion";
+        return 'Dailymotion';
     }
 
     /*
@@ -185,10 +186,9 @@ class Dailymotion implements VideoInterface
      */
     public function getVideoID()
     {
-
         if (!isset($this->videoId)) {
             $urlParts = parse_url($this->url);
-            $matches = preg_split("@/video/@", $urlParts['path']);
+            $matches = preg_split('@/video/@', $urlParts['path']);
             if (count($matches) > 0) {
                 $this->videoId = $matches[1];
             } else {

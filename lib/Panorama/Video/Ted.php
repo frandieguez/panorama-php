@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Onm package.
  *
@@ -8,12 +9,13 @@
  * file that was distributed with this source code.
  **/
 /**
- * Wrapper class for Youtube
+ * Wrapper class for Youtube.
  *
  * @author Fran Diéguez <fran@openhost.es>
+ *
  * @version \$Id\$
+ *
  * @copyright OpenHost S.L., Mér Xuñ 01 15:58:58 2011
- * @package Panorama\Video
  **/
 namespace Panorama\Video;
 
@@ -25,15 +27,16 @@ class Ted implements VideoInterface
     /**
      * @param $url
      * @param array $options
+     *
      * @throws \Exception
      */
     public function __construct($url, $params = [])
     {
-        $this->url    = $url;
+        $this->url = $url;
         $this->params = $params;
 
         $path = parse_url($url, PHP_URL_PATH);
-        if (!preg_match("@talks@", $path)) {
+        if (!preg_match('@talks@', $path)) {
             throw new \Exception(
                 "The url '{$this->url}' is not a valid Ted talk url"
             );
@@ -49,7 +52,7 @@ class Ted implements VideoInterface
         if (!isset($this->page)) {
             $this->page = file_get_contents($this->url);
             if (!$this->page) {
-                throw new \Exception("Video id not valid or found.", 1);
+                throw new \Exception('Video id not valid or found.', 1);
             }
         }
 
@@ -91,7 +94,7 @@ class Ted implements VideoInterface
      */
     public function getDuration()
     {
-        return null;
+        return;
     }
 
     /*
@@ -115,13 +118,13 @@ class Ted implements VideoInterface
         $options = array_merge($defaultOptions, $options);
 
         // convert options into
-        $htmlOptions = "";
+        $htmlOptions = '';
         if (count($options) > 0) {
             foreach ($options as $key => $value) {
-                if(in_array($key, ['width', 'height'])) {
+                if (in_array($key, ['width', 'height'])) {
                     continue;
                 }
-                $htmlOptions .= "&" . $key . "=" . $value;
+                $htmlOptions .= '&'.$key.'='.$value;
             }
         }
         $embedUrl = $this->getEmbedUrl();
@@ -138,8 +141,7 @@ class Ted implements VideoInterface
             ."src='{$embedUrl}'\n"
             ."width='{$options['width']}' "
             ."height='{$options['height']}'></embed>\n"
-            ."</object>";
-
+            .'</object>';
     }
 
     /*
@@ -158,7 +160,7 @@ class Ted implements VideoInterface
                 "@param\sname=\"flashvars\"\svalue=\"@",
                 urldecode((string) $this->emb)
             );
-            $split = preg_split("@\"@", $split[1]);
+            $split = preg_split('@"@', $split[1]);
             $this->flashvars = $split[0];
         }
 
@@ -172,11 +174,10 @@ class Ted implements VideoInterface
     public function getArgs()
     {
         if (!isset($this->args)) {
-
-            $parts = explode("&", $this->getFlashVars());
+            $parts = explode('&', $this->getFlashVars());
             $this->args = [];
             foreach ($parts as $part) {
-                $elemParts = explode("=", $part);
+                $elemParts = explode('=', $part);
                 $args[$elemParts[0]] = $elemParts[1];
             }
             $this->args = $args;
@@ -211,7 +212,7 @@ class Ted implements VideoInterface
                 $this->getPage(),
                 $matches
             );
-            $this->downloadUrl =  $matches[1];
+            $this->downloadUrl = $matches[1];
         }
 
         return $this->downloadUrl;
@@ -223,7 +224,7 @@ class Ted implements VideoInterface
      */
     public function getService()
     {
-        return "Ted";
+        return 'Ted';
     }
 
     /*
