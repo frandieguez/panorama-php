@@ -244,7 +244,17 @@ class Youtube  implements VideoInterface
     public function getThumbnail()
     {
         if (!isset($this->thumbnail)) {
-            $this->thumbnail = $this->getFeed()->snippet->thumbnails->standard->url;
+            $thumbnailArray = $this->getThumbnails();
+
+            if (isset($thumbnailArray->standard->url)) {
+                $this->thumbnail = $thumbnailArray->standard->url;
+            } elseif (isset($thumbnailArray->high->url)) {
+                $this->thumbnail = $thumbnailArray->high->url;
+            } elseif (isset($thumbnailArray->medium->url)) {
+                $this->thumbnail = $thumbnailArray->medium->url;
+            } else {
+                $this->thumbnail = $thumbnailArray->default->url;
+            }
         }
 
         return $this->thumbnail;
