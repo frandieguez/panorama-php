@@ -1,9 +1,8 @@
 <?php
-
 /**
- * This file is part of the Onm package.
+ * This file is part of the Panorama package.
  *
- * (c)  OpenHost S.L. <developers@openhost.es>
+ * (c)  Fran Dieguez <fran.dieguez@mabishu.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,8 +10,8 @@
 namespace Panorama\Video;
 
 /*
- * class Flickr
- */
+ * Wrapper class for Flickr videos.
+ **/
 class Flickr implements VideoInterface
 {
     public $url;

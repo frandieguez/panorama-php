@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the Onm package.
  *
@@ -8,17 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  **/
-/**
- * Wrapper class.
- *
- * @author Fran Diéguez <fran@openhost.es>
- *
- * @version \$Id\$
- *
- * @copyright OpenHost S.L., Mér Xuñ 01 15:58:58 2011
- **/
 namespace Panorama;
 
+/**
+ * Wrapper class.
+ **/
 class Video
 {
     /**
