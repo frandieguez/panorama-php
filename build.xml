@@ -29,7 +29,7 @@
         <delete dir="${basedir}/build/pdepend"/>
     </target>
 
-    <target name="prepare" depends="clean,phpab"
+    <target name="prepare" depends="clean"
     description="Prepare for build">
         <mkdir dir="${basedir}/build/api"/>
         <mkdir dir="${basedir}/build/code-browser"/>
@@ -37,20 +37,6 @@
         <mkdir dir="${basedir}/build/logs"/>
         <mkdir dir="${basedir}/build/pdepend"/>
         <mkdir dir="${basedir}/build/logs/behat"/>
-    </target>
-
-    <target name="phpab" description="Generate autoloader scripts">
-        <exec executable="phpab">
-            <arg value="--output" />
-            <arg path="${basedir}/lib/Panorama/autoload.php" />
-            <arg path="${basedir}/lib/Panorama" />
-        </exec>
-
-        <exec executable="phpab">
-            <arg value="--output" />
-            <arg path="${basedir}/tests/autoload.php" />
-            <arg path="${basedir}/tests" />
-        </exec>
     </target>
 
     <target name="lint">
@@ -92,7 +78,7 @@
         <exec executable="phpmd">
             <arg path="${basedir}/lib/Panorama" />
             <arg value="text" />
-            <arg value="${basedir}/build/phpmd.xml" />
+            <arg value="${basedir}/phpmd.xml" />
         </exec>
     </target>
 
@@ -101,7 +87,7 @@
         <exec executable="phpmd">
             <arg path="${basedir}/lib/Panorama" />
             <arg value="xml" />
-            <arg value="${basedir}/build/phpmd.xml" />
+            <arg value="${basedir}/phpmd.xml" />
             <arg value="--reportfile" />
             <arg value="${basedir}/build/logs/pmd.xml" />
         </exec>
@@ -121,7 +107,7 @@
         <exec executable="phpcs" output="/dev/null">
             <arg value="--report=checkstyle" />
             <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
-            <arg value="--standard=${basedir}/build/phpcs.xml" />
+            <arg value="--standard=${basedir}/phpcs.xml" />
             <arg value="--ignore=autoload.php" />
             <arg path="${basedir}/lib/Panorama" />
         </exec>
@@ -135,8 +121,8 @@
         </exec>
     </target>
 
-    <target name="docblox">
-        <exec executable="docblox">
+    <target name="phpdoc">
+      <exec executable="bin/phpdoc">
             <arg line="-d" />
             <arg value="${basedir}/lib/Panorama" />
             <arg line="-t" />
@@ -152,5 +138,4 @@
             <arg path="${basedir}/build/logs/behat" />
         </exec>
     </target>
-
 </project>
