@@ -1,26 +1,30 @@
 {
-    "name": "frandieguez/panorama-php",
-    "type": "library",
-    "description": "Wrapper class for accessing video services information in a standarized way",
-    "keywords": ["library"],
-    "homepage": "http://frandieguez.github.com/Panorama-PHP/",
-    "license": "MIT",
-    "authors": [
-        {"name": "Fran Diéguez", "email": "fran.dieguez@mabishu.com"}
-    ],
-    "require": {
-        "php": ">=5.4"
-    },
-
-    "require-dev": {
-        "behat/behat": "2.5.*",
-	    "phpunit/phpunit": "*"
-    },
-
-    "config": {
-        "bin-dir": "bin/"
-    },
-    "autoload": {
-        "psr-0": { "Panorama": "lib/" }
+  "name": "frandieguez/panorama-php",
+  "type": "library",
+  "description": "Wrapper class for accessing video services information in a standarized way",
+  "keywords": ["library"],
+  "homepage": "http://frandieguez.github.com/Panorama-PHP/",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Fran Diéguez",
+      "email": "fran.dieguez@mabishu.com"
     }
+  ],
+  "require": {
+    "php": ">=5.4"
+  },
+
+  "require-dev": {
+    "behat/behat": "2.5.*",
+    "phpunit/phpunit": "*",
+    "phpdocumentor/phpdocumentor": "2.*"
+  },
+
+  "config": {
+    "bin-dir": "bin/"
+  },
+  "autoload": {
+    "psr-0": { "Panorama": "lib/" }
+  }
 }
