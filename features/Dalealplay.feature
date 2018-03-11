@@ -5,7 +5,7 @@ Feature: Dalealplay service provider
     Scenario: Get the title of the Dalealplay video
         Given The url http://www.dalealplay.com/informaciondecontenido.php?con=403408
         When I get the title
-        Then The result should be "Los mejores goles del 2011 - Video Online"
+        Then The result should be "Los mejores goles del 2011"
 
     Scenario: Get the duration of the Dalealplay video
         Given The url http://www.dalealplay.com/informaciondecontenido.php?con=403408
@@ -24,17 +24,17 @@ Feature: Dalealplay service provider
         """
         <object type='application/x-shockwave-flash'
         width='560' height='349'
-        data='http://c.brightcove.com/services/viewer/federated_f9/71239000001?isVid=1&isUI=1&publisherID=35140843001&playerID=71239000001&domain=embed&autoStart=false&videoId=DAP-403408'>
+        data='https://www.dailymotion.com/embed/video/403408'>
         <param name='quality' value='best' />
         <param name='allowfullscreen' value='true' />
-        <param name='movie' value='http://c.brightcove.com/services/viewer/federated_f9/71239000001?isVid=1&isUI=1&publisherID=35140843001&playerID=71239000001&domain=embed&autoStart=false&videoId=DAP-403408' />
+        <param name='movie' value='https://www.dailymotion.com/embed/video/403408' />
         </object>
         """
 
     Scenario: Get the embed url of the Dalealplay video
         Given The url http://www.dalealplay.com/informaciondecontenido.php?con=403408
         When I get the embed url
-        Then The result should be "http://c.brightcove.com/services/viewer/federated_f9/71239000001?isVid=1&isUI=1&publisherID=35140843001&playerID=71239000001&domain=embed&autoStart=false&videoId=DAP-403408"
+        Then The result should be "https://www.dailymotion.com/embed/video/403408"
 
     Scenario: Get the FLV url of the Dalealplay video
         Given The url http://www.dalealplay.com/informaciondecontenido.php?con=403408

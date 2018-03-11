@@ -73,8 +73,9 @@ class Dalealplay implements VideoInterface
     {
         if (!isset($this->title)) {
             preg_match('@<title>(.*)</title>@', $this->getPage(), $matches);
-            $title = preg_split('@ - www.dalealplay.com@', $matches[1]);
-            $title = $title[0];
+
+            $title = str_replace('Vídeo ', '', $matches[1]);
+
             $this->title = iconv('ISO-8859-1', 'UTF-8', (string) $title);
         }
 
@@ -107,17 +108,11 @@ class Dalealplay implements VideoInterface
     /*
      * Returns the embed url for this Dalealplay video
      *
+     * @return string the embed url
      */
     public function getEmbedUrl()
     {
-        //@page.search("//link[@rel='video_src']").first.attributes["href"].sub("autoStart=true", "autoStart=false")
-        if (!isset($this->embedUrl)) {
-            preg_match('@rel="video_src"\shref="(.*)"@', $this->getPage(), $matches);
-            $title = preg_replace('@autoStart=true@', 'autoStart=false', $matches[1]);
-            $this->embedUrl = (string) $title;
-        }
-
-        return $this->embedUrl;
+        return 'https://www.dailymotion.com/embed/video/' . $this->getVideoId();
     }
 
     /*
