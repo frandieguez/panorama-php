@@ -28,46 +28,7 @@ class Youtube implements VideoInterface
         $this->url = $url;
         $this->params = $params;
 
-        if (!array_key_exists('youtube', $params)
-            && !array_key_exists('api_key', $params['youtube'])
-            && empty($params['youtube']['api_key'])
-        ) {
-            throw new \Exception('Missing Youtube configuration.');
-        }
-
-        $this->params = $params['youtube'];
-
-        if (!($this->videoId = $this->getvideoId())) {
-            throw new \Exception('Video ID not valid.', 1);
-        }
-        $this->getFeed();
-
         return $this;
-    }
-
-    /*
-     * Returns the feed that contains information of video
-     *
-     */
-    public function getFeed()
-    {
-        if (!isset($this->feed)) {
-            $videoId = $this->getVideoID();
-            $apikey = $this->params['api_key'];
-
-            // Fetch and decode information from the API
-            $data = file_get_contents(
-                'https://www.googleapis.com/youtube/v3/videos?key='.$apikey
-                .'&id='.$videoId.'&part=snippet,contentDetails,statistics,player'
-            );
-            $videoObj = @json_decode($data);
-
-            if (empty($videoObj->items)) {
-                throw new \Exception('Video Id not valid.');
-            }
-        }
-
-        return $videoObj->items[0];
     }
 
     /*
@@ -91,24 +52,12 @@ class Youtube implements VideoInterface
     public function getTitle()
     {
         if (!isset($this->title)) {
-            $this->title = (string) $this->getFeed()->snippet->title;
+            $oembed = $this->getOEmbedInfo($this->url);
+
+            $this->title = (string) $oembed->title;
         }
 
         return $this->title;
-    }
-
-    /*
-     * Returns the descrition for this video
-     *
-     * @returns string, the description of this video
-     */
-    public function getDescription()
-    {
-        if (!isset($this->description)) {
-            $this->description = (string) $this->getFeed()->snippet->description;
-        }
-
-        return $this->description;
     }
 
     /*
@@ -141,8 +90,8 @@ class Youtube implements VideoInterface
 
         // if this video is not embed
         return   "<iframe type='text/html' src='{$embedUrl}'"
-                ." width='{$options['width']}' height='{$options['height']}'"
-                ." frameborder='0' allowfullscreen='true'></iframe>";
+            ." width='{$options['width']}' height='{$options['height']}'"
+            ." frameborder='0' allowfullscreen='true'></iframe>";
     }
 
     /*
@@ -152,11 +101,7 @@ class Youtube implements VideoInterface
      */
     public function getFLV()
     {
-        if (!isset($this->FLV)) {
-            $this->FLV = $this->getEmbedUrl();
-        }
-
-        return $this->FLV;
+        return "";
     }
 
     /*
@@ -168,7 +113,13 @@ class Youtube implements VideoInterface
     {
         $this->embedUrl = '';
         if (empty($this->embedUrl)) {
-            $this->embedUrl = 'http://www.youtube.com/embed/'.$this->getVideoID();
+            $oembed = $this->getOEmbedInfo($this->url);
+
+            $this->embedUrl = (string) $oembed->html;
+
+            $matched = preg_match('@src="([^""]*)"@', $oembed->html, $matches);
+
+            $this->embedUrl = $matches[1];
         }
 
         return $this->embedUrl;
@@ -191,11 +142,7 @@ class Youtube implements VideoInterface
      */
     public function getDownloadUrl()
     {
-        if (!isset($this->downloadUrl)) {
-            $this->downloadUrl = $this->getEmbedUrl();
-        }
-
-        return $this->downloadUrl;
+        return "";
     }
 
     /*
@@ -205,31 +152,7 @@ class Youtube implements VideoInterface
      */
     public function getDuration()
     {
-        if (!isset($this->duration)) {
-            $this->duration = new \DateTime('@0'); // Unix epoch
-
-            $this->duration->add(
-                new \DateInterval(
-                    $this->getFeed()->contentDetails->duration
-                )
-            );
-        }
-
-        return $this->duration->format('H:i:s');
-    }
-
-    /*
-     * Returns the video Thumbnails
-     *
-     * @returns mixed, the video thumbnails
-     */
-    public function getThumbnails()
-    {
-        if (!isset($this->thumbnails)) {
-            $this->thumbnails = $this->getFeed()->snippet->thumbnails;
-        }
-
-        return $this->thumbnails;
+        return 0;
     }
 
     /*
@@ -240,48 +163,12 @@ class Youtube implements VideoInterface
     public function getThumbnail()
     {
         if (!isset($this->thumbnail)) {
-            $thumbnailArray = $this->getThumbnails();
+            $oembed = $this->getOEmbedInfo($this->url);
 
-            if (isset($thumbnailArray->standard->url)) {
-                $this->thumbnail = $thumbnailArray->standard->url;
-            } elseif (isset($thumbnailArray->high->url)) {
-                $this->thumbnail = $thumbnailArray->high->url;
-            } elseif (isset($thumbnailArray->medium->url)) {
-                $this->thumbnail = $thumbnailArray->medium->url;
-            } else {
-                $this->thumbnail = $thumbnailArray->default->url;
-            }
+            $this->thumbnail = (string) $oembed->thumbnail_url;
         }
 
         return $this->thumbnail;
-    }
-
-    /*
-     * Returns the video tags
-     *
-     * @returns mixed, a list of tags for this video
-     */
-    public function getTags()
-    {
-        if (!isset($this->tags)) {
-            $this->tags = $this->getFeed()->snippet->title;
-        }
-
-        return $this->tags;
-    }
-
-    /*
-     * Returns the watch url for the video
-     *
-     * @returns string, the url for watching this video
-     */
-    public function getWatchUrl()
-    {
-        if (!isset($this->watchUrl)) {
-            $this->watchUrl = $this->url;
-        }
-
-        return $this->watchUrl;
     }
 
     /**
@@ -297,5 +184,23 @@ class Youtube implements VideoInterface
         preg_match('@v=([a-zA-Z0-9_-]*)@', $queryParamsRAW, $matches);
 
         return $matches[1];
+    }
+
+    /**
+     * Returns the OEmbed information for a given Youtube video
+     *
+     * @return array the Oembed info array
+     **/
+    private function getOEmbedInfo($url = '')
+    {
+        if (isset($this->oembed)) {
+            return $this->oembed;
+        }
+
+        $info = file_get_contents('http://www.youtube.com/oembed?url=' . urlencode($url) . '&format=json');
+
+        $this->oembed = json_decode($info);
+
+        return $this->oembed;
     }
 }

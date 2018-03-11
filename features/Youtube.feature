@@ -10,43 +10,32 @@ Feature: Youtube service provider
     Scenario: Get the duration of the Youtube video
         Given The url http://www.youtube.com/watch?v=uO3GYt47YQs&feature=topvideos_entertainment
         When I get the duration
-        Then The result should be "296"
+        Then The result should be "0"
 
     Scenario: Get the thumbnail of the Youtube video
         Given The url http://www.youtube.com/watch?v=uO3GYt47YQs&feature=topvideos_entertainment
         When I get the thumbnail
-        Then The result should be like "@http://(.*).ytimg.com/vi/uO3GYt47YQs/0.jpg@"
+        Then The result should be like "@//(.*).ytimg.com/vi/uO3GYt47YQs/hqdefault.jpg@"
 
     Scenario: Get the embed HTML of the Youtube video
         Given The url http://www.youtube.com/watch?v=uO3GYt47YQs&feature=topvideos_entertainment
         When I get the embedHTML
-        Then The result should be:
-        """
-        <object width='560' height='349'>
-        <param name='movie' value='http://www.youtube.com/v/uO3GYt47YQs?version=3&f=videos&app=youtube_gdata'>
-        <param name='allowFullScreen' value='true'>
-        <param name='allowscriptaccess' value='always'>
-        <param name='wmode' value='transparent'>
-        <embed src='http://www.youtube.com/v/uO3GYt47YQs?version=3&f=videos&app=youtube_gdata' type='application/x-shockwave-flash'
-        allowscriptaccess='always' allowfullscreen='true'
-        width='560' height='349'>
-        </object>
-        """
+        Then The result should be "<iframe type='text/html' src='https://www.youtube.com/embed/uO3GYt47YQs?feature=oembed' width='560' height='349' frameborder='0' allowfullscreen='true'></iframe>"
 
     Scenario: Get the embed url of the Youtube video
         Given The url http://www.youtube.com/watch?v=uO3GYt47YQs&feature=topvideos_entertainment
         When I get the embed url
-        Then The result should be "http://www.youtube.com/v/uO3GYt47YQs?version=3&f=videos&app=youtube_gdata"
+        Then The result should be "https://www.youtube.com/embed/uO3GYt47YQs?feature=oembed"
 
     Scenario: Get the download url of the Youtube video
         Given The url http://www.youtube.com/watch?v=uO3GYt47YQs&feature=topvideos_entertainment
         When I get the download url
-        Then The result should be "http://www.youtube.com/v/uO3GYt47YQs?version=3&f=videos&app=youtube_gdata"
+        Then The result should be ""
 
     Scenario: Get the FLV url of the Youtube video
         Given The url http://www.youtube.com/watch?v=uO3GYt47YQs&feature=topvideos_entertainment
         When I get the FLV url
-        Then The result should be "http://www.youtube.com/v/uO3GYt47YQs?version=3&f=videos&app=youtube_gdata"
+        Then The result should be ""
 
     Scenario: Get the service name of the Youtube video
         Given The url http://www.youtube.com/watch?v=uO3GYt47YQs&feature=topvideos_entertainment
