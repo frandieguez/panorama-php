@@ -7,6 +7,11 @@ Feature: Rutube service provider
         When I get the title
         Then The result should be "Фейерверк разбушевался"
 
+    Scenario: Get the title of the Rutube video
+        Given The url https://rutube.ru/video/7557315f1f4922f0caa6d4ae45b2888d/
+        When I get the title
+        Then The result should be "Холостяк: Интервью участниц"
+
     Scenario: Get the duration of the Rutube video
         Given The url http://rutube.ru/tracks/4436308.html?v=da5ede8f5aa5832e74b8afec8bd1818f
         When I get the duration
@@ -15,33 +20,25 @@ Feature: Rutube service provider
     Scenario: Get the thumbnail of the Rutube video
         Given The url http://rutube.ru/tracks/4436308.html?v=da5ede8f5aa5832e74b8afec8bd1818f
         When I get the thumbnail
-        Then The result should be "http://img.rutube.ru/thumbs/da/5e/da5ede8f5aa5832e74b8afec8bd1818f-2.jpg"
+        Then The result should be "//pic.rutube.ru/video/08/06/080693c750a84c004254b7bf1f629b55.jpg?size=l"
 
     Scenario: Get the embed HTML of the Rutube video
         Given The url http://rutube.ru/tracks/4436308.html?v=da5ede8f5aa5832e74b8afec8bd1818f
         When I get the embedHTML
         Then The result should be:
         """
-        <object width='560' height='349'>
-        <param name='movie' value='http://video.rutube.ru/da5ede8f5aa5832e74b8afec8bd1818f'></param>
-        <param name='wmode' value='window'></param>
-        <param name='allowFullScreen' value='true'></param>
-        <embed type='application/x-shockwave-flash
-        src='http://video.rutube.ru/da5ede8f5aa5832e74b8afec8bd1818f'
-        width='560' height='349'
-        wmode='window' allowFullScreen='true'></embed>
-        </object>
+        <iframe width="560" height="349" src="//rutube.ru/play/embed/4436308" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen></iframe>
         """
 
     Scenario: Get the embed url of the Rutube video
         Given The url http://rutube.ru/tracks/4436308.html?v=da5ede8f5aa5832e74b8afec8bd1818f
         When I get the embed url
-        Then The result should be "http://video.rutube.ru/da5ede8f5aa5832e74b8afec8bd1818f"
+        Then The result should be "//rutube.ru/play/embed/4436308"
 
     Scenario: Get the FLV url of the Rutube video
         Given The url http://rutube.ru/tracks/4436308.html?v=da5ede8f5aa5832e74b8afec8bd1818f
         When I get the FLV url
-        Then The result should be "http://bl.rutube.ru/da5ede8f5aa5832e74b8afec8bd1818f.iflv"
+        Then The result should be ""
 
     Scenario: Get the service name of the Rutube video
         Given The url http://rutube.ru/tracks/4436308.html?v=da5ede8f5aa5832e74b8afec8bd1818f

@@ -35,10 +35,10 @@ class Rutube implements VideoInterface
      */
     public function getTitle()
     {
-        //rt_info["movie"][0]["title"][0].strip
         if (!isset($this->title)) {
             $rtInfo = $this->getRtInfo();
-            $this->title = trim((string) $rtInfo->movie[0]->title);
+
+            $this->title = trim($rtInfo->title);
         }
 
         return $this->title;
@@ -51,11 +51,9 @@ class Rutube implements VideoInterface
     public function getThumbnail()
     {
         if (!isset($this->thumbnail)) {
-            $size = 2;
-            $movieHash = $this->getMovieHash();
-            $sub1 = substr($movieHash, 0, 2);
-            $sub2 = substr($movieHash, 2, 2);
-            $this->thumbnail = "http://img.rutube.ru/thumbs/{$sub1}/{$sub2}/{$movieHash}-{$size}.jpg";
+            $rtInfo = $this->getRtInfo();
+
+            $this->thumbnail = trim($rtInfo->thumbnail_url);
         }
 
         return $this->thumbnail;
@@ -76,24 +74,16 @@ class Rutube implements VideoInterface
      */
     public function getEmbedUrl()
     {
-        $movieHash = $this->getMovieHash();
-
-        return "http://video.rutube.ru/{$movieHash}";
-    }
-
-    /*
-     * Returns the movie hash to make request to Rutube
-     *
-     */
-    public function getMovieHash()
-    {
-        if (!isset($this->movieHash)) {
+        // //rutube.ru/play/embed/4436308
+        if (!isset($this->embed_url)) {
             $rtInfo = $this->getRtInfo();
-            preg_match('@[a-f0-9]+$@', $rtInfo->movie->playerLink[0], $matches);
-            $this->movieHash = $matches[0];
+
+            $matched = preg_match('@src="([^""]*)"@', $rtInfo->html, $matches);
+
+            $this->embed_url = $matches[1];
         }
 
-        return $this->movieHash;
+        return $this->embed_url;
     }
 
     /*
@@ -105,28 +95,13 @@ class Rutube implements VideoInterface
         $defaultOptions = ['width' => 560, 'height' => 349];
         $options = array_merge($defaultOptions, $options);
 
-        // convert options into
-        $htmlOptions = '';
-        if (count($options) > 0) {
-            foreach ($options as $key => $value) {
-                if (in_array($key, ['width', 'height'])) {
-                    continue;
-                }
-                $htmlOptions .= '&'.$key.'='.$value;
-            }
-        }
+        $this->embed_html = sprintf(
+            '<iframe width="' . $options['width'] . '" height="' . $options['height'] . '" '
+            . 'src="' . $this->getEmbedUrl() . '" '
+            . 'frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen></iframe>'
+        );
 
-        return  "<object width='{$options['width']}' "
-            ."height='{$options['height']}'>\n"
-            ."<param name='movie' value='{$this->getEmbedUrl()}'></param>\n"
-            ."<param name='wmode' value='window'></param>\n"
-            ."<param name='allowFullScreen' value='true'></param>\n"
-            ."<embed type='application/x-shockwave-flash\n"
-            ."src='{$this->getEmbedUrl()}'\n"
-            ."width='{$options['width']}' "
-            ."height='{$options['height']}'\n"
-            ."wmode='window' allowFullScreen='true'></embed>\n"
-            .'</object>';
+        return $this->embed_html;
     }
 
     /*
@@ -135,9 +110,7 @@ class Rutube implements VideoInterface
      */
     public function getFLV()
     {
-        $movieHash = $this->getMovieHash();
-
-        return "http://bl.rutube.ru/{$movieHash}.iflv";
+        return;
     }
 
     /*
@@ -164,13 +137,13 @@ class Rutube implements VideoInterface
      */
     public function getRtInfo()
     {
-        $videoId = (string) $this->getVideoId();
-        $url = $this->rtXmlAPIUrl."{$videoId}";
-
-        if (!isset($this->rtInfo)) {
-            $content = file_get_contents($url);
-            $this->rtInfo = simplexml_load_string($content);
+        if (isset($this->rtInfo)) {
+            return $this->rtInfo;
         }
+
+        $this->rtInfo = json_decode(
+            file_get_contents('https://rutube.ru/api/oembed/?format=json&url='.$this->url)
+        );
 
         return $this->rtInfo;
     }
@@ -182,10 +155,18 @@ class Rutube implements VideoInterface
      */
     public function getVideoID()
     {
-        if (!isset($this->videoId)) {
-            $path = parse_url($this->url, PHP_URL_PATH);
-            preg_match("@(\d+)@", $path, $matches);
-            $this->videoId = (int) $matches[1];
+        if (isset($this->videoId)) {
+            return $this->videoId;
+        }
+
+        $matched = preg_match('@/video/([a-z0-9])*@', $this->url, $matches);
+        if ($matched) {
+            $this->videoId = $matches[1];
+        }
+
+        $matched = preg_match('@([a-z0-9])*@', $this->url, $matches);
+        if ($matched) {
+            $this->videoId = $matches[1];
         }
 
         return $this->videoId;
