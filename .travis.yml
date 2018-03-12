@@ -9,3 +9,5 @@ before_script:
   - composer install
 
 script: bash run-test.sh
+
+cache: vendor
