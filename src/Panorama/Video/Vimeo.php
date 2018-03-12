@@ -129,7 +129,8 @@ class Vimeo implements VideoInterface
             }
 
             $this->embedHTML = sprintf(
-                "<iframe src='%s' width='%s' height='%s' frameborder='0' title='%s' webkitAllowFullScreen  mozallowfullscreen allowFullScreen></iframe>",
+                "<iframe src='%s' width='%s' height='%s' frameborder='0' title='%s' "
+                . "webkitAllowFullScreen  mozallowfullscreen allowFullScreen></iframe>",
                 $this->getEmbedUrl(),
                 $options['width'],
                 $options['height'],
