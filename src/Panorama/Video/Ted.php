@@ -38,34 +38,18 @@ class Ted implements VideoInterface
     }
 
     /*
-     * Returns the page contents of the url
-     *
-     */
-    public function getPage()
-    {
-        if (!isset($this->page)) {
-            $this->page = file_get_contents($this->url);
-            if (!$this->page) {
-                throw new \Exception('Video id not valid or found.', 1);
-            }
-        }
-
-        return $this->page;
-    }
-
-    /*
      * Returns the title for this Ted video
      *
      */
     public function getTitle()
     {
-        preg_match(
-            '@<span id="altHeadline"  class="notranslate">(.*)</span>@',
-            $this->getPage(),
-            $matches
-        );
+        if (isset($this->title)) {
+            return $this->title;
+        }
 
-        return trim($matches[1]);
+        $this->title = $this->getOEmbed()->title;
+
+        return $this->title;
     }
 
     /*
@@ -74,10 +58,11 @@ class Ted implements VideoInterface
      */
     public function getThumbnail()
     {
-        if (!isset($this->thumbnail)) {
-            $args = $this->getArgs();
-            $this->thumbnail = $args['su'];
+        if (isset($this->thumbnail)) {
+            return $this->thumbnail;
         }
+
+        $this->thumbnail = $this->getOEmbed()->thumbnail_url;
 
         return $this->thumbnail;
     }
@@ -97,9 +82,18 @@ class Ted implements VideoInterface
      */
     public function getEmbedUrl()
     {
-        $flashvars = $this->getFlashVars();
+        $this->embedUrl = '';
+        if (empty($this->embedUrl)) {
+            $oembed = $this->getOEmbed($this->url);
 
-        return "http://video.ted.com/assets/player/swf/EmbedPlayer.swf?{$flashvars}";
+            $this->embedUrl = (string) $oembed->html;
+
+            $matched = preg_match('@src="([^""]*)"@', $oembed->html, $matches);
+
+            $this->embedUrl = $matches[1];
+        }
+
+        return $this->embedUrl;
     }
 
     /*
@@ -111,73 +105,19 @@ class Ted implements VideoInterface
         $defaultOptions = ['width' => 560, 'height' => 349];
         $options = array_merge($defaultOptions, $options);
 
-        // convert options into
-        $htmlOptions = '';
-        if (count($options) > 0) {
-            foreach ($options as $key => $value) {
-                if (in_array($key, ['width', 'height'])) {
-                    continue;
-                }
-                $htmlOptions .= '&'.$key.'='.$value;
-            }
-        }
-        $embedUrl = $this->getEmbedUrl();
-
-        return "<object width='{$options['width']}' "
-            ."height='{$options['height']}'>\n"
-            ."<param name='movie' value='{$embedUrl}'></param>\n"
-            ."<param name='allowFullScreen' value='true'></param>\n"
-            ."<param name='wmode' value='transparent'></param>\n"
-            ."<param name='bgColor' value='#ffffff'></param>\n"
-            ."<embed pluginspace='http://www.macromedia.com/go/getflashplayer\n"
-            ."type='application/x-shockwave-flash'\n"
-            ."wmode='transparent' allowFullScreen='true' bgColor='#ffffff'\n"
-            ."src='{$embedUrl}'\n"
-            ."width='{$options['width']}' "
-            ."height='{$options['height']}'></embed>\n"
-            .'</object>';
-    }
-
-    /*
-     * Returns the flash vars for this video
-     *
-     */
-    public function getFlashVars()
-    {
-        if (!isset($this->flashvars)) {
-            $videoId = $this->getVideoID();
-            $this->emb = file_get_contents(
-                "http://www.ted.com/talks/embed/id/{$videoId}"
-            );
-
-            $split = preg_split(
-                "@param\sname=\"flashvars\"\svalue=\"@",
-                urldecode((string) $this->emb)
-            );
-            $split = preg_split('@"@', $split[1]);
-            $this->flashvars = $split[0];
+        if (isset($this->embedHTML)) {
+            return $this->embedHTML;
         }
 
-        return $this->flashvars;
-    }
+        $this->embedHTML = sprintf(
+            "<iframe src='%s' width='%s' height='%s' frameborder='0' scrolling='no' "
+            . "webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>",
+            $this->getEmbedUrl(),
+            $options['width'],
+            $options['height']
+        );
 
-    /*
-     * Returns the arguments from url
-     *
-     */
-    public function getArgs()
-    {
-        if (!isset($this->args)) {
-            $parts = explode('&', $this->getFlashVars());
-            $this->args = [];
-            foreach ($parts as $part) {
-                $elemParts = explode('=', $part);
-                $args[$elemParts[0]] = $elemParts[1];
-            }
-            $this->args = $args;
-        }
-
-        return $this->args;
+        return $this->embedHTML;
     }
 
     /*
@@ -186,12 +126,7 @@ class Ted implements VideoInterface
      */
     public function getFLV()
     {
-        if (!isset($this->FLV)) {
-            $args = $this->getArgs();
-            $this->FLV = (string) $args['vu'];
-        }
-
-        return $this->FLV;
+        return;
     }
 
     /*
@@ -200,16 +135,7 @@ class Ted implements VideoInterface
      */
     public function getDownloadUrl()
     {
-        if (!isset($this->downloadUrl)) {
-            preg_match(
-                '@<a href="(.*)">download the video</a>@',
-                $this->getPage(),
-                $matches
-            );
-            $this->downloadUrl = $matches[1];
-        }
-
-        return $this->downloadUrl;
+        return;
     }
 
     /*
@@ -219,6 +145,25 @@ class Ted implements VideoInterface
     public function getService()
     {
         return 'Ted';
+    }
+
+    /**
+     * undocumented function
+     *
+     * @return void
+     * @author
+     **/
+    public function getOEmbed()
+    {
+        if (isset($this->oEmbed)) {
+            return $this->oEmbed;
+        }
+
+        $this->oEmbed = json_decode(
+            file_get_contents('https://www.ted.com/services/v1/oembed.json?url='. $this->url)
+        );
+
+        return $this->oEmbed;
     }
 
     /*
