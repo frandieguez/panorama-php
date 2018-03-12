@@ -1,6 +1,8 @@
 Panorama PHP
 ============
 
+[![Build Status](https://travis-ci.org/frandieguez/panorama-php.svg?branch=master)](https://travis-ci.org/frandieguez/panorama-php)
+
 What  is this!
 --------------
 
