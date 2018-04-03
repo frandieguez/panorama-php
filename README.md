@@ -96,18 +96,14 @@ Supported services
 
 At this moment we support the following video services:
 
--   [Youtube](http://www.youtube.com/)
--   [Vimeo](http://vimeo.com/)
--   [Flickr (videos)](http://flickr.com/)
--   [Metacafe](http://metacafe.com/)
 -   [Dailymotion](http://dailymotion.com/)
--   [Collegehumor](http://collegehumor.com/)
--   [Blip.tv](http://blip.tv/)
--   [Myspace](http://vids.myspace.com/)
--   [11870.com](http://11870.com/)
--   [Marca.tv](http://www.marca.tv/)
 -   [Dalealplay](http://www.dalealplay.com/)
+-   [Marca.tv](http://www.marca.tv/)
+-   [Metacafe](http://metacafe.com/)
 -   [RuTube](http://www.rutube.ru/)
+-   [Ted Talks](http://www.ted.com/talks/)
+-   [Vimeo](http://vimeo.com/)
+-   [Youtube](http://www.youtube.com/)
 
 Broken services
 ---------------
@@ -115,7 +111,11 @@ Broken services
 These services were included in this API but, due changes in their website, don't work
 anymore. Any patch for fixing them are welcome. ;)
 
--   [Ted Talks](http://www.ted.com/talks/)
+-   [Myspace](http://vids.myspace.com/)
+-   [Flickr (videos)](http://flickr.com/)
+-   [11870.com](http://11870.com/)
+-   [Blip.tv](http://blip.tv/)
+-   [Collegehumor](http://collegehumor.com/)
 -   [Qik](http://qik.com/)
 -   [MTV](http://www.mtvhive.com/)
 
