@@ -193,7 +193,11 @@ class Video
      */
     public static function getDomain($url = '')
     {
-        $host        = parse_url($url);
+        $host = parse_url($url);
+
+        if (!array_key_exists('host', $host)) {
+            throw new \Exception('Video service or Url not supported');
+        }
         $domainParts = preg_split("@\.@", $host['host']);
 
         /*
