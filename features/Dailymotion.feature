@@ -15,7 +15,7 @@ Feature: Dailymotion service provider
     Scenario: Get the thumbnail of the Dailymotion video
         Given The url http://www.dailymotion.com/visited-week/lang/es/video/x7u5kn_parkour-dayyy_sport
         When  I get the thumbnail
-        Then  The result should be "http://s1.dmcdn.net/resw/x240-_VO.jpg"
+        Then  The result should be like "@http(s)?://s[0-9]+-ssl.dmcdn.net/resw/x240-_VO.jpg@"
 
     Scenario: Get the embed HTML of the Dailymotion video
         Given The url http://www.dailymotion.com/visited-week/lang/es/video/x7u5kn_parkour-dayyy_sport

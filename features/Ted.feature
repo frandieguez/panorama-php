@@ -20,7 +20,7 @@ Feature: Ted service provider
     Scenario: Get the thumbnail of the Ted video
         Given The url http://www.ted.com/talks/benjamin_wallace_on_the_price_of_happiness.html
         When I get the thumbnail
-        Then The result should be like "@https://pe.tedcdn.com/images/ted/\S*\.jpg@"
+        Then The result should be like "@https://pi.tedcdn.com/r/pe.tedcdn.com/images/ted/\S*\.jpg@"
 
     Scenario: Get the embed url of the Ted video
         Given The url http://www.ted.com/talks/benjamin_wallace_on_the_price_of_happiness.html
