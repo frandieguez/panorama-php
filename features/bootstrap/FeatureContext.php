@@ -23,7 +23,7 @@ class FeatureContext implements SnippetAcceptingContext
      */
     public function theUrl($url)
     {
-        $this->videoService = new \Panorama\Video($this->url);
+        $this->videoService = new \Panorama\Video($url);
     }
 
     /**
