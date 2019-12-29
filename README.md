@@ -97,7 +97,6 @@ Supported services
 At this moment we support the following video services:
 
 -   [Dailymotion](http://dailymotion.com/)
--   [Dalealplay](http://www.dalealplay.com/)
 -   [Marca.tv](http://www.marca.tv/)
 -   [Metacafe](http://metacafe.com/)
 -   [RuTube](http://www.rutube.ru/)
@@ -111,6 +110,7 @@ Broken services
 These services were included in this API but, due changes in their website, don't work
 anymore. Any patch for fixing them are welcome. ;)
 
+-   [Dalealplay](http://www.dalealplay.com/)
 -   [Myspace](http://vids.myspace.com/)
 -   [Flickr (videos)](http://flickr.com/)
 -   [11870.com](http://11870.com/)
