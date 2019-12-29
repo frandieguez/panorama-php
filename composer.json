@@ -3,7 +3,7 @@
   "type": "library",
   "description": "Wrapper class for accessing video services information in a standarized way",
   "keywords": ["library"],
-  "homepage": "http://frandieguez.github.com/Panorama-PHP/",
+  "homepage": "http://frandieguez.github.com/panorama-php/",
   "license": "MIT",
   "authors": [
     {
@@ -12,13 +12,12 @@
     }
   ],
   "require": {
-    "php": ">=5.4"
+    "php": ">=7.1"
   },
 
   "require-dev": {
-    "behat/behat": "2.5.*",
-    "phpunit/phpunit": "*",
-    "phpdocumentor/phpdocumentor": "2.*"
+    "behat/behat": "*",
+    "phpunit/phpunit": "*"
   },
 
   "config": {

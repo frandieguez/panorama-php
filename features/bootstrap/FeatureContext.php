@@ -7,35 +7,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  **/
-use Behat\Behat\Context\BehatContext;
+use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\PyStringNode;
+use Behat\Gherkin\Node\TableNode;
 
 require_once __DIR__.'/../../vendor/phpunit/phpunit/src/Framework/Assert/Functions.php';
 
 /**
  * Features context.
  */
-class FeatureContext extends BehatContext
+class FeatureContext implements SnippetAcceptingContext
 {
-
-    public $url =  '';
-    /**
-     * Initializes context.
-     * Every scenario gets it's own context object.
-     *
-     * @param   array   $parameters     context parameters (set them up through behat.yml)
-     */
-    public function __construct(array $parameters)
-    {
-        // Initialize your context here
-    }
-
     /**
      * @Given /^The url (.*)$/
      */
     public function theUrl($url)
     {
-        $this->url = $url;
         $this->videoService = new \Panorama\Video($this->url);
     }
 
