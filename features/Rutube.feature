@@ -20,20 +20,20 @@ Feature: Rutube service provider
     Scenario: Get the thumbnail of the Rutube video
         Given The url http://rutube.ru/tracks/4436308.html?v=da5ede8f5aa5832e74b8afec8bd1818f
         When I get the thumbnail
-        Then The result should be "//pic.rutube.ru/video/08/06/080693c750a84c004254b7bf1f629b55.jpg?size=l"
+        Then The result should be "https://pic.rutube.ru/video/08/06/080693c750a84c004254b7bf1f629b55.jpg?size=l"
 
     Scenario: Get the embed HTML of the Rutube video
         Given The url http://rutube.ru/tracks/4436308.html?v=da5ede8f5aa5832e74b8afec8bd1818f
         When I get the embedHTML
         Then The result should be:
         """
-        <iframe width="560" height="349" src="//rutube.ru/play/embed/4436308" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen></iframe>
+        <iframe width="560" height="349" src="https://rutube.ru/play/embed/4436308" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen></iframe>
         """
 
     Scenario: Get the embed url of the Rutube video
         Given The url http://rutube.ru/tracks/4436308.html?v=da5ede8f5aa5832e74b8afec8bd1818f
         When I get the embed url
-        Then The result should be "//rutube.ru/play/embed/4436308"
+        Then The result should be "https://rutube.ru/play/embed/4436308"
 
     Scenario: Get the FLV url of the Rutube video
         Given The url http://rutube.ru/tracks/4436308.html?v=da5ede8f5aa5832e74b8afec8bd1818f

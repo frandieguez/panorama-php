@@ -25,12 +25,12 @@ Feature: Ted service provider
     Scenario: Get the embed url of the Ted video
         Given The url http://www.ted.com/talks/benjamin_wallace_on_the_price_of_happiness.html
         When I get the embed url
-        Then The result should be "https://embed.ted.com/talks/benjamin_wallace_on_the_price_of_happiness"
+        Then The result should be "https://embed.ted.com/talks/benjamin_wallace_the_price_of_happiness"
 
     Scenario: Get the embed HTML of the Ted video
         Given The url http://www.ted.com/talks/benjamin_wallace_on_the_price_of_happiness.html
         When I get the embedHTML
-        Then The result should be "<iframe src='https://embed.ted.com/talks/benjamin_wallace_on_the_price_of_happiness' width='560' height='349' frameborder='0' scrolling='no' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>"
+        Then The result should be "<iframe src='https://embed.ted.com/talks/benjamin_wallace_the_price_of_happiness' width='560' height='349' frameborder='0' scrolling='no' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>"
 
     Scenario: Get the FLV url of the Ted video
         Given The url http://www.ted.com/talks/benjamin_wallace_on_the_price_of_happiness.html
