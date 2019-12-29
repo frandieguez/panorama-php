@@ -25,6 +25,7 @@ class Dailymotion implements VideoInterface
     {
         $this->url = $url;
         $this->params = $params;
+        $this->getPage();
     }
 
     /*
@@ -36,8 +37,7 @@ class Dailymotion implements VideoInterface
     {
         if (!isset($this->page)) {
             $videoId = $this->getVideoID();
-            $content = file_get_contents("http://www.dailymotion.com/rss/video/{$videoId}");
-            $this->page = simplexml_load_string($content);
+            $this->page = file_get_contents("http://www.dailymotion.com/video/{$videoId}");
         }
 
         return $this->page;
@@ -51,8 +51,7 @@ class Dailymotion implements VideoInterface
     public function getTitle()
     {
         if (!isset($this->title)) {
-            $titles = $this->getPage()->xpath('//item/title');
-            $this->title = (string) $titles[0];
+            $this->title = $this->getByMetaProperty('og:title');
         }
 
         return $this->title;
@@ -66,8 +65,7 @@ class Dailymotion implements VideoInterface
     public function getThumbnail()
     {
         if (!isset($this->thumbnail)) {
-            $thumbnail = $this->getPage()->xpath('//media:thumbnail');
-            $this->thumbnail = preg_replace('@preview_large@', 'preview_medium', $thumbnail[0]['url']);
+            $this->thumbnail = $this->getByMetaProperty('og:image');
         }
 
         return $this->thumbnail;
@@ -80,7 +78,11 @@ class Dailymotion implements VideoInterface
      */
     public function getDuration()
     {
-        return;
+        if (!isset($this->thumbnail)) {
+            $this->duration = $this->getByMetaProperty('video:duration');
+        }
+
+        return $this->duration;
     }
 
     /*
@@ -91,8 +93,7 @@ class Dailymotion implements VideoInterface
     public function getEmbedUrl()
     {
         if (!isset($this->embedUrl)) {
-            $embed = $this->getPage()->xpath("//media:content[@type='application/x-shockwave-flash']");
-            $this->embedUrl = (string) $embed[0]['url'];
+            $this->embedUrl = str_replace('?autoplay=1', '', $this->getByMetaProperty('og:video:url'));
         }
 
         return $this->embedUrl;
@@ -120,17 +121,11 @@ class Dailymotion implements VideoInterface
                 }
             }
 
-            $this->embedHTML =
-                "<object width='{$options['width']}' height='{$options['height']}'>\n"
-                ."<param name='movie' value='{$this->getEmbedUrl()}&related=1'></param>\n"
-                ."<param name='allowFullScreen' value='true'></param>\n"
-                ."<param name='allowScriptAccess' value='always'></param>\n"
-                ."<embed type='application/x-shockwave-flash'\n"
-                ."src='{$this->getEmbedUrl()}&related=1'\n"
-                ."width='{$options['width']}' height='{$options['height']}'\n"
-                ."allowFullScreen='true' allowScriptAccess='always'>\n"
-                ."</embed>\n"
-                .'</object>';
+            $this->embedHTML = "<iframe src='{$this->getEmbedUrl()}' "
+                ."width='{$options['width']}' "
+                ."height='{$options['height']}' frameborder='0' "
+                ."title='{$this->getTitle()}' "
+                ."webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
         }
 
         return $this->embedHTML;
@@ -143,12 +138,7 @@ class Dailymotion implements VideoInterface
      */
     public function getFLV()
     {
-        if (!isset($this->FLV)) {
-            $item = $this->getPage()->xpath('//media:content');
-            $this->FLV = (string) $item[0]['url'];
-        }
-
-        return $this->FLV;
+        return null;
     }
 
     /*
@@ -190,5 +180,32 @@ class Dailymotion implements VideoInterface
         }
 
         return $this->videoId;
+    }
+
+    /*
+     * Extracts the meta tag from the page
+     *
+     * @return string    the video ID for this video
+     * @throws Exception if url doesn't seem to be a Dailymotion video url
+     */
+    private function getByMetaProperty($name, $default = '')
+    {
+        $matched = preg_match_all('/property\=\"' . $name . '\" content=\"(?<part>.*)\"/i', $this->page,  $matches);
+        // var_export($name);
+        // var_export($matches);
+        return $matched ? (string) $matches['part'][0] : $default;
+    }
+    /*
+     * Extracts the meta tag from the page
+     *
+     * @return string    the video ID for this video
+     * @throws Exception if url doesn't seem to be a Dailymotion video url
+     */
+    private function getByMetaName($name, $default = '')
+    {
+        $matched = preg_match_all('/name\=\"' . $name . '\" content=\"(?<part>.*)\"/i', $this->page,  $matches);
+        // var_export($name);
+        // var_export($matches);
+        return $matched ? (string) $matches['part'][0] : $default;
     }
 }
