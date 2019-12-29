@@ -106,27 +106,28 @@ class Dailymotion implements VideoInterface
      */
     public function getEmbedHTML($options = [])
     {
-        if (!isset($this->embedHTML)) {
-            $defaultOptions = ['width' => 560, 'height' => 349];
-            $options = array_merge($defaultOptions, $options);
-
-            // convert options into
-            $htmlOptions = '';
-            if (count($options) > 0) {
-                foreach ($options as $key => $value) {
-                    if (in_array($key, ['width', 'height'])) {
-                        continue;
-                    }
-                    $htmlOptions .= '&'.$key.'='.$value;
-                }
-            }
-
-            $this->embedHTML = "<iframe src='{$this->getEmbedUrl()}' "
-                ."width='{$options['width']}' "
-                ."height='{$options['height']}' frameborder='0' "
-                ."title='{$this->getTitle()}' "
-                ."webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
+        if (isset($this->embedHTML)) {
+            return $this->embedHTML;
         }
+        $defaultOptions = ['width' => 560, 'height' => 349];
+        $options = array_merge($defaultOptions, $options);
+
+        // convert options into
+        $htmlOptions = '';
+        if (count($options) > 0) {
+            foreach ($options as $key => $value) {
+                if (in_array($key, ['width', 'height'])) {
+                    continue;
+                }
+                $htmlOptions .= '&'.$key.'='.$value;
+            }
+        }
+
+        $this->embedHTML = "<iframe src='{$this->getEmbedUrl()}' "
+            ."width='{$options['width']}' "
+            ."height='{$options['height']}' frameborder='0' "
+            ."title='{$this->getTitle()}' "
+            ."webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
 
         return $this->embedHTML;
     }
@@ -169,43 +170,47 @@ class Dailymotion implements VideoInterface
      */
     public function getVideoID()
     {
-        if (!isset($this->videoId)) {
-            $urlParts = parse_url($this->url);
-            $matches = preg_split('@/video/@', $urlParts['path']);
-            if (count($matches) > 0) {
-                $this->videoId = $matches[1];
-            } else {
-                throw new \Exception("This url doesn't seem to be a Dailymotion video url");
-            }
+        if (isset($this->videoId)) {
+            return $this->videoId;
+        }
+
+        $urlParts = parse_url($this->url);
+        $matches = preg_split('@/video/@', $urlParts['path']);
+        if (count($matches) > 0) {
+            $this->videoId = $matches[1];
+        } else {
+            throw new \Exception("This url doesn't seem to be a Dailymotion video url");
         }
 
         return $this->videoId;
     }
 
     /*
-     * Extracts the meta tag from the page
+     * Extracts the meta property tag from the page
      *
-     * @return string    the video ID for this video
-     * @throws Exception if url doesn't seem to be a Dailymotion video url
+     * @param string $name    The property name
+     * @param string $default The default value to return if the property doesnt exists
+     *
+     * @return string    The value of the property
      */
     private function getByMetaProperty($name, $default = '')
     {
         $matched = preg_match_all('/property\=\"' . $name . '\" content=\"(?<part>.*)\"/i', $this->page,  $matches);
-        // var_export($name);
-        // var_export($matches);
+
         return $matched ? (string) $matches['part'][0] : $default;
     }
     /*
      * Extracts the meta tag from the page
      *
-     * @return string    the video ID for this video
-     * @throws Exception if url doesn't seem to be a Dailymotion video url
+     * @param string $name    The property name
+     * @param string $default The default value to return if the property doesnt exists
+     *
+     * @return string    The value of the property
      */
     private function getByMetaName($name, $default = '')
     {
         $matched = preg_match_all('/name\=\"' . $name . '\" content=\"(?<part>.*)\"/i', $this->page,  $matches);
-        // var_export($name);
-        // var_export($matches);
+
         return $matched ? (string) $matches['part'][0] : $default;
     }
 }
