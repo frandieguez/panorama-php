@@ -197,7 +197,7 @@ class Youtube implements VideoInterface
             return $this->oembed;
         }
 
-        $info = file_get_contents('http://www.youtube.com/oembed?url=' . urlencode($url) . '&format=json');
+        $info = file_get_contents('https://www.youtube.com/oembed?url=' . urlencode($url) . '&format=json');
 
         $this->oembed = json_decode($info);
 
